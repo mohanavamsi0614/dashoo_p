@@ -1,0 +1,211 @@
+import { useState } from "react";
+import axios from "axios";
+import { useLocation, useParams, useNavigate } from "react-router-dom";
+import TeamReg from "./TeamReg";
+
+export default function Reg() {
+  const { name: eventParam } = useParams();
+  const { state } = useLocation();
+  const navigate = useNavigate();
+
+  const [form, setForm] = useState({
+    name: "",
+    college: "",
+    year: "",
+    stream: "",
+    branch: "",
+    rollNumber: "",
+    email: "",
+  });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState(false);
+
+  const eventTitle = state?.eventTitle || eventParam || "";
+  const eventType = state?.type || state?.event?.type || state?.eventType || "qr";
+
+  // ✅ If this is a team event, show TeamReg component
+  if (eventType !== "qr") {
+    return <TeamReg />;
+  }
+
+  function validate() {
+    if (!form.name.trim()) return "Name is required";
+    if (!form.college.trim()) return "College is required";
+    if (!form.year.trim()) return "Year is required";
+    if (!form.rollNumber.trim()) return "Roll number is required";
+    if (!form.email.trim()) return "Email is required";
+    return "";
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    const v = validate();
+    if (v) return setError(v);
+    setLoading(true);
+
+    try {
+      const payload = {
+        ...form,
+        eventName: eventTitle,
+        userId: JSON.parse(localStorage.getItem("user"))?._id,
+      };
+
+      const res = await axios.post(
+        `https://dasho-backend.onrender.com/participant/register/qr/${state._id}`,
+        payload
+      );
+
+      if (res?.data) {
+        localStorage.setItem(
+          "lastRegistration",
+          JSON.stringify({ payload, server: res.data })
+        );
+      }
+      setSuccess(true);
+      setTimeout(() => navigate("/profile"), 1500);
+    } catch (err) {
+      console.error(err);
+      setError(
+        err?.response?.data?.message || err.message || "Registration failed"
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50 flex justify-center items-start pt-10 pb-16">
+      <div className="w-full max-w-2xl bg-white rounded-2xl shadow-lg p-8">
+        <h1 className="text-2xl font-bold text-gray-800 mb-4 text-center">
+          Register for {eventTitle || "the event"}
+        </h1>
+
+        {success ? (
+          <div className="p-4 text-green-700 bg-green-100 border border-green-300 rounded-lg text-center">
+            ✅ Registration successful — redirecting to your profile...
+          </div>
+        ) : (
+          <form onSubmit={handleSubmit} className="space-y-5">
+            <div>
+              <label className="block text-gray-700 font-medium mb-1">
+                Full Name
+              </label>
+              <input
+                type="text"
+                value={form.name}
+                onChange={(e) => setForm({ ...form, name: e.target.value })}
+                placeholder="Your full name"
+                className="w-full border rounded-lg p-3 outline-none focus:ring-2 focus:ring-red-400"
+              />
+            </div>
+
+            <div>
+              <label className="block text-gray-700 font-medium mb-1">
+                College
+              </label>
+              <input
+                type="text"
+                value={form.college}
+                onChange={(e) => setForm({ ...form, college: e.target.value })}
+                placeholder="Your college name"
+                className="w-full border rounded-lg p-3 outline-none focus:ring-2 focus:ring-red-400"
+              />
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-gray-700 font-medium mb-1">
+                  Year
+                </label>
+                <input
+                  value={form.year}
+                  onChange={(e) => setForm({ ...form, year: e.target.value })}
+                  placeholder="e.g. 1, 2, 3, 4"
+                  className="w-full border rounded-lg p-3 outline-none focus:ring-2 focus:ring-red-400"
+                />
+              </div>
+
+              <div>
+                <label className="block text-gray-700 font-medium mb-1">
+                  Stream
+                </label>
+                <input
+                  value={form.stream}
+                  onChange={(e) => setForm({ ...form, stream: e.target.value })}
+                  placeholder="e.g. B.Tech, MBA"
+                  className="w-full border rounded-lg p-3 outline-none focus:ring-2 focus:ring-red-400"
+                />
+              </div>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-gray-700 font-medium mb-1">
+                  Branch
+                </label>
+                <input
+                  value={form.branch}
+                  onChange={(e) => setForm({ ...form, branch: e.target.value })}
+                  placeholder="e.g. Computer Science"
+                  className="w-full border rounded-lg p-3 outline-none focus:ring-2 focus:ring-red-400"
+                />
+              </div>
+
+              <div>
+                <label className="block text-gray-700 font-medium mb-1">
+                  Email
+                </label>
+                <input
+                  value={form.email}
+                  onChange={(e) => setForm({ ...form, email: e.target.value })}
+                  placeholder="e.g. john@college.edu"
+                  className="w-full border rounded-lg p-3 outline-none focus:ring-2 focus:ring-red-400"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-gray-700 font-medium mb-1">
+                Roll Number
+              </label>
+              <input
+                value={form.rollNumber}
+                onChange={(e) =>
+                  setForm({ ...form, rollNumber: e.target.value })
+                }
+                placeholder="College roll or registration number"
+                className="w-full border rounded-lg p-3 outline-none focus:ring-2 focus:ring-red-400"
+              />
+            </div>
+
+            {error && (
+              <div className="text-red-600 bg-red-100 border border-red-300 p-3 rounded-lg text-sm">
+                {error}
+              </div>
+            )}
+
+            <div className="flex gap-4 justify-center">
+              <button
+                type="submit"
+                disabled={loading}
+                className="bg-red-500 hover:bg-red-600 text-white font-semibold px-6 py-2 rounded-lg transition disabled:opacity-60"
+              >
+                {loading ? "Registering..." : "Register"}
+              </button>
+
+              <button
+                type="button"
+                onClick={() => navigate(-1)}
+                className="bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold px-6 py-2 rounded-lg transition"
+              >
+                Back
+              </button>
+            </div>
+          </form>
+        )}
+      </div>
+    </div>
+  );
+}
