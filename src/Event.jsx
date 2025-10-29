@@ -25,6 +25,7 @@ function Event() {
 
   if (loading || !state) {
     return (
+
       <div className="flex items-center justify-center min-h-screen bg-[#212121] text-white font-poppins">
         <p>Loading event details...</p>
       </div>
@@ -54,12 +55,16 @@ function Event() {
             <img
               src={state.logoUrl}
               alt="Logo"
-              className="w-24 h-24 rounded-full border-4 border-[#2a2a2a] shadow-lg -mt-12 mb-4 bg-white object-cover"
+              className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-full border-4 border-[#2a2a2a] shadow-lg -mt-8 sm:-mt-10 md:-mt-12 mb-4 bg-white object-cover"
             />
           )}
-          <h1 className="text-5xl font-nerko font-medium text-white">{state.eventTitle}</h1>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-nerko font-medium text-white">
+            {state.eventTitle}
+          </h1>
           {state.shortTitle && (
-            <p className="text-gray-300 italic mt-1">{state.shortTitle}</p>
+            <p className="text-sm sm:text-base text-gray-300 italic mt-1">
+              {state.shortTitle}
+            </p>
           )}
         </div>
 
@@ -103,14 +108,14 @@ function Event() {
                 <img
                   src={state.photo1Url}
                   alt="Event Photo 1"
-                  className="w-full h-64 object-cover rounded-xl shadow-md hover:scale-[1.02] transition-transform"
+                  className="w-full h-48 sm:h-56 md:h-64 object-cover rounded-xl shadow-md hover:scale-[1.02] transition-transform"
                 />
               )}
               {state.photo2Url && (
                 <img
                   src={state.photo2Url}
                   alt="Event Photo 2"
-                  className="w-full h-64 object-cover rounded-xl shadow-md hover:scale-[1.02] transition-transform"
+                  className="w-full h-48 sm:h-56 md:h-64 object-cover rounded-xl shadow-md hover:scale-[1.02] transition-transform"
                 />
               )}
             </div>
@@ -118,29 +123,21 @@ function Event() {
         )}
 
         {/* Register Button */}
-        <div className="mt-10 text-center">
-          {isRegistered ? (
-            <p className="text-green-500 font-medium mb-4">
-              ✅ You are already registered for this event.
-            </p>
-          ) : (
-            <button
-              onClick={() => {
-                console.log(state.eventId);
-                nav(`/reg/${state.eventId}`, { state })}}
-              className="bg-transparent cursor-pointer hover:bg-white hover:text-black border border-[#aeaeae4d] text-white text-lg font-semibold px-8 py-3 rounded-xl transition duration-300"
-            >
-              Register Now
-            </button>
-          )}
+        <div className="mt-8 sm:mt-10 text-center">
+          <button
+            onClick={() => nav("/reg", { state })}
+            className="bg-transparent cursor-pointer hover:bg-white hover:text-black border border-[#aeaeae4d] text-white text-base sm:text-lg font-semibold px-6 sm:px-8 py-2 sm:py-3 rounded-xl transition duration-300 w-full sm:w-auto"
+          >
+            Register Now
+          </button>
         </div>
       </div>
 
       {/* Back Button */}
-      <div className="text-center mt-6 pb-6">
+      <div className="text-center mt-4 sm:mt-6 pb-4 sm:pb-6">
         <Link
           to="/"
-          className="text-gray-400 cursor-pointer hover:text-white transition text-sm"
+          className="text-gray-400 cursor-pointer hover:text-white transition text-xs sm:text-sm"
         >
           ← Home
         </Link>

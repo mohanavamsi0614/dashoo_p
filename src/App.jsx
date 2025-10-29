@@ -28,11 +28,11 @@ function App() {
     if (!hasVisited) {
       setIsFirstVisit(true);
       localStorage.setItem("hasVisited", "true");
-      const timer = setTimeout(() => setLoading(false), 15000); // 15 seconds total for first visit
+      const timer = setTimeout(() => setLoading(false), 10000); 
       return () => clearTimeout(timer);
     } else {
       setIsFirstVisit(false);
-      const timer = setTimeout(() => setLoading(false), 1000); // 1 second for subsequent visits
+      const timer = setTimeout(() => setLoading(false), 1000); 
       return () => clearTimeout(timer);
     }
   }, []);
