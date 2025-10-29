@@ -1,6 +1,8 @@
+import { useNavigate } from "react-router";
 import GoogleAuth from "./firebase";
 
 function Navbar() {
+  const nav=useNavigate()
 
   return (
     <div className="text-4xl ml-10 mr-10 font-poppins text-white p-5 flex justify-between items-center rounded-full">
@@ -12,7 +14,7 @@ function Navbar() {
         </p>
       </div>
        {localStorage.getItem("user") ? 
-      (<img src={JSON.parse(localStorage.getItem("user")).imgUrl} alt="Profile" className="h-12 w-12 rounded-full object-cover border" />)
+      (<img src={JSON.parse(localStorage.getItem("user")).imgUrl} alt="Profile" className="h-12 w-12 rounded-full object-cover border" onClick={()=>{nav("/profile")}} />)
        :
         (<button className=" text-sm"><GoogleAuth text="Sign in" /></button>)
       }
