@@ -125,7 +125,9 @@ function Event() {
         {/* Register Button */}
         <div className="mt-8 sm:mt-10 text-center">
           <button
-            onClick={() => nav("/reg", { state })}
+            onClick={() => {
+              
+              nav("/reg/"+state.eventId, { state })}}
             className="bg-transparent cursor-pointer hover:bg-white hover:text-black border border-[#aeaeae4d] text-white text-base sm:text-lg font-semibold px-6 sm:px-8 py-2 sm:py-3 rounded-xl transition duration-300 w-full sm:w-auto"
           >
             Register Now
