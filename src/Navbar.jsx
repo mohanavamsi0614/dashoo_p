@@ -1,3 +1,5 @@
+import GoogleAuth from "./firebase";
+
 function Navbar() {
 
   return (
@@ -9,6 +11,11 @@ function Navbar() {
           Dasho
         </p>
       </div>
+       {localStorage.getItem("user") ? 
+      (<img src={JSON.parse(localStorage.getItem("user")).imgUrl} alt="Profile" className="h-12 w-12 rounded-full object-cover border" />)
+       :
+        (<button className=" text-sm"><GoogleAuth text="Sign in" /></button>)
+      }
     </div>
   );
 }

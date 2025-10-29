@@ -17,7 +17,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-function GoogleAuth() {
+function GoogleAuth({text}) {
   const [newUser, setNewUser] = useState(false);
   const [data, setData] = useState({
     name: "",
@@ -109,7 +109,7 @@ function GoogleAuth() {
           onClick={signIn}
           className="border cursor-pointer border-[#aeaeae4d] hover:bg-white hover:text-black transition-colors text-white px-6 py-3 rounded-lg font-medium w-full"
         >
-          Sign in with Google
+          {text || "Sign in with Google"}
         </button>
       ) : (
         <div className="flex mt-10 flex-col gap-4 text-left">
