@@ -16,7 +16,7 @@ function Navbar() {
        {localStorage.getItem("user") ? 
       (<img src={JSON.parse(localStorage.getItem("user")).imgUrl} alt="Profile" className="h-12 w-12 rounded-full object-cover border cursor-pointer" onClick={()=>{nav("/profile")}} />)
        :
-        (<button className=" text-sm"><GoogleAuth text="Sign in" /></button>)
+        (<button className=" text-sm" onClick={()=>{nav("/auth")}}>Sign in</button>)
       }
     </div>
   );

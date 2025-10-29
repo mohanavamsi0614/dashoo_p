@@ -1,25 +1,52 @@
 import { Link, useLocation, useNavigate, useParams } from "react-router";
+import axios from "axios";
+import { useState, useEffect } from "react";
 
 function Event() {
-  const { name } = useParams();
-  const { state } = useLocation();
+  const { eventID } = useParams();
+  const loc = useLocation();
+  const [state, setState] = useState(loc.state || null);
+  const [loading, setLoading] = useState(!loc.state);
   const nav = useNavigate();
 
-  // if (!state) {
-  // }
+  useEffect(() => {
+    if (!state) {
+      setLoading(true);
+      axios
+        .get(`https://dasho-backend.onrender.com/participant/eventdata/${eventID}`)
+        .then((res) => {
+          console.log(res.data);
+          setState(res.data);
+        })
+        .catch((err) => console.error(err))
+        .finally(() => setLoading(false));
+    }
+  }, [eventID, state]);
+
+  if (loading || !state) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-[#212121] text-white font-poppins">
+        <p>Loading event details...</p>
+      </div>
+    );
+  }
+
+  const user = JSON.parse(localStorage.getItem("user"));
+  const isRegistered = user?.registeredEvents?.some((ev) => ev._id === state._id);
 
   return (
     <div className="bg-[#212121] font-poppins min-h-screen pb-0">
-      {/* Banner at Top */}
-      <div className="w-full h-64 md:h-96">
+      {/* Banner */}
+      <div className="w-full h-64 md:h-96 relative">
         <img
           src={state.bannerUrl}
           alt={state.eventTitle}
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover rounded-b-2xl"
         />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
       </div>
 
-      {/* Event Info Section */}
+      {/* Event Card */}
       <div className="max-w-4xl mx-auto bg-[#2a2a2a] shadow-lg rounded-2xl -mt-16 relative z-10 p-8">
         {/* Logo + Title */}
         <div className="flex flex-col items-center text-center">
@@ -36,51 +63,41 @@ function Event() {
           )}
         </div>
 
-        {/* Event Details */}
+        {/* Details Grid */}
         <div className="grid md:grid-cols-2 gap-6 mt-8">
           <div>
-            <h3 className="text-lg font-nerko font-medium text-white mb-1">
-              📅 Date
-            </h3>
-            <p className="text-gray-300">
-              {state.startDate} – {state.endDate}
-            </p>
+            <h3 className="text-lg font-nerko font-medium text-white mb-1">📅 Date</h3>
+            <p className="text-gray-300">{state.startDate} – {state.endDate}</p>
           </div>
           <div>
-            <h3 className="text-lg font-nerko font-medium text-white mb-1">
-              ⏰ Time
-            </h3>
+            <h3 className="text-lg font-nerko font-medium text-white mb-1">⏰ Time</h3>
             <p className="text-gray-300">{state.startTime || "TBA"}</p>
           </div>
           <div>
-            <h3 className="text-lg font-nerko font-medium text-white mb-1">
-              📍 Venue
-            </h3>
-            <p className="text-gray-300">{state.venue}</p>
-            <p className="text-gray-300">{state.address}</p>
+            <h3 className="text-lg font-nerko font-medium text-white mb-1">📍 Venue</h3>
+            <p className="text-gray-300">{state.venue || "Not specified"}</p>
+            <p className="text-gray-300">{state.address || ""}</p>
           </div>
           <div>
-            <h3 className="text-lg font-nerko font-medium text-white mb-1">
-              🎟 Capacity
-            </h3>
-            <p className="text-gray-300">{state.capacity} participants</p>
+            <h3 className="text-lg font-nerko font-medium text-white mb-1">🎟 Capacity</h3>
+            <p className="text-gray-300">
+              {state.capacity ? `${state.capacity} participants` : "N/A"}
+            </p>
           </div>
         </div>
 
         {/* Description */}
         <div className="mt-8">
-          <h3 className="text-lg font-nerko font-medium text-white mb-2">
-            📖 Description
-          </h3>
-          <p className="text-gray-300 leading-relaxed">{state.description}</p>
+          <h3 className="text-lg font-nerko font-medium text-white mb-2">📖 Description</h3>
+          <p className="text-gray-300 leading-relaxed">
+            {state.description || "No description available."}
+          </p>
         </div>
 
         {/* Gallery */}
         {(state.photo1Url || state.photo2Url) && (
           <div className="mt-10">
-            <h3 className="text-lg font-nerko font-medium text-white mb-3">
-              📸 Event Gallery
-            </h3>
+            <h3 className="text-lg font-nerko font-medium text-white mb-3">📸 Event Gallery</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {state.photo1Url && (
                 <img
@@ -102,17 +119,20 @@ function Event() {
 
         {/* Register Button */}
         <div className="mt-10 text-center">
-        {(JSON.parse(localStorage.getItem("user"))?.registeredEvents?.map((i)=>i._id) || []).includes(state._id) ? (
-          <p className="text-green-500 font-medium mb-4">✅ You are already registered for this event.</p>
-        ) : (
-          <button
-            onClick={() => nav("/reg", { state })}
-            className="bg-transparent cursor-pointer hover:bg-white hover:text-black border border-[#aeaeae4d] text-white text-lg font-semibold px-8 py-3 rounded-xl transition duration-300 "
-          >
-            Register Now
-          </button>
-
-        )}
+          {isRegistered ? (
+            <p className="text-green-500 font-medium mb-4">
+              ✅ You are already registered for this event.
+            </p>
+          ) : (
+            <button
+              onClick={() => {
+                console.log(state.eventId);
+                nav(`/reg/${state.eventId}`, { state })}}
+              className="bg-transparent cursor-pointer hover:bg-white hover:text-black border border-[#aeaeae4d] text-white text-lg font-semibold px-8 py-3 rounded-xl transition duration-300"
+            >
+              Register Now
+            </button>
+          )}
         </div>
       </div>
 
