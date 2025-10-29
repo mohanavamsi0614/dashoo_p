@@ -59,6 +59,10 @@ function GoogleAuth({text}) {
 
   // 🔹 Register new user
   const register = async () => {
+     if(!data.name.trim() || !data.group.trim() || !data.email.trim() || !data.phone.trim()  || !data.imgUrl.trim()) {
+       alert("Please fill in all fields");
+       return;
+    }
     try {
       const res = await axios.post(
         "https://dasho-backend.onrender.com/participant/register",
