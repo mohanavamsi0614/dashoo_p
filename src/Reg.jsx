@@ -175,7 +175,7 @@ export default function Reg() {
 
             <div>
               <label className="block text-white font-medium mb-1">
-                Roll Number
+                Roll Number | Collage Registration Number
               </label>
               <input
                 value={form.rollNumber}
