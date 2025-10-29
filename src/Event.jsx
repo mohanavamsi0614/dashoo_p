@@ -7,7 +7,7 @@ function Event() {
 
   if (!state) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 text-gray-700">
+      <div className="flex flex-col items-center font-poppins justify-center min-h-screen bg-[#212121] text-white">
         <h1 className="text-3xl font-bold mb-4">Event not found ⚠️</h1>
         <Link
           to="/"
@@ -20,7 +20,7 @@ function Event() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="bg-[#212121] font-poppins min-h-screen pb-0">
       {/* Banner at Top */}
       <div className="w-full h-64 md:h-96">
         <img
@@ -31,55 +31,67 @@ function Event() {
       </div>
 
       {/* Event Info Section */}
-      <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-2xl -mt-16 relative z-10 p-8">
+      <div className="max-w-4xl mx-auto bg-[#2a2a2a] shadow-lg rounded-2xl -mt-16 relative z-10 p-8">
         {/* Logo + Title */}
         <div className="flex flex-col items-center text-center">
           {state.logoUrl && (
             <img
               src={state.logoUrl}
               alt="Logo"
-              className="w-24 h-24 rounded-full border-4 border-white shadow-lg -mt-12 mb-4 bg-white object-cover"
+              className="w-24 h-24 rounded-full border-4 border-[#2a2a2a] shadow-lg -mt-12 mb-4 bg-white object-cover"
             />
           )}
-          <h1 className="text-3xl font-bold text-gray-800">{state.eventTitle}</h1>
+          <h1 className="text-5xl font-nerko font-medium text-white">{state.eventTitle}</h1>
           {state.shortTitle && (
-            <p className="text-gray-500 italic mt-1">{state.shortTitle}</p>
+            <p className="text-gray-300 italic mt-1">{state.shortTitle}</p>
           )}
         </div>
 
         {/* Event Details */}
         <div className="grid md:grid-cols-2 gap-6 mt-8">
           <div>
-            <h3 className="text-lg font-semibold text-gray-700 mb-1">📅 Date</h3>
-            <p className="text-gray-600">
+            <h3 className="text-lg font-nerko font-medium text-white mb-1">
+              📅 Date
+            </h3>
+            <p className="text-gray-300">
               {state.startDate} – {state.endDate}
             </p>
           </div>
           <div>
-            <h3 className="text-lg font-semibold text-gray-700 mb-1">⏰ Time</h3>
-            <p className="text-gray-600">{state.startTime || "TBA"}</p>
+            <h3 className="text-lg font-nerko font-medium text-white mb-1">
+              ⏰ Time
+            </h3>
+            <p className="text-gray-300">{state.startTime || "TBA"}</p>
           </div>
           <div>
-            <h3 className="text-lg font-semibold text-gray-700 mb-1">📍 Venue</h3>
-            <p className="text-gray-600">{state.venue}</p>
-            <p className="text-gray-500">{state.address}</p>
+            <h3 className="text-lg font-nerko font-medium text-white mb-1">
+              📍 Venue
+            </h3>
+            <p className="text-gray-300">{state.venue}</p>
+            <p className="text-gray-300">{state.address}</p>
           </div>
           <div>
-            <h3 className="text-lg font-semibold text-gray-700 mb-1">🎟 Capacity</h3>
-            <p className="text-gray-600">{state.capacity} participants</p>
+            <h3 className="text-lg font-nerko font-medium text-white mb-1">
+              🎟 Capacity
+            </h3>
+            <p className="text-gray-300">{state.capacity} participants</p>
           </div>
         </div>
 
         {/* Description */}
         <div className="mt-8">
-          <h3 className="text-lg font-semibold text-gray-700 mb-2">📖 Description</h3>
-          <p className="text-gray-600 leading-relaxed">{state.description}</p>
+          <h3 className="text-lg font-nerko font-medium text-white mb-2">
+            📖 Description
+          </h3>
+          <p className="text-gray-300 leading-relaxed">{state.description}</p>
         </div>
 
         {/* Gallery */}
         {(state.photo1Url || state.photo2Url) && (
           <div className="mt-10">
-            <h3 className="text-lg font-semibold text-gray-700 mb-3">📸 Event Gallery</h3>
+            <h3 className="text-lg font-nerko font-medium text-white mb-3">
+              📸 Event Gallery
+            </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {state.photo1Url && (
                 <img
@@ -103,7 +115,7 @@ function Event() {
         <div className="mt-10 text-center">
           <button
             onClick={() => nav("/reg", { state })}
-            className="bg-red-500 hover:bg-red-600 text-white text-lg font-semibold px-8 py-3 rounded-xl transition duration-300 shadow-md"
+            className="bg-transparent cursor-pointer hover:bg-white hover:text-black border border-[#aeaeae4d] text-white text-lg font-semibold px-8 py-3 rounded-xl transition duration-300 "
           >
             Register Now
           </button>
@@ -111,12 +123,12 @@ function Event() {
       </div>
 
       {/* Back Button */}
-      <div className="text-center mt-6 mb-10">
+      <div className="text-center mt-6 pb-6">
         <Link
           to="/"
-          className="text-gray-600 hover:text-red-500 transition text-sm"
+          className="text-gray-400 cursor-pointer hover:text-white transition text-sm"
         >
-          ← Back to Events
+          ← Home
         </Link>
       </div>
     </div>

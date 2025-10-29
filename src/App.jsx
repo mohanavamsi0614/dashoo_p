@@ -1,84 +1,110 @@
-import './App.css';
-import { Route, Routes, Navigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import Home from './Home';
-import Auth from './Auth';
-import Profile from './Profile';
-import Event from './Event';
-import Reg from './Reg';
+import "./App.css";
+import { Route, Routes, Navigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import Home from "./Home";
+import Auth from "./Auth";
+import Profile from "./Profile";
+import Event from "./Event";
+import Reg from "./Reg";
+import { MultiStepLoader } from "./components/ui/multi-step-loader";
 
 // Reusable Protected Route Wrapper
 function ProtectedRoute({ children }) {
-  const user = JSON.parse(localStorage.getItem('user') || 'null');
+  const user = JSON.parse(localStorage.getItem("user") || "null");
   return user ? children : <Navigate to="/auth" replace />;
 }
 
 function App() {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
+  const [isFirstVisit, setIsFirstVisit] = useState(false);
 
   useEffect(() => {
-    // Simulate startup loading
-    const storedUser = JSON.parse(localStorage.getItem('user') || 'null');
+    const storedUser = JSON.parse(localStorage.getItem("user") || "null");
+    const hasVisited = localStorage.getItem("hasVisited");
+
     setUser(storedUser);
-    const timer = setTimeout(() => setLoading(false), 500); // half-second load
-    return () => clearTimeout(timer);
+
+    if (!hasVisited) {
+      setIsFirstVisit(true);
+      localStorage.setItem("hasVisited", "true");
+      const timer = setTimeout(() => setLoading(false), 15000); // 15 seconds total for first visit
+      return () => clearTimeout(timer);
+    } else {
+      setIsFirstVisit(false);
+      const timer = setTimeout(() => setLoading(false), 1000); // 1 second for subsequent visits
+      return () => clearTimeout(timer);
+    }
   }, []);
 
-  if (loading) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white">
-        <div className="w-12 h-12 border-4 border-red-500 border-t-transparent rounded-full animate-spin mb-4"></div>
-        <p className="text-lg font-medium tracking-wide">Loading Dashboard...</p>
-      </div>
-    );
-  }
+  const firstVisitLoadingStates = [
+    { text: "Starting Dashoo..." },
+    { text: "Connecting to servers..." },
+    { text: "Fetching your personalized data..." },
+    { text: "Building the dashboard layout..." },
+    { text: "Just a moment more..." },
+    { text: "And we're good to go!" },
+  ];
+
+  const regularLoadingStates = [
+    { text: "Loading..." },
+    { text: "Getting ready..." },
+  ];
 
   return (
-    <Routes>
-      {/* Redirect to /auth if no user */}
-      <Route path="/" element={
-        <ProtectedRoute>
-          <Home />
-        </ProtectedRoute>
-      } />
-
-      {/* Auth route (redirect to / if already logged in) */}
-      <Route
-        path="/auth"
-        element={user ? <Navigate to="/" replace /> : <Auth />}
-      />
-
-      <Route
-        path="/profile"
-        element={
-          <ProtectedRoute>
-            <Profile />
-          </ProtectedRoute>
+    <div>
+      <MultiStepLoader
+        loadingStates={
+          isFirstVisit ? firstVisitLoadingStates : regularLoadingStates
         }
+        loading={loading}
+        duration={isFirstVisit ? 2500 : 500}
       />
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <Home />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/auth"
+          element={user ? <Navigate to="/" replace /> : <Auth />}
+        />
 
-      <Route
-        path="/event/:name"
-        element={
-          <ProtectedRoute>
-            <Event />
-          </ProtectedRoute>
-        }
-      />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
 
-      <Route
-        path="/reg"
-        element={
-          <ProtectedRoute>
-            <Reg />
-          </ProtectedRoute>
-        }
-      />
+        <Route
+          path="/event/:name"
+          element={
+            <ProtectedRoute>
+              <Event />
+            </ProtectedRoute>
+          }
+        />
 
-      {/* Fallback for unknown routes */}
-      <Route path="*" element={<Navigate to="/" replace />} />
-    </Routes>
+        <Route
+          path="/reg"
+          element={
+            <ProtectedRoute>
+              <Reg />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Fallback for unknown routes */}
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </div>
   );
 }
 
