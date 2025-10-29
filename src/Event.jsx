@@ -113,12 +113,17 @@ function Event() {
 
         {/* Register Button */}
         <div className="mt-10 text-center">
+        {(JSON.parse(localStorage.getItem("user"))?.registeredEvents.map((i)=>i._id) || []).includes(state._id) ? (
+          <p className="text-green-500 font-medium mb-4">✅ You are already registered for this event.</p>
+        ) : (
           <button
             onClick={() => nav("/reg", { state })}
             className="bg-transparent cursor-pointer hover:bg-white hover:text-black border border-[#aeaeae4d] text-white text-lg font-semibold px-8 py-3 rounded-xl transition duration-300 "
           >
             Register Now
           </button>
+
+        )}
         </div>
       </div>
 
