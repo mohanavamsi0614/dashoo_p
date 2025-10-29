@@ -111,8 +111,8 @@ function Footer() {
           <div className="col-span-1">
             <h3 className="font-poppins font-semibold text-lg mb-4">Contact</h3>
             <ul className="space-y-2 font-poppins text-sm text-gray-400">
-              <li>Email: support@dasho.com</li>
-              <li>Phone: +91 1234567890</li>
+              <li>Email: mohanavamsi14@gmail.com</li>
+              <li>Phone: +91 6281605767</li>
             </ul>
           </div>
         </div>

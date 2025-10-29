@@ -28,6 +28,10 @@ function GoogleAuth({text}) {
     imgUrl: "",
   });
 
+  // loading states
+  const [authLoading, setAuthLoading] = useState(false);
+  const [regLoading, setRegLoading] = useState(false);
+
   const wid = useRef();
   const nav = useNavigate();
 
@@ -63,6 +67,7 @@ function GoogleAuth({text}) {
        alert("Please fill in all fields");
        return;
     }
+    setRegLoading(true);
     try {
       const res = await axios.post(
         "https://dasho-backend.onrender.com/participant/register",
@@ -73,11 +78,14 @@ function GoogleAuth({text}) {
     } catch (err) {
       console.error("Registration error:", err);
       alert("Registration failed!");
+    } finally {
+      setRegLoading(false);
     }
   };
 
   // 🔹 Google Sign-in
   const signIn = async () => {
+    setAuthLoading(true);
     try {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
@@ -103,6 +111,8 @@ function GoogleAuth({text}) {
     } catch (err) {
       console.error("Sign-in error:", err);
       alert("Google sign-in failed!");
+    } finally {
+      setAuthLoading(false);
     }
   };
 
@@ -111,9 +121,21 @@ function GoogleAuth({text}) {
       {!newUser ? (
         <button
           onClick={signIn}
-          className="border cursor-pointer border-[#aeaeae4d] hover:bg-white hover:text-black transition-colors text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-medium w-full text-sm sm:text-base"
+          disabled={authLoading}
+          aria-busy={authLoading}
+          className={`border cursor-pointer border-[#aeaeae4d] transition-colors text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-medium w-full text-sm sm:text-base ${authLoading ? 'opacity-80 cursor-wait' : 'hover:bg-white hover:text-black'}`}
         >
-          {text || "Sign in with Google"}
+          {authLoading ? (
+            <>
+              <svg className="animate-spin -ml-1 mr-2 h-5 w-5 text-white inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+              </svg>
+              Signing in...
+            </>
+          ) : (
+            text || "Sign in with Google"
+          )}
         </button>
       ) : (
         <div className="flex mt-6 sm:mt-10 flex-col gap-3 sm:gap-4 text-left">
@@ -151,9 +173,20 @@ function GoogleAuth({text}) {
           <div className="flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-0">
             <button
               onClick={() => wid.current && wid.current.open()}
-              className="bg-trasparent w-full sm:w-auto border rounded-lg border-[#aeaeae4d] hover:bg-white hover:text-black transition-colors duration-300 px-4 py-2 text-sm sm:text-base text-white"
+              disabled={regLoading}
+              className={`bg-trasparent w-full sm:w-auto border rounded-lg border-[#aeaeae4d] transition-colors duration-300 px-4 py-2 text-sm sm:text-base text-white ${regLoading ? 'opacity-80 cursor-wait' : 'hover:bg-white hover:text-black'}`}
             >
-              Upload Image
+              {regLoading ? (
+                <>
+                  <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+                  </svg>
+                  Uploading...
+                </>
+              ) : (
+                'Upload Image'
+              )}
             </button>
             {data.imgUrl && (
               <img
@@ -166,9 +199,21 @@ function GoogleAuth({text}) {
 
           <button
             onClick={register}
-            className="mt-3 sm:mt-4 bg-trasparent border rounded-lg border-[#aeaeae4d] hover:bg-white hover:text-black transition-colors duration-300 px-4 sm:px-6 py-2 sm:py-3 font-nerko text-xl sm:text-2xl font-normal text-white"
+            disabled={regLoading}
+            aria-busy={regLoading}
+            className={`mt-3 sm:mt-4 bg-trasparent border rounded-lg border-[#aeaeae4d] transition-colors duration-300 px-4 sm:px-6 py-2 sm:py-3 font-nerko text-xl sm:text-2xl font-normal text-white ${regLoading ? 'opacity-80 cursor-wait' : 'hover:bg-white hover:text-black'}`}
           >
-            Submit Registration
+            {regLoading ? (
+              <>
+                <svg className="animate-spin -ml-1 mr-2 h-5 w-5 text-white inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+                </svg>
+                Submitting...
+              </>
+            ) : (
+              'Submit Registration'
+            )}
           </button>
         </div>
       )}
