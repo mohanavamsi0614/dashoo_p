@@ -113,7 +113,7 @@ function Event() {
 
         {/* Register Button */}
         <div className="mt-10 text-center">
-        {(JSON.parse(localStorage.getItem("user"))?.registeredEvents.map((i)=>i._id) || []).includes(state._id) ? (
+        {(JSON.parse(localStorage.getItem("user"))?.registeredEvents?.map((i)=>i._id) || []).includes(state._id) ? (
           <p className="text-green-500 font-medium mb-4">✅ You are already registered for this event.</p>
         ) : (
           <button
