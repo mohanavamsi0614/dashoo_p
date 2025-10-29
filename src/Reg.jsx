@@ -2,6 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useLocation, useParams, useNavigate } from "react-router-dom";
 import TeamReg from "./TeamReg";
+import { BackgroundBeams } from "./components/ui/background-beams";
 
 export default function Reg() {
   const { name: eventParam } = useParams();
@@ -22,7 +23,8 @@ export default function Reg() {
   const [success, setSuccess] = useState(false);
 
   const eventTitle = state?.eventTitle || eventParam || "";
-  const eventType = state?.type || state?.event?.type || state?.eventType || "qr";
+  const eventType =
+    state?.type || state?.event?.type || state?.eventType || "qr";
 
   // ✅ If this is a team event, show TeamReg component
   if (eventType !== "qr") {
@@ -76,20 +78,24 @@ export default function Reg() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex justify-center items-start pt-10 pb-16">
-      <div className="w-full max-w-2xl bg-white rounded-2xl shadow-lg p-8">
-        <h1 className="text-2xl font-bold text-gray-800 mb-4 text-center">
-          Register for {eventTitle || "the event"}
+    <div className="min-h-screen font-poppins bg-[#212121] flex justify-center items-center pt-10 pb-16 relative">
+      <BackgroundBeams className="fixed inset-0 z-0" />
+      <div className="w-full max-w-2xl bg-[#161616] border border-[#aeaeae4d] rounded-2xl shadow-lg p-8 relative z-10">
+        <h1 className="text-2xl font-bold text-white mb-4 text-center">
+          Register for{" "}
+          <span className="font-nerko text-3xl font-medium">
+            {eventTitle || "the event"}
+          </span>
         </h1>
 
         {success ? (
-          <div className="p-4 text-green-700 bg-green-100 border border-green-300 rounded-lg text-center">
+          <div className="p-4 text-green-700 bg-transparent border border-green-700 rounded-lg text-center">
             ✅ Registration successful — redirecting to your profile...
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <label className="block text-gray-700 font-medium mb-1">
+              <label className="block text-white font-medium mb-1">
                 Full Name
               </label>
               <input
@@ -97,12 +103,12 @@ export default function Reg() {
                 value={form.name}
                 onChange={(e) => setForm({ ...form, name: e.target.value })}
                 placeholder="Your full name"
-                className="w-full border rounded-lg p-3 outline-none focus:ring-2 focus:ring-red-400"
+                className="w-full border bg-transparent text-gray-300 border-[#aeaeae4d] rounded-lg p-3 outline-none focus:ring-2 focus:ring-[#8989894d] transition-all duration-300 placeholder:opacity-40 placeholder:transition-opacity placeholder:duration-300 focus:placeholder:opacity-30"
               />
             </div>
 
             <div>
-              <label className="block text-gray-700 font-medium mb-1">
+              <label className="block text-white font-medium mb-1">
                 College
               </label>
               <input
@@ -110,64 +116,64 @@ export default function Reg() {
                 value={form.college}
                 onChange={(e) => setForm({ ...form, college: e.target.value })}
                 placeholder="Your college name"
-                className="w-full border rounded-lg p-3 outline-none focus:ring-2 focus:ring-red-400"
+                className="w-full border bg-transparent text-gray-300 border-[#aeaeae4d] rounded-lg p-3 outline-none focus:ring-2 focus:ring-[#8989894d] transition-all duration-300 placeholder:opacity-40 placeholder:transition-opacity placeholder:duration-300 focus:placeholder:opacity-30"
               />
             </div>
 
             <div className="grid md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-gray-700 font-medium mb-1">
+                <label className="block text-white font-medium mb-1">
                   Year
                 </label>
                 <input
                   value={form.year}
                   onChange={(e) => setForm({ ...form, year: e.target.value })}
                   placeholder="e.g. 1, 2, 3, 4"
-                  className="w-full border rounded-lg p-3 outline-none focus:ring-2 focus:ring-red-400"
+                  className="w-full border bg-transparent text-gray-300 border-[#aeaeae4d] rounded-lg p-3 outline-none focus:ring-2 focus:ring-[#8989894d] transition-all duration-300 placeholder:opacity-40 placeholder:transition-opacity placeholder:duration-300 focus:placeholder:opacity-30"
                 />
               </div>
 
               <div>
-                <label className="block text-gray-700 font-medium mb-1">
+                <label className="block text-white font-medium mb-1">
                   Stream
                 </label>
                 <input
                   value={form.stream}
                   onChange={(e) => setForm({ ...form, stream: e.target.value })}
                   placeholder="e.g. B.Tech, MBA"
-                  className="w-full border rounded-lg p-3 outline-none focus:ring-2 focus:ring-red-400"
+                  className="w-full border bg-transparent text-gray-300 border-[#aeaeae4d] rounded-lg p-3 outline-none focus:ring-2 focus:ring-[#8989894d] transition-all duration-300 placeholder:opacity-40 placeholder:transition-opacity placeholder:duration-300 focus:placeholder:opacity-30"
                 />
               </div>
             </div>
 
             <div className="grid md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-gray-700 font-medium mb-1">
+                <label className="block text-white font-medium mb-1">
                   Branch
                 </label>
                 <input
                   value={form.branch}
                   onChange={(e) => setForm({ ...form, branch: e.target.value })}
                   placeholder="e.g. Computer Science"
-                  className="w-full border rounded-lg p-3 outline-none focus:ring-2 focus:ring-red-400"
+                  className="w-full border bg-transparent text-gray-300 border-[#aeaeae4d] rounded-lg p-3 outline-none focus:ring-2 focus:ring-[#8989894d] transition-all duration-300 placeholder:opacity-40 placeholder:transition-opacity placeholder:duration-300 focus:placeholder:opacity-30"
                 />
               </div>
 
               <div>
-                <label className="block text-gray-700 font-medium mb-1">
+                <label className="block text-white font-medium mb-1">
                   Email
                 </label>
                 <input
                   value={form.email}
                   onChange={(e) => setForm({ ...form, email: e.target.value })}
                   placeholder="e.g. john@college.edu"
-                  className="w-full border rounded-lg p-3 outline-none focus:ring-2 focus:ring-red-400"
+                  className="w-full border bg-transparent text-gray-300 border-[#aeaeae4d] rounded-lg p-3 outline-none focus:ring-2 focus:ring-[#8989894d] transition-all duration-300 placeholder:opacity-40 placeholder:transition-opacity placeholder:duration-300 focus:placeholder:opacity-30"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-gray-700 font-medium mb-1">
+              <label className="block text-white font-medium mb-1">
                 Roll Number
               </label>
               <input
@@ -176,12 +182,12 @@ export default function Reg() {
                   setForm({ ...form, rollNumber: e.target.value })
                 }
                 placeholder="College roll or registration number"
-                className="w-full border rounded-lg p-3 outline-none focus:ring-2 focus:ring-red-400"
+                className="w-full border bg-transparent text-gray-300 border-[#aeaeae4d] rounded-lg p-3 outline-none focus:ring-2 focus:ring-[#8989894d] transition-all duration-300 placeholder:opacity-40 placeholder:transition-opacity placeholder:duration-300 focus:placeholder:opacity-30"
               />
             </div>
 
             {error && (
-              <div className="text-red-600 bg-red-100 border border-red-300 p-3 rounded-lg text-sm">
+              <div className="text-red-700 bg-transparent border border-red-700 p-3 rounded-lg text-sm">
                 {error}
               </div>
             )}
@@ -190,7 +196,7 @@ export default function Reg() {
               <button
                 type="submit"
                 disabled={loading}
-                className="bg-red-500 hover:bg-red-600 text-white font-semibold px-6 py-2 rounded-lg transition disabled:opacity-60"
+                className="bg-transparent cursor-pointer border border-[#aeaeae4d] hover:bg-white hover:text-black hover:border-white text-white font-semibold px-6 py-2 rounded-lg transition disabled:opacity-60"
               >
                 {loading ? "Registering..." : "Register"}
               </button>
@@ -198,7 +204,7 @@ export default function Reg() {
               <button
                 type="button"
                 onClick={() => navigate(-1)}
-                className="bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold px-6 py-2 rounded-lg transition"
+                className="bg-transparent cursor-pointer border border-[#aeaeae4d] hover:bg-white hover:text-black hover:border-white text-white font-semibold px-6 py-2 rounded-lg transition"
               >
                 Back
               </button>
