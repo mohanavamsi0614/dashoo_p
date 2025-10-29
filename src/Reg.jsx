@@ -64,6 +64,7 @@ export default function Reg() {
           "lastRegistration",
           JSON.stringify({ payload, server: res.data })
         );
+        localStorage.setItem("user", JSON.stringify(res.data.user));
       }
       setSuccess(true);
       setTimeout(() => navigate("/profile"), 1500);
