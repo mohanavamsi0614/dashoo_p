@@ -107,47 +107,47 @@ function GoogleAuth() {
       {!newUser ? (
         <button
           onClick={signIn}
-          className="border cursor-pointer border-[#aeaeae4d] hover:bg-white hover:text-black transition-colors text-white px-6 py-3 rounded-lg font-medium w-full"
+          className="border cursor-pointer border-[#aeaeae4d] hover:bg-white hover:text-black transition-colors text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-medium w-full text-sm sm:text-base"
         >
           Sign in with Google
         </button>
       ) : (
-        <div className="flex mt-10 flex-col gap-4 text-left">
+        <div className="flex mt-6 sm:mt-10 flex-col gap-3 sm:gap-4 text-left">
           <input
-            className="p-2 bg-transparent border rounded-lg border-[#aeaeae4d] focus:outline-none"
+            className="p-2 sm:p-3 text-sm sm:text-base bg-transparent text-gray-300 border rounded-lg border-[#aeaeae4d] focus:outline-none focus:ring-2 focus:ring-[#8989894d] transition-all duration-300 placeholder:opacity-40"
             placeholder="Name"
             value={data.name}
             onChange={(e) => setData({ ...data, name: e.target.value })}
           />
           <input
-            className="p-2 rounded-lg bg-transparent border border-[#aeaeae4d] focus:outline-none"
+            className="p-2 sm:p-3 text-sm sm:text-base rounded-lg bg-transparent text-gray-300 border border-[#aeaeae4d] focus:outline-none focus:ring-2 focus:ring-[#8989894d] transition-all duration-300 placeholder:opacity-40"
             placeholder="College / Company"
             value={data.group}
             onChange={(e) => setData({ ...data, group: e.target.value })}
           />
           <input
-            className="p-2 rounded-lg bg-transparent border border-[#aeaeae4d] focus:outline-none"
+            className="p-2 sm:p-3 text-sm sm:text-base rounded-lg bg-transparent text-gray-300 border border-[#aeaeae4d] focus:outline-none focus:ring-2 focus:ring-[#8989894d] transition-all duration-300 placeholder:opacity-40"
             placeholder="Email"
             value={data.email}
             onChange={(e) => setData({ ...data, email: e.target.value })}
           />
           <input
-            className="p-2 rounded-lg bg-transparent border border-[#aeaeae4d] focus:outline-none"
+            className="p-2 sm:p-3 text-sm sm:text-base rounded-lg bg-transparent text-gray-300 border border-[#aeaeae4d] focus:outline-none focus:ring-2 focus:ring-[#8989894d] transition-all duration-300 placeholder:opacity-40"
             placeholder="Phone"
             value={data.phone}
             onChange={(e) => setData({ ...data, phone: e.target.value })}
           />
           <textarea
-            className="p-2 rounded-lg bg-transparent border border-[#aeaeae4d] focus:outline-none"
+            className="p-2 sm:p-3 text-sm sm:text-base rounded-lg bg-transparent text-gray-300 border border-[#aeaeae4d] focus:outline-none focus:ring-2 focus:ring-[#8989894d] transition-all duration-300 placeholder:opacity-40"
             placeholder="Bio"
             value={data.bio}
             onChange={(e) => setData({ ...data, bio: e.target.value })}
           />
 
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-0">
             <button
               onClick={() => wid.current && wid.current.open()}
-              className="bg-trasparent border rounded-lg border-[#aeaeae4d] hover:bg-white hover:text-black transition-colors duration-300 px-4 py-2 text-white"
+              className="bg-trasparent w-full sm:w-auto border rounded-lg border-[#aeaeae4d] hover:bg-white hover:text-black transition-colors duration-300 px-4 py-2 text-sm sm:text-base text-white"
             >
               Upload Image
             </button>
@@ -155,14 +155,14 @@ function GoogleAuth() {
               <img
                 src={data.imgUrl}
                 alt="Profile"
-                className="h-12 w-12 rounded-full object-cover border"
+                className="h-10 w-10 sm:h-12 sm:w-12 rounded-full object-cover border"
               />
             )}
           </div>
 
           <button
             onClick={register}
-            className="mt-4 bg-trasparent border rounded-lg border-[#aeaeae4d] hover:bg-white hover:text-black transition-colors duration-300 px-6 py-3 font-nerko text-2xl font-normal"
+            className="mt-3 sm:mt-4 bg-trasparent border rounded-lg border-[#aeaeae4d] hover:bg-white hover:text-black transition-colors duration-300 px-4 sm:px-6 py-2 sm:py-3 font-nerko text-xl sm:text-2xl font-normal text-white"
           >
             Submit Registration
           </button>

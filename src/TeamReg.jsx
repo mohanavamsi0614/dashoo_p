@@ -96,31 +96,33 @@ export default function TeamReg() {
   };
 
   return (
-    <div className="min-h-screen font-poppins bg-[#212121] flex justify-center items-center pt-10 pb-16 relative">
+    <div className="min-h-screen font-poppins bg-[#212121] flex justify-center items-center px-4 sm:px-6 py-10 sm:py-16 relative">
       <BackgroundBeams className="fixed inset-0 z-0" />
-      <div className="max-w-3xl w-full mx-auto bg-[#161616] border border-[#aeaeae4d] shadow-lg rounded-2xl p-6 relative z-10">
-        <h2 className="text-2xl font-semibold mb-4 text-white text-center">
+      <div className="max-w-3xl w-full mx-auto bg-[#161616] border border-[#aeaeae4d] shadow-lg rounded-2xl p-4 sm:p-6 relative z-10">
+        <h2 className="text-xl sm:text-2xl font-semibold mb-3 sm:mb-4 text-white text-center">
           Team Registration
         </h2>
         {eventTitle && (
-          <div className="text-center mb-6">
-            <span className="text-gray-400">Event:</span>{" "}
-            <span className="font-medium font-nerko text-3xl text-white">{eventTitle}</span>
+          <div className="text-center mb-4 sm:mb-6">
+            <span className="text-sm sm:text-base text-gray-400">Event:</span>{" "}
+            <span className="font-medium font-nerko text-2xl sm:text-3xl text-white">
+              {eventTitle}
+            </span>
           </div>
         )}
 
         {success ? (
-          <div className="border border-green-700 text-green-700 p-4 rounded-lg text-center">
+          <div className="border border-green-700 text-green-700 p-3 sm:p-4 rounded-lg text-center text-sm sm:text-base">
             ✅ Team registered successfully — redirecting to your profile...
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
             <div>
-              <label className="block text-sm font-medium mb-1 text-white">
+              <label className="block text-sm sm:text-base font-medium mb-1 text-white">
                 Team Name
               </label>
               <input
-                className="w-full border bg-transparent text-gray-300 border-[#aeaeae4d] rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-[#8989894d] transition-all duration-300 placeholder:opacity-40"
+                className="w-full border text-sm sm:text-base bg-transparent text-gray-300 border-[#aeaeae4d] rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-[#8989894d] transition-all duration-300 placeholder:opacity-40"
                 value={teamName}
                 onChange={(e) => setTeamName(e.target.value)}
                 placeholder="Enter your team name"
@@ -128,15 +130,15 @@ export default function TeamReg() {
             </div>
 
             {/* Team Lead Section */}
-            <fieldset className="border border-[#aeaeae4d] p-4 rounded-lg">
-              <legend className="text-md font-semibold text-white px-2">
+            <fieldset className="border border-[#aeaeae4d] p-3 sm:p-4 rounded-lg">
+              <legend className="text-sm sm:text-base font-semibold text-white px-2">
                 Team Lead
               </legend>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
                 {Object.keys(lead).map((field, idx) => (
                   <input
                     key={idx}
-                    className="border bg-transparent text-gray-300 border-[#aeaeae4d] rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-[#8989894d] transition-all duration-300 placeholder:opacity-40"
+                    className="border text-sm sm:text-base bg-transparent text-gray-300 border-[#aeaeae4d] rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-[#8989894d] transition-all duration-300 placeholder:opacity-40"
                     value={lead[field]}
                     onChange={(e) =>
                       setLead({ ...lead, [field]: e.target.value })
@@ -152,15 +154,15 @@ export default function TeamReg() {
             </fieldset>
 
             {/* Members */}
-            <div className="flex items-center justify-between">
-              <p className="font-medium text-white">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-0">
+              <p className="font-medium text-sm sm:text-base text-white">
                 Members (including lead): {members.length + 1}/{maxMembersTotal}
               </p>
               <button
                 type="button"
                 onClick={addMember}
                 disabled={members.length + 1 >= maxMembersTotal}
-                className="cursor-pointer border border-[#aeaeae4d] text-white px-4 py-2 rounded-lg hover:bg-white hover:text-black transition disabled:bg-gray-600 disabled:cursor-not-allowed"
+                className="cursor-pointer w-full sm:w-auto border text-sm sm:text-base border-[#aeaeae4d] text-white px-4 py-2 rounded-lg hover:bg-white hover:text-black transition disabled:bg-gray-600 disabled:cursor-not-allowed"
               >
                 + Add Member
               </button>
@@ -169,23 +171,23 @@ export default function TeamReg() {
             {members.map((m, idx) => (
               <fieldset
                 key={idx}
-                className="border border-[#aeaeae4d] p-4 rounded-lg relative"
+                className="border border-[#aeaeae4d] p-3 sm:p-4 rounded-lg relative"
               >
                 <button
                   type="button"
                   onClick={() => removeMember(idx)}
-                  className="absolute bottom-56 right-2 text-red-500 hover:text-red-700 text-sm"
+                  className="absolute top-2 right-2 text-red-500 hover:text-red-700 text-lg sm:text-xl"
                 >
                   ✕
                 </button>
-                <legend className="text-md font-semibold text-white px-2">
+                <legend className="text-sm sm:text-base font-semibold text-white px-2">
                   Member {idx + 2}
                 </legend>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
                   {Object.keys(m).map((field, i) => (
                     <input
                       key={i}
-                      className="border bg-transparent text-gray-300 border-[#aeaeae4d] rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-[#8989894d] transition-all duration-300 placeholder:opacity-40"
+                      className="border text-sm sm:text-base bg-transparent text-gray-300 border-[#aeaeae4d] rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-[#8989894d] transition-all duration-300 placeholder:opacity-40"
                       value={m[field]}
                       onChange={(e) => updateMember(idx, field, e.target.value)}
                       placeholder={
@@ -199,20 +201,24 @@ export default function TeamReg() {
               </fieldset>
             ))}
 
-            {error && <div className="text-red-700 font-medium">{error}</div>}
+            {error && (
+              <div className="text-red-700 font-medium text-sm sm:text-base">
+                {error}
+              </div>
+            )}
 
-            <div className="flex justify-end gap-3">
+            <div className="flex flex-col sm:flex-row justify-end gap-3">
               <button
                 type="button"
                 onClick={() => navigate(-1)}
-                className="px-5 py-2 cursor-pointer border border-[#aeaeae4d] text-white rounded-lg hover:bg-white hover:text-black transition"
+                className="px-5 py-2 text-sm sm:text-base cursor-pointer border border-[#aeaeae4d] text-white rounded-lg hover:bg-white hover:text-black transition w-full sm:w-auto"
               >
                 Back
               </button>
               <button
                 type="submit"
                 disabled={loading}
-                className="px-6 py-2 cursor-pointer border border-[#aeaeae4d] text-white rounded-lg hover:bg-white hover:text-black transition disabled:bg-gray-600 disabled:cursor-not-allowed"
+                className="px-6 py-2 text-sm sm:text-base cursor-pointer border border-[#aeaeae4d] text-white rounded-lg hover:bg-white hover:text-black transition disabled:bg-gray-600 disabled:cursor-not-allowed w-full sm:w-auto"
               >
                 {loading ? "Registering..." : "Register Team"}
               </button>

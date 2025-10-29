@@ -78,24 +78,24 @@ export default function Reg() {
   };
 
   return (
-    <div className="min-h-screen font-poppins bg-[#212121] flex justify-center items-center pt-10 pb-16 relative">
+    <div className="min-h-screen font-poppins bg-[#212121] flex justify-center items-center px-4 sm:px-6 py-10 sm:py-16 relative">
       <BackgroundBeams className="fixed inset-0 z-0" />
-      <div className="w-full max-w-2xl bg-[#161616] border border-[#aeaeae4d] rounded-2xl shadow-lg p-8 relative z-10">
-        <h1 className="text-2xl font-bold text-white mb-4 text-center">
+      <div className="w-full max-w-2xl bg-[#161616] border border-[#aeaeae4d] rounded-2xl shadow-lg p-4 sm:p-6 md:p-8 relative z-10">
+        <h1 className="text-xl sm:text-2xl font-bold text-white mb-3 sm:mb-4 text-center">
           Register for{" "}
-          <span className="font-nerko text-3xl font-medium">
+          <span className="font-nerko text-2xl sm:text-3xl font-medium">
             {eventTitle || "the event"}
           </span>
         </h1>
 
         {success ? (
-          <div className="p-4 text-green-700 bg-transparent border border-green-700 rounded-lg text-center">
+          <div className="p-3 sm:p-4 text-sm sm:text-base text-green-700 bg-transparent border border-green-700 rounded-lg text-center">
             ✅ Registration successful — redirecting to your profile...
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
             <div>
-              <label className="block text-white font-medium mb-1">
+              <label className="block text-sm sm:text-base text-white font-medium mb-1">
                 Full Name
               </label>
               <input
@@ -103,12 +103,12 @@ export default function Reg() {
                 value={form.name}
                 onChange={(e) => setForm({ ...form, name: e.target.value })}
                 placeholder="Your full name"
-                className="w-full border bg-transparent text-gray-300 border-[#aeaeae4d] rounded-lg p-3 outline-none focus:ring-2 focus:ring-[#8989894d] transition-all duration-300 placeholder:opacity-40 placeholder:transition-opacity placeholder:duration-300 focus:placeholder:opacity-30"
+                className="w-full border text-sm sm:text-base bg-transparent text-gray-300 border-[#aeaeae4d] rounded-lg p-2 sm:p-3 outline-none focus:ring-2 focus:ring-[#8989894d] transition-all duration-300 placeholder:opacity-40 placeholder:transition-opacity placeholder:duration-300 focus:placeholder:opacity-30"
               />
             </div>
 
             <div>
-              <label className="block text-white font-medium mb-1">
+              <label className="block text-sm sm:text-base text-white font-medium mb-1">
                 College
               </label>
               <input
@@ -116,64 +116,64 @@ export default function Reg() {
                 value={form.college}
                 onChange={(e) => setForm({ ...form, college: e.target.value })}
                 placeholder="Your college name"
-                className="w-full border bg-transparent text-gray-300 border-[#aeaeae4d] rounded-lg p-3 outline-none focus:ring-2 focus:ring-[#8989894d] transition-all duration-300 placeholder:opacity-40 placeholder:transition-opacity placeholder:duration-300 focus:placeholder:opacity-30"
+                className="w-full border text-sm sm:text-base bg-transparent text-gray-300 border-[#aeaeae4d] rounded-lg p-2 sm:p-3 outline-none focus:ring-2 focus:ring-[#8989894d] transition-all duration-300 placeholder:opacity-40 placeholder:transition-opacity placeholder:duration-300 focus:placeholder:opacity-30"
               />
             </div>
 
-            <div className="grid md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
               <div>
-                <label className="block text-white font-medium mb-1">
+                <label className="block text-sm sm:text-base text-white font-medium mb-1">
                   Year
                 </label>
                 <input
                   value={form.year}
                   onChange={(e) => setForm({ ...form, year: e.target.value })}
                   placeholder="e.g. 1, 2, 3, 4"
-                  className="w-full border bg-transparent text-gray-300 border-[#aeaeae4d] rounded-lg p-3 outline-none focus:ring-2 focus:ring-[#8989894d] transition-all duration-300 placeholder:opacity-40 placeholder:transition-opacity placeholder:duration-300 focus:placeholder:opacity-30"
+                  className="w-full border text-sm sm:text-base bg-transparent text-gray-300 border-[#aeaeae4d] rounded-lg p-2 sm:p-3 outline-none focus:ring-2 focus:ring-[#8989894d] transition-all duration-300 placeholder:opacity-40 placeholder:transition-opacity placeholder:duration-300 focus:placeholder:opacity-30"
                 />
               </div>
 
               <div>
-                <label className="block text-white font-medium mb-1">
+                <label className="block text-sm sm:text-base text-white font-medium mb-1">
                   Stream
                 </label>
                 <input
                   value={form.stream}
                   onChange={(e) => setForm({ ...form, stream: e.target.value })}
                   placeholder="e.g. B.Tech, MBA"
-                  className="w-full border bg-transparent text-gray-300 border-[#aeaeae4d] rounded-lg p-3 outline-none focus:ring-2 focus:ring-[#8989894d] transition-all duration-300 placeholder:opacity-40 placeholder:transition-opacity placeholder:duration-300 focus:placeholder:opacity-30"
+                  className="w-full border text-sm sm:text-base bg-transparent text-gray-300 border-[#aeaeae4d] rounded-lg p-2 sm:p-3 outline-none focus:ring-2 focus:ring-[#8989894d] transition-all duration-300 placeholder:opacity-40 placeholder:transition-opacity placeholder:duration-300 focus:placeholder:opacity-30"
                 />
               </div>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
               <div>
-                <label className="block text-white font-medium mb-1">
+                <label className="block text-sm sm:text-base text-white font-medium mb-1">
                   Branch
                 </label>
                 <input
                   value={form.branch}
                   onChange={(e) => setForm({ ...form, branch: e.target.value })}
                   placeholder="e.g. Computer Science"
-                  className="w-full border bg-transparent text-gray-300 border-[#aeaeae4d] rounded-lg p-3 outline-none focus:ring-2 focus:ring-[#8989894d] transition-all duration-300 placeholder:opacity-40 placeholder:transition-opacity placeholder:duration-300 focus:placeholder:opacity-30"
+                  className="w-full border text-sm sm:text-base bg-transparent text-gray-300 border-[#aeaeae4d] rounded-lg p-2 sm:p-3 outline-none focus:ring-2 focus:ring-[#8989894d] transition-all duration-300 placeholder:opacity-40 placeholder:transition-opacity placeholder:duration-300 focus:placeholder:opacity-30"
                 />
               </div>
 
               <div>
-                <label className="block text-white font-medium mb-1">
+                <label className="block text-sm sm:text-base text-white font-medium mb-1">
                   Email
                 </label>
                 <input
                   value={form.email}
                   onChange={(e) => setForm({ ...form, email: e.target.value })}
                   placeholder="e.g. john@college.edu"
-                  className="w-full border bg-transparent text-gray-300 border-[#aeaeae4d] rounded-lg p-3 outline-none focus:ring-2 focus:ring-[#8989894d] transition-all duration-300 placeholder:opacity-40 placeholder:transition-opacity placeholder:duration-300 focus:placeholder:opacity-30"
+                  className="w-full border text-sm sm:text-base bg-transparent text-gray-300 border-[#aeaeae4d] rounded-lg p-2 sm:p-3 outline-none focus:ring-2 focus:ring-[#8989894d] transition-all duration-300 placeholder:opacity-40 placeholder:transition-opacity placeholder:duration-300 focus:placeholder:opacity-30"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-white font-medium mb-1">
+              <label className="block text-sm sm:text-base text-white font-medium mb-1">
                 Roll Number
               </label>
               <input
@@ -182,21 +182,21 @@ export default function Reg() {
                   setForm({ ...form, rollNumber: e.target.value })
                 }
                 placeholder="College roll or registration number"
-                className="w-full border bg-transparent text-gray-300 border-[#aeaeae4d] rounded-lg p-3 outline-none focus:ring-2 focus:ring-[#8989894d] transition-all duration-300 placeholder:opacity-40 placeholder:transition-opacity placeholder:duration-300 focus:placeholder:opacity-30"
+                className="w-full border text-sm sm:text-base bg-transparent text-gray-300 border-[#aeaeae4d] rounded-lg p-2 sm:p-3 outline-none focus:ring-2 focus:ring-[#8989894d] transition-all duration-300 placeholder:opacity-40 placeholder:transition-opacity placeholder:duration-300 focus:placeholder:opacity-30"
               />
             </div>
 
             {error && (
-              <div className="text-red-700 bg-transparent border border-red-700 p-3 rounded-lg text-sm">
+              <div className="text-sm sm:text-base text-red-700 bg-transparent border border-red-700 p-3 rounded-lg">
                 {error}
               </div>
             )}
 
-            <div className="flex gap-4 justify-center">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
               <button
                 type="submit"
                 disabled={loading}
-                className="bg-transparent cursor-pointer border border-[#aeaeae4d] hover:bg-white hover:text-black hover:border-white text-white font-semibold px-6 py-2 rounded-lg transition disabled:opacity-60"
+                className="bg-transparent cursor-pointer border border-[#aeaeae4d] hover:bg-white hover:text-black hover:border-white text-white font-semibold px-6 py-2 rounded-lg transition disabled:opacity-60 text-sm sm:text-base w-full sm:w-auto"
               >
                 {loading ? "Registering..." : "Register"}
               </button>
@@ -204,7 +204,7 @@ export default function Reg() {
               <button
                 type="button"
                 onClick={() => navigate(-1)}
-                className="bg-transparent cursor-pointer border border-[#aeaeae4d] hover:bg-white hover:text-black hover:border-white text-white font-semibold px-6 py-2 rounded-lg transition"
+                className="bg-transparent cursor-pointer border border-[#aeaeae4d] hover:bg-white hover:text-black hover:border-white text-white font-semibold px-6 py-2 rounded-lg transition text-sm sm:text-base w-full sm:w-auto"
               >
                 Back
               </button>
