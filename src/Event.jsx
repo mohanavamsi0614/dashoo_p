@@ -5,19 +5,8 @@ function Event() {
   const { state } = useLocation();
   const nav = useNavigate();
 
-  if (!state) {
-    return (
-      <div className="flex flex-col items-center font-poppins justify-center min-h-screen bg-[#212121] text-white">
-        <h1 className="text-3xl font-bold mb-4">Event not found ⚠️</h1>
-        <Link
-          to="/"
-          className="text-red-500 hover:underline hover:text-red-600 transition"
-        >
-          Go back to events
-        </Link>
-      </div>
-    );
-  }
+  // if (!state) {
+  // }
 
   return (
     <div className="bg-[#212121] font-poppins min-h-screen pb-0">

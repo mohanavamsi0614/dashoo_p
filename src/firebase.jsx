@@ -69,7 +69,7 @@ function GoogleAuth({text}) {
         data
       );
       localStorage.setItem("user", JSON.stringify(res.data.user));
-      nav("/profile");
+      nav("/");
     } catch (err) {
       console.error("Registration error:", err);
       alert("Registration failed!");
