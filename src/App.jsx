@@ -64,9 +64,7 @@ function App() {
         <Route
           path="/"
           element={
-            <ProtectedRoute>
               <Home />
-            </ProtectedRoute>
           }
         />
         <Route
@@ -84,16 +82,14 @@ function App() {
         />
 
         <Route
-          path="/event/:name"
+          path="/event/:eventID"
           element={
-            <ProtectedRoute>
               <Event />
-            </ProtectedRoute>
           }
         />
 
         <Route
-          path="/reg"
+          path="/reg/:eventID"
           element={
             <ProtectedRoute>
               <Reg />

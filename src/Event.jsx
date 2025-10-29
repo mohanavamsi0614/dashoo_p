@@ -1,39 +1,54 @@
 import { Link, useLocation, useNavigate, useParams } from "react-router";
+import axios from "axios";
+import { useState, useEffect } from "react";
 
 function Event() {
-  const { name } = useParams();
-  const { state } = useLocation();
+  const { eventID } = useParams();
+  const loc = useLocation();
+  const [state, setState] = useState(loc.state || null);
+  const [loading, setLoading] = useState(!loc.state);
   const nav = useNavigate();
 
-  if (!state) {
+  useEffect(() => {
+    if (!state) {
+      setLoading(true);
+      axios
+        .get(`https://dasho-backend.onrender.com/participant/eventdata/${eventID}`)
+        .then((res) => {
+          console.log(res.data);
+          setState(res.data);
+        })
+        .catch((err) => console.error(err))
+        .finally(() => setLoading(false));
+    }
+  }, [eventID, state]);
+
+  if (loading || !state) {
     return (
-      <div className="flex flex-col items-center font-poppins justify-center min-h-screen bg-[#212121] text-white px-4">
-        <h1 className="text-2xl sm:text-3xl font-bold mb-4 text-center">
-          Event not found ⚠️
-        </h1>
-        <Link
-          to="/"
-          className="text-red-500 hover:underline hover:text-red-600 transition text-sm sm:text-base"
-        >
-          Go back to events
-        </Link>
+
+      <div className="flex items-center justify-center min-h-screen bg-[#212121] text-white font-poppins">
+        <p>Loading event details...</p>
       </div>
     );
   }
 
+  const user = JSON.parse(localStorage.getItem("user"));
+  const isRegistered = user?.registeredEvents?.some((ev) => ev._id === state._id);
+
   return (
     <div className="bg-[#212121] font-poppins min-h-screen pb-0">
-      {/* Banner at Top */}
-      <div className="w-full h-48 sm:h-64 md:h-96">
+      {/* Banner */}
+      <div className="w-full h-64 md:h-96 relative">
         <img
           src={state.bannerUrl}
           alt={state.eventTitle}
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover rounded-b-2xl"
         />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
       </div>
 
-      {/* Event Info Section */}
-      <div className="max-w-4xl mx-4 sm:mx-6 md:mx-auto bg-[#2a2a2a] shadow-lg rounded-2xl -mt-12 sm:-mt-16 relative z-10 p-4 sm:p-6 md:p-8">
+      {/* Event Card */}
+      <div className="max-w-4xl mx-auto bg-[#2a2a2a] shadow-lg rounded-2xl -mt-16 relative z-10 p-8">
         {/* Logo + Title */}
         <div className="flex flex-col items-center text-center">
           {state.logoUrl && (
@@ -53,60 +68,42 @@ function Event() {
           )}
         </div>
 
-        {/* Event Details */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mt-6 sm:mt-8">
+        {/* Details Grid */}
+        <div className="grid md:grid-cols-2 gap-6 mt-8">
           <div>
-            <h3 className="text-base sm:text-lg font-nerko font-medium text-white mb-1">
-              📅 Date
-            </h3>
-            <p className="text-sm sm:text-base text-gray-300">
-              {state.startDate} – {state.endDate}
-            </p>
+            <h3 className="text-lg font-nerko font-medium text-white mb-1">📅 Date</h3>
+            <p className="text-gray-300">{state.startDate} – {state.endDate}</p>
           </div>
           <div>
-            <h3 className="text-base sm:text-lg font-nerko font-medium text-white mb-1">
-              ⏰ Time
-            </h3>
-            <p className="text-sm sm:text-base text-gray-300">
-              {state.startTime || "TBA"}
-            </p>
+            <h3 className="text-lg font-nerko font-medium text-white mb-1">⏰ Time</h3>
+            <p className="text-gray-300">{state.startTime || "TBA"}</p>
           </div>
           <div>
-            <h3 className="text-base sm:text-lg font-nerko font-medium text-white mb-1">
-              📍 Venue
-            </h3>
-            <p className="text-sm sm:text-base text-gray-300">{state.venue}</p>
-            <p className="text-sm sm:text-base text-gray-300">
-              {state.address}
-            </p>
+            <h3 className="text-lg font-nerko font-medium text-white mb-1">📍 Venue</h3>
+            <p className="text-gray-300">{state.venue || "Not specified"}</p>
+            <p className="text-gray-300">{state.address || ""}</p>
           </div>
           <div>
-            <h3 className="text-base sm:text-lg font-nerko font-medium text-white mb-1">
-              🎟 Capacity
-            </h3>
-            <p className="text-sm sm:text-base text-gray-300">
-              {state.capacity} participants
+            <h3 className="text-lg font-nerko font-medium text-white mb-1">🎟 Capacity</h3>
+            <p className="text-gray-300">
+              {state.capacity ? `${state.capacity} participants` : "N/A"}
             </p>
           </div>
         </div>
 
         {/* Description */}
-        <div className="mt-6 sm:mt-8">
-          <h3 className="text-base sm:text-lg font-nerko font-medium text-white mb-2">
-            📖 Description
-          </h3>
-          <p className="text-sm sm:text-base text-gray-300 leading-relaxed">
-            {state.description}
+        <div className="mt-8">
+          <h3 className="text-lg font-nerko font-medium text-white mb-2">📖 Description</h3>
+          <p className="text-gray-300 leading-relaxed">
+            {state.description || "No description available."}
           </p>
         </div>
 
         {/* Gallery */}
         {(state.photo1Url || state.photo2Url) && (
-          <div className="mt-8 sm:mt-10">
-            <h3 className="text-base sm:text-lg font-nerko font-medium text-white mb-3">
-              📸 Event Gallery
-            </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+          <div className="mt-10">
+            <h3 className="text-lg font-nerko font-medium text-white mb-3">📸 Event Gallery</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {state.photo1Url && (
                 <img
                   src={state.photo1Url}

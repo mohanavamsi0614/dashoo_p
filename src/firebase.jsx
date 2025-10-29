@@ -17,7 +17,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-function GoogleAuth() {
+function GoogleAuth({text}) {
   const [newUser, setNewUser] = useState(false);
   const [data, setData] = useState({
     name: "",
@@ -59,13 +59,17 @@ function GoogleAuth() {
 
   // 🔹 Register new user
   const register = async () => {
+     if(!data.name.trim() || !data.group.trim() || !data.email.trim() || !data.phone.trim()  || !data.imgUrl.trim()) {
+       alert("Please fill in all fields");
+       return;
+    }
     try {
       const res = await axios.post(
         "https://dasho-backend.onrender.com/participant/register",
         data
       );
       localStorage.setItem("user", JSON.stringify(res.data.user));
-      nav("/profile");
+      nav("/");
     } catch (err) {
       console.error("Registration error:", err);
       alert("Registration failed!");
@@ -109,7 +113,7 @@ function GoogleAuth() {
           onClick={signIn}
           className="border cursor-pointer border-[#aeaeae4d] hover:bg-white hover:text-black transition-colors text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-medium w-full text-sm sm:text-base"
         >
-          Sign in with Google
+          {text || "Sign in with Google"}
         </button>
       ) : (
         <div className="flex mt-6 sm:mt-10 flex-col gap-3 sm:gap-4 text-left">

@@ -1,13 +1,27 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { useLocation, useParams, useNavigate } from "react-router-dom";
 import TeamReg from "./TeamReg";
 import { BackgroundBeams } from "./components/ui/background-beams";
-
+  
 export default function Reg() {
-  const { name: eventParam } = useParams();
-  const { state } = useLocation();
+  const { eventID } = useParams();
+  const loc = useLocation();
+  const [state, setState] = useState(loc.state || "");
   const navigate = useNavigate();
+
+  useEffect(()=>{
+    if(!state){
+      axios.get(`https://dasho-backend.onrender.com/participant/eventdata/${eventID}`)
+      .then(res=>{
+        console.log(res.data);
+        setState(res.data);
+      })
+      .catch(err=>{
+        console.error(err);
+      });
+    }
+  })
 
   const [form, setForm] = useState({
     name: "",
@@ -64,6 +78,8 @@ export default function Reg() {
           "lastRegistration",
           JSON.stringify({ payload, server: res.data })
         );
+        console.log("Registration response:", res.data);
+        localStorage.setItem("user", JSON.stringify(res.data.user));
       }
       setSuccess(true);
       setTimeout(() => navigate("/profile"), 1500);
@@ -173,8 +189,8 @@ export default function Reg() {
             </div>
 
             <div>
-              <label className="block text-sm sm:text-base text-white font-medium mb-1">
-                Roll Number
+              <label className="block text-white font-medium mb-1">
+                Roll Number | College Registration Number
               </label>
               <input
                 value={form.rollNumber}
