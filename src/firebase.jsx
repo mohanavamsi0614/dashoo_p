@@ -63,7 +63,7 @@ function GoogleAuth({text}) {
 
   // 🔹 Register new user
   const register = async () => {
-     if(!data.name.trim() || !data.group.trim() || !data.email.trim() || !data.phone.trim()  || !data.imgUrl.trim()) {
+     if(!data.name.trim() || !data.group.trim() || !data.email.trim() || !data.phone.trim()  ||) {
        alert("Please fill in all fields");
        return;
     }
@@ -171,6 +171,7 @@ function GoogleAuth({text}) {
           />
 
           <div className="flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-0">
+          <p>Optional</p>
             <button
               onClick={() => wid.current && wid.current.open()}
               disabled={regLoading}
