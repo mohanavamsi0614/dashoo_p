@@ -86,7 +86,7 @@ export default function Reg() {
     } catch (err) {
       console.error(err);
       setError(
-        err?.response?.data?.message || err.message || "Registration failed"
+        err.response?.data?.error || "Registration failed. Please try again."
       );
     } finally {
       setLoading(false);
@@ -181,6 +181,7 @@ export default function Reg() {
                 </label>
                 <input
                   value={form.email}
+                  type="email"
                   onChange={(e) => setForm({ ...form, email: e.target.value })}
                   placeholder="e.g. john@college.edu"
                   className="w-full border text-sm sm:text-base bg-transparent text-gray-300 border-[#aeaeae4d] rounded-lg p-2 sm:p-3 outline-none focus:ring-2 focus:ring-[#8989894d] transition-all duration-300 placeholder:opacity-40 placeholder:transition-opacity placeholder:duration-300 focus:placeholder:opacity-30"
