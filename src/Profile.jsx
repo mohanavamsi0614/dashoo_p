@@ -92,7 +92,7 @@ function Profile() {
                     📅 {event.startDate} | 🕒 {event.startTime}
                   </p>
                   <p className="mt-4 sm:mt-5 text-xs sm:text-sm font-medium text-white">
-                    Status: {event.status ? "✅ Present" : "❌ Absent"}
+                    Status: {event.status ? "Open" : "Close"}
                   </p>
                 </div>
               </div>
