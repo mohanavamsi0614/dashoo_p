@@ -63,7 +63,7 @@ function GoogleAuth({text}) {
 
   // 🔹 Register new user
   const register = async () => {
-     if(!data.name.trim() || !data.group.trim() || !data.email.trim() || !data.phone.trim()  ||) {
+     if(!data.name.trim() || !data.group.trim() || !data.email.trim() || !data.phone.trim() ) {
        alert("Please fill in all fields");
        return;
     }
