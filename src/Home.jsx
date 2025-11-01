@@ -93,7 +93,7 @@ function Home() {
                     <span className="text-xs md:text-sm text-white group-hover:text-black px-2 py-1 rounded-md font-medium whitespace-nowrap">
                       {event.ticketPrice === "0"
                         ? "Free"
-                        : `₹${event.ticketPrice}`}
+                        : `₹${event.ticketPrice || "N/A"}`}
                     </span>
                   </div>
 
