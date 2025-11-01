@@ -82,6 +82,10 @@ export default function TeamReg() {
           "lastRegistration",
           JSON.stringify({ payload, server: res.data })
         );
+        localStorage.setItem(
+          "user",
+          JSON.stringify(res.data.updatedUser)
+        );
       }
       setSuccess(true);
       setTimeout(() => navigate("/profile"), 1400);
