@@ -2,24 +2,24 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useLocation, useParams, useNavigate } from "react-router-dom";
 import TeamReg from "./TeamReg";
-import { BackgroundBeams } from "./components/ui/background-beams";
-  
+import { BackgroundBeams } from "../components/ui/background-beams";
+
 export default function Reg() {
   const { eventID } = useParams();
   const loc = useLocation();
   const [state, setState] = useState(loc.state || "");
   const navigate = useNavigate();
 
-  useEffect(()=>{
-    if(!state){
-      axios.get(`https://dasho-backend.onrender.com/participant/eventdata/${eventID}`)
-      .then(res=>{
-        console.log(res.data);
-        setState(res.data);
-      })
-      .catch(err=>{
-        console.error(err);
-      });
+  useEffect(() => {
+    if (!state) {
+      axios.get(`http://localhost:6100/participant/eventdata/${eventID}`)
+        .then(res => {
+          console.log(res.data);
+          setState(res.data);
+        })
+        .catch(err => {
+          console.error(err);
+        });
     }
   })
 
@@ -42,7 +42,7 @@ export default function Reg() {
 
   // ✅ If this is a team event, show TeamReg component
   if (eventType !== "qr") {
-    return <TeamReg />;
+    return <TeamReg state={state} />;
   }
 
   function validate() {
@@ -69,7 +69,7 @@ export default function Reg() {
       };
 
       const res = await axios.post(
-        `https://dasho-backend.onrender.com/participant/register/qr/${state._id}`,
+        `http://localhost:6100/participant/register/qr/${state._id}`,
         payload
       );
 
@@ -208,7 +208,36 @@ export default function Reg() {
                 {error}
               </div>
             )}
-
+            <div>
+              other
+              {state?.other.map((i) => (
+                <div>
+                  <label className="block text-white font-medium mb-1">
+                    {i.title}
+                  </label>
+                  {i.type === 'text' && (
+                    <input
+                      value={form[i.key] || ""}
+                      onChange={(e) =>
+                        setForm({ ...form, [i.title]: e.target.value })
+                      }
+                      placeholder={i.placeholder || ""}
+                      className="w-full border text-sm sm:text-base bg-transparent text-gray-300 border-[#aeaeae4d] rounded-lg p-2 sm:p-3 outline-none focus:ring-2 focus:ring-[#8989894d] transition-all duration-300 placeholder:opacity-40 placeholder:transition-opacity placeholder:duration-300 focus:placeholder:opacity-30"
+                    />
+                  )}
+                  {i.type == "upload" && (
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="file"
+                        onChange={(e) =>
+                          setForm({ ...form, [i.title]: e.target.files[0] })
+                        }
+                      />
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
               <button
                 type="submit"

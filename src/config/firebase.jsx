@@ -70,7 +70,7 @@ function GoogleAuth({text}) {
     setRegLoading(true);
     try {
       const res = await axios.post(
-        "https://dasho-backend.onrender.com/participant/register",
+        "http://localhost:6100/participant/register",
         data
       );
       localStorage.setItem("user", JSON.stringify(res.data.user));
@@ -91,7 +91,7 @@ function GoogleAuth({text}) {
       const user = result.user;
 
       const res = await axios.post(
-        "https://dasho-backend.onrender.com/participant/auth",
+        "http://localhost:6100/participant/auth",
         {
           email: user.email,
         }

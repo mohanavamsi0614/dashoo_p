@@ -1,5 +1,5 @@
-import GoogleAuth from "./firebase";
-import { BackgroundBeams } from "./components/ui/background-beams";
+import GoogleAuth from "../config/firebase";
+import { BackgroundBeams } from "../components/ui/background-beams";
 
 function Auth() {
   return (

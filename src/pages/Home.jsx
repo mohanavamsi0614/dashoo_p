@@ -1,10 +1,10 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import Navbar from "./Navbar";
+import Navbar from "../components/Navbar";
 import { TypeAnimation } from "react-type-animation";
-import { BackgroundBeams } from "./components/ui/background-beams";
-import Footer from "./Footer";
+import { BackgroundBeams } from "../components/ui/background-beams";
+import Footer from "../components/Footer";
 
 function Home() {
   const nav = useNavigate();
@@ -12,7 +12,7 @@ function Home() {
 
   useEffect(() => {
     axios
-      .get("https://dasho-backend.onrender.com/participant/eventslist")
+      .get("http://localhost:6100/participant/eventslist")
       .then((response) => {
         setEvents(response.data.events);
       })
@@ -91,9 +91,9 @@ function Home() {
                       {event.eventTitle}
                     </h2>
                     <span className="text-xs md:text-sm text-white group-hover:text-black px-2 py-1 rounded-md font-medium whitespace-nowrap">
-                      {event.ticketPrice === "0"
+                      {event.cost === "0"
                         ? "Free"
-                        : `₹${event.ticketPrice || "N/A"}`}
+                        : `₹${event.cost || "N/A"}`}
                     </span>
                   </div>
 

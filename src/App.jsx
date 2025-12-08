@@ -1,12 +1,15 @@
 import "./App.css";
 import { Route, Routes, Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import Home from "./Home";
-import Auth from "./Auth";
-import Profile from "./Profile";
-import Event from "./Event";
-import Reg from "./Reg";
+import Home from "./pages/Home";
+import Auth from "./pages/Auth";
+import Profile from "./pages/Profile";
+import Event from "./pages/Event";
+import Reg from "./pages/Reg";
 import { MultiStepLoader } from "./components/ui/multi-step-loader";
+import Payment from "./pages/Payment";
+import Teampanel from "./pages/Teampanel";
+import socket from "./lib/socket";
 
 // Reusable Protected Route Wrapper
 function ProtectedRoute({ children }) {
@@ -20,6 +23,9 @@ function App() {
   const [isFirstVisit, setIsFirstVisit] = useState(false);
 
   useEffect(() => {
+    socket.on("connect", () => {
+      console.log("Connected to server");
+    });
     const storedUser = JSON.parse(localStorage.getItem("user") || "null");
     const hasVisited = localStorage.getItem("hasVisited");
 
@@ -28,11 +34,11 @@ function App() {
     if (!hasVisited) {
       setIsFirstVisit(true);
       localStorage.setItem("hasVisited", "true");
-      const timer = setTimeout(() => setLoading(false), 10000); 
+      const timer = setTimeout(() => setLoading(false), 10000);
       return () => clearTimeout(timer);
     } else {
       setIsFirstVisit(false);
-      const timer = setTimeout(() => setLoading(false), 1000); 
+      const timer = setTimeout(() => setLoading(false), 1000);
       return () => clearTimeout(timer);
     }
   }, []);
@@ -64,7 +70,7 @@ function App() {
         <Route
           path="/"
           element={
-              <Home />
+            <Home />
           }
         />
         <Route
@@ -80,11 +86,16 @@ function App() {
             </ProtectedRoute>
           }
         />
-
+        <Route
+          path="/payment/:eventId/:teamId"
+          element={
+            <Payment />
+          }
+        />
         <Route
           path="/event/:eventID"
           element={
-              <Event />
+            <Event />
           }
         />
 
@@ -94,6 +105,12 @@ function App() {
             <ProtectedRoute>
               <Reg />
             </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/teampanel/:eventId"
+          element={
+            <Teampanel />
           }
         />
 
