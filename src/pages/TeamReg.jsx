@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
+import api from "../lib/api";
 import { useLocation, useParams, useNavigate } from "react-router-dom";
 import { BackgroundBeams } from "../components/ui/background-beams";
 import socket from "@/lib/socket";
@@ -142,8 +143,8 @@ export default function TeamReg({ state: propState }) {
         members,
         userId: JSON.parse(localStorage.getItem("user"))?._id,
       };
-      const res = await axios.post(
-        "http://localhost:6100/participant/register/hackathon/" +
+      const res = await api.post(
+        "/participant/register/hackathon/" +
         state._id,
         payload
       );

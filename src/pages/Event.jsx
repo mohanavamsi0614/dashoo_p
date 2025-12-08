@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate, useParams } from "react-router";
-import axios from "axios";
+import api from "../lib/api";
 import { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
@@ -16,8 +16,8 @@ function Event() {
   useEffect(() => {
     if (!state) {
       setLoading(true);
-      axios
-        .get(`http://localhost:6100/participant/eventdata/${eventID}`)
+      api
+        .get(`/participant/eventdata/${eventID}`)
         .then((res) => {
           console.log(res.data);
           setState(res.data);

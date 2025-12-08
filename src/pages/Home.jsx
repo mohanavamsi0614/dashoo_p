@@ -1,4 +1,4 @@
-import axios from "axios";
+import api from "../lib/api";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import Navbar from "../components/Navbar";
@@ -11,8 +11,8 @@ function Home() {
   const [events, setEvents] = useState([]);
 
   useEffect(() => {
-    axios
-      .get("http://localhost:6100/participant/eventslist")
+    api
+      .get("/participant/eventslist")
       .then((response) => {
         setEvents(response.data.events);
       })

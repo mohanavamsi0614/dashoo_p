@@ -1,4 +1,5 @@
 import axios from "axios";
+import api from "../lib/api";
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom"; // make sure you're using react-router-dom v6
 
@@ -14,9 +15,9 @@ function Payment() {
 
   useEffect(() => {
     // 1) Fetch payment data for this event + team
-    axios
+    api
       .get(
-        `http://localhost:6100/participant/payment/hackthon/${eventId}/${teamId}`
+        `/participant/payment/hackthon/${eventId}/${teamId}`
       )
       .then((res) => {
         console.log(res.data);
@@ -70,8 +71,8 @@ function Payment() {
       return;
     }
     try {
-      const res = await axios.post(
-        `http://localhost:6100/participant/payment/hackthon/${eventId}/${teamId}`,
+      const res = await api.post(
+        `/participant/payment/hackthon/${eventId}/${teamId}`,
         payment
       );
       console.log(res.data);

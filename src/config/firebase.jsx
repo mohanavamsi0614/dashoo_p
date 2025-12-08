@@ -1,4 +1,5 @@
 import axios from "axios";
+import api from "../lib/api";
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { useEffect, useRef, useState } from "react";
@@ -17,7 +18,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-function GoogleAuth({text}) {
+function GoogleAuth({ text }) {
   const [newUser, setNewUser] = useState(false);
   const [data, setData] = useState({
     name: "",
@@ -63,14 +64,14 @@ function GoogleAuth({text}) {
 
   // 🔹 Register new user
   const register = async () => {
-     if(!data.name.trim() || !data.group.trim() || !data.email.trim() || !data.phone.trim() ) {
-       alert("Please fill in all fields");
-       return;
+    if (!data.name.trim() || !data.group.trim() || !data.email.trim() || !data.phone.trim()) {
+      alert("Please fill in all fields");
+      return;
     }
     setRegLoading(true);
     try {
-      const res = await axios.post(
-        "http://localhost:6100/participant/register",
+      const res = await api.post(
+        "/participant/register",
         data
       );
       localStorage.setItem("user", JSON.stringify(res.data.user));
@@ -90,8 +91,8 @@ function GoogleAuth({text}) {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
 
-      const res = await axios.post(
-        "http://localhost:6100/participant/auth",
+      const res = await api.post(
+        "/participant/auth",
         {
           email: user.email,
         }
@@ -171,7 +172,7 @@ function GoogleAuth({text}) {
           />
 
           <div className="flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-0">
-          <p>Optional</p>
+            <p>Optional</p>
             <button
               onClick={() => wid.current && wid.current.open()}
               disabled={regLoading}

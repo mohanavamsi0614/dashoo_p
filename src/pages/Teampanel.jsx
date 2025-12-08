@@ -1,4 +1,5 @@
 import axios from "axios";
+import api from "../lib/api";
 import Webcam from "react-webcam";
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router";
@@ -33,7 +34,7 @@ function Teampanel() {
 
     useEffect(() => {
         if (localStorage.getItem(`${eventId}-pass`)) {
-            axios.get("http://localhost:6100/participant/dashboard/" + eventId + "/" + localStorage.getItem(`${eventId}-pass`))
+            api.get("/participant/dashboard/" + eventId + "/" + localStorage.getItem(`${eventId}-pass`))
                 .then(res => {
                     setTeam(res.data.team)
                     setAttd(res.data.attd)
@@ -65,7 +66,7 @@ function Teampanel() {
 
 
     const handlePassSubmit = () => {
-        axios.get("http://localhost:6100/participant/dashboard/" + eventId + "/" + pass)
+        api.get("/participant/dashboard/" + eventId + "/" + pass)
             .then(res => {
                 setTeam(res.data.team)
                 setAttd(res.data.attd)
@@ -199,7 +200,7 @@ function Model({ mem, setOpen, setTeam, attd, event }) {
         const updatedattd = { ...mem.attd }
         updatedattd[attd] = { img: res.data.url, status: "" }
         const participant = { ...mem, attd: updatedattd }
-        let data = await axios.post(`http://localhost:6100/participant/attd/${event}/${localStorage.getItem(`${event}-pass`)}`, { participant, role: mem.role });
+        let data = await api.post(`/participant/attd/${event}/${localStorage.getItem(`${event}-pass`)}`, { participant, role: mem.role });
         data = data.data.team
         console.log(data)
         setTeam(data)

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import api from "../lib/api";
 import { useLocation, useParams, useNavigate } from "react-router-dom";
 import TeamReg from "./TeamReg";
 import { BackgroundBeams } from "../components/ui/background-beams";
@@ -12,7 +13,7 @@ export default function Reg() {
 
   useEffect(() => {
     if (!state) {
-      axios.get(`http://localhost:6100/participant/eventdata/${eventID}`)
+      api.get(`/participant/eventdata/${eventID}`)
         .then(res => {
           console.log(res.data);
           setState(res.data);
@@ -68,8 +69,8 @@ export default function Reg() {
         userId: JSON.parse(localStorage.getItem("user"))?._id,
       };
 
-      const res = await axios.post(
-        `http://localhost:6100/participant/register/qr/${state._id}`,
+      const res = await api.post(
+        `/participant/register/qr/${state._id}`,
         payload
       );
 
