@@ -1,17 +1,26 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Shield } from 'lucide-react';
+import StylePopup from './StylePopup';
 
 const TeamLogo = ({ team, styles }) => {
-    const { backgroundColor, color } = styles || {};
+    const [customStyle, setCustomStyle] = useState({
+        backgroundColor: styles?.backgroundColor || '#000000',
+        color: styles?.color || '#ffffff'
+    });
+
+    const handleStyleUpdate = (key, value) => {
+        setCustomStyle(prev => ({ ...prev, [key]: value }));
+    };
 
     return (
         <div
-            className="flex flex-col items-center justify-center p-8 rounded-2xl border border-gray-800 h-full transition-all"
+            className="flex flex-col items-center justify-center p-8 rounded-2xl border border-gray-800 h-full transition-all relative group"
             style={{
-                backgroundColor: backgroundColor || '#000000',
-                color: color || '#ffffff'
+                backgroundColor: customStyle.backgroundColor,
+                color: customStyle.color
             }}
         >
+            <StylePopup currentStyles={customStyle} onUpdate={handleStyleUpdate} />
             <div className="w-48 h-48 bg-gray-900 rounded-full flex items-center justify-center text-blue-500 mb-6 shadow-2xl border-4 border-gray-800 relative overflow-hidden group">
                 {team?.logo ? (
                     <img src={team.logo} alt="Team Logo" className="w-full h-full object-cover rounded-full" />

@@ -159,9 +159,8 @@ export default function TeamReg({ state: propState }) {
           "user",
           JSON.stringify(res.data.user)
         );
-        // Clear form data from local storage on success
         localStorage.removeItem(STORAGE_KEY);
-        socket.emit("regCheck", state._id)
+        socket.emit("regCheck", { eventId: state._id })
       }
       setSuccess(true);
       if (isPaymentRequired) {
@@ -308,7 +307,7 @@ export default function TeamReg({ state: propState }) {
                         <input
                           value={form[i.key] || ""}
                           onChange={(e) =>
-                            setForm({ ...form, [i.title]: e.target.value })
+                            setForm({ ...form, [i.key]: e.target.value })
                           }
                           placeholder={i.placeholder || ""}
                           className="w-full bg-[#1a1a1a] border border-gray-600 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-indigo-500 transition-colors"

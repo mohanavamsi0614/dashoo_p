@@ -12,7 +12,7 @@ import TeamLogo from "../components/teampanel/TeamLogo";
 import AttendanceSection from "../components/teampanel/AttendanceSection";
 import ProblemStatementSection from "../components/teampanel/ProblemStatementSection";
 import UpdatesSection from "../components/teampanel/UpdatesSection";
-import StyleEditor from "../components/teampanel/StyleEditor";
+
 
 function Teampanel() {
     const { eventId } = useParams()
@@ -22,6 +22,7 @@ function Teampanel() {
     const [open, setOpen] = useState(false)
     const [auth, setauth] = useState(false)
     const [current, setCurent] = useState({})
+    const [HTML, setHtml] = useState("")
     const [currAttd, setCurrAttd] = useState()
 
     // Customization State
@@ -41,7 +42,8 @@ function Teampanel() {
                     setCurrAttd(res.data.currAttd || "")
                     setauth(true)
                     socket.emit("join", [res.data.team._id, eventId])
-                    socket.emit("currAttd", eventId)
+                    socket.emit("currAttd", { eventId, teamId: res.data.team._id })
+                    socket.emit("getUpdate", { teamId: team._id, eventId: eventId })
                 })
                 .catch(err => {
                     console.log(err)
@@ -52,7 +54,6 @@ function Teampanel() {
     useEffect(() => {
     }, [team])
 
-    console.log(currAttd)
 
     socket.on("currAttd", (id) => {
         console.log(id)
@@ -62,6 +63,11 @@ function Teampanel() {
     socket.on("attd", (team) => {
         console.log(team)
         setTeam(team)
+    })
+
+    socket.on("updateOn", (data) => {
+        console.log(data)
+        setHtml(data)
     })
 
 
@@ -160,26 +166,25 @@ function Teampanel() {
                 {/* Bottom Rows: Problem Statement & Updates */}
                 <div className="space-y-8">
                     <ProblemStatementSection styles={customization.problem} />
-                    <UpdatesSection styles={customization.updates} />
+                    <UpdatesSection styles={customization.updates} team={team} event={eventId} html={HTML} />
                 </div>
             </div>
 
-            <StyleEditor
-                customization={customization}
-                setCustomization={setCustomization}
-            />
 
-            {open && (
-                <Model
-                    mem={current}
-                    setOpen={setOpen}
-                    setTeam={setTeam}
-                    attd={currAttd}
-                    team={team._id}
-                    event={eventId}
-                />
-            )}
-        </div>
+
+            {
+                open && (
+                    <Model
+                        mem={current}
+                        setOpen={setOpen}
+                        setTeam={setTeam}
+                        attd={currAttd}
+                        team={team._id}
+                        event={eventId}
+                    />
+                )
+            }
+        </div >
     );
 }
 

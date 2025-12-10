@@ -1,8 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Check, Loader2, Camera, X } from 'lucide-react';
+import StylePopup from './StylePopup';
 
 const AttendanceSection = ({ team, attd, currAttd, onMarkAttendance, styles }) => {
-    const { backgroundColor, color, font } = styles || {};
+    const [customStyle, setCustomStyle] = useState({
+        backgroundColor: styles?.backgroundColor || '#000000',
+        color: styles?.color || '#ffffff',
+        font: styles?.font || 'inherit'
+    });
+
+    const handleStyleUpdate = (key, value) => {
+        setCustomStyle(prev => ({ ...prev, [key]: value }));
+    };
 
     // Combine lead and members into a single list for the table
     const allMembers = [
@@ -12,15 +21,17 @@ const AttendanceSection = ({ team, attd, currAttd, onMarkAttendance, styles }) =
 
     return (
         <div
-            className="rounded-2xl border border-gray-800 overflow-hidden mb-8 transition-all"
+            className="rounded-2xl border border-gray-800 overflow-hidden mb-8 transition-all relative group"
             style={{
-                backgroundColor: backgroundColor || '#000000',
-                color: color || '#ffffff',
-                fontFamily: font || 'inherit'
+                backgroundColor: customStyle.backgroundColor,
+                color: customStyle.color,
+                fontFamily: customStyle.font
             }}
         >
+            <StylePopup currentStyles={customStyle} onUpdate={handleStyleUpdate} />
+
             <div className="p-6 border-b border-gray-800">
-                <h2 className="text-xl font-bold flex items-center gap-2 text-white">
+                <h2 className="text-xl font-bold flex items-center gap-2">
                     Attendance Record
                 </h2>
             </div>

@@ -1,19 +1,30 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FileText } from 'lucide-react';
+import StylePopup from './StylePopup';
 
 const ProblemStatementSection = ({ styles }) => {
-    const { backgroundColor, color, font } = styles || {};
+    const [customStyle, setCustomStyle] = useState({
+        backgroundColor: styles?.backgroundColor || '#000000',
+        color: styles?.color || '#ffffff',
+        font: styles?.font || 'inherit'
+    });
+
+    const handleStyleUpdate = (key, value) => {
+        setCustomStyle(prev => ({ ...prev, [key]: value }));
+    };
 
     return (
         <div
-            className="rounded-2xl border border-gray-800 p-6 mb-8 transition-all"
+            className="rounded-2xl border border-gray-800 p-6 mb-8 transition-all relative group"
             style={{
-                backgroundColor: backgroundColor || '#000000',
-                color: color || '#ffffff',
-                fontFamily: font || 'inherit'
+                backgroundColor: customStyle.backgroundColor,
+                color: customStyle.color,
+                fontFamily: customStyle.font
             }}
         >
-            <h2 className="text-xl font-bold mb-4 flex items-center gap-2 text-white">
+            <StylePopup currentStyles={customStyle} onUpdate={handleStyleUpdate} />
+
+            <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
                 <FileText className="w-5 h-5 opacity-70" />
                 Problem Statement
             </h2>

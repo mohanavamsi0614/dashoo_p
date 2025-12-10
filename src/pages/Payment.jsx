@@ -1,9 +1,10 @@
 import axios from "axios";
 import api from "../lib/api";
 import { useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom"; // make sure you're using react-router-dom v6
-
+import { useParams, useNavigate } from "react-router-dom";
 function Payment() {
+  const navigate = useNavigate();
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const wid = useRef(null);
   const { eventId, teamId } = useParams();
   const [data, setData] = useState(null);
@@ -14,11 +15,7 @@ function Payment() {
   });
 
   useEffect(() => {
-    // 1) Fetch payment data for this event + team
-    api
-      .get(
-        `/participant/payment/hackthon/${eventId}/${teamId}`
-      )
+    api.get(`/participant/payment/hackthon/${eventId}/${teamId}`)
       .then((res) => {
         console.log(res.data);
         setData(res.data);
@@ -27,10 +24,8 @@ function Payment() {
         console.error("Error fetching payment data:", err);
       });
 
-    // 2) Initialise Cloudinary upload widget
     if (typeof window === "undefined") return;
 
-    // Make sure script is loaded
     if (!window.cloudinary) {
       console.error(
         "Cloudinary widget not found. Make sure the Cloudinary script is included in index.html"
@@ -38,7 +33,6 @@ function Payment() {
       return;
     }
 
-    // Avoid recreating widget if it already exists (React StrictMode calls useEffect twice in dev)
     if (wid.current) return;
 
     const widget = window.cloudinary.createUploadWidget(
@@ -76,7 +70,7 @@ function Payment() {
         payment
       );
       console.log(res.data);
-      alert("Payment submitted successfully");
+      setShowSuccessPopup(true);
     } catch (err) {
       console.error(err);
       alert("Payment submission failed");
@@ -84,7 +78,7 @@ function Payment() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black flex items-center justify-center px-4 py-10 text-[#ECE8E7]">
+    <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black flex items-center justify-center px-4 py-10 text-[#ECE8E7] relative">
       <div className="w-full max-w-3xl bg-[#020617]/90 border border-gray-800 rounded-3xl shadow-2xl p-6 sm:p-8">
         <h1 className="text-2xl sm:text-3xl font-bold mb-2 text-center bg-gradient-to-r from-indigo-400 to-pink-400 bg-clip-text text-transparent">
           Hackathon Payment
@@ -214,6 +208,45 @@ function Payment() {
           </div>
         )}
       </div>
+
+      {showSuccessPopup && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+          <div className="bg-[#0f172a] border border-gray-700 rounded-2xl p-6 sm:p-8 max-w-md w-full shadow-2xl transform transition-all scale-100 opacity-100">
+            <div className="flex flex-col items-center text-center space-y-4">
+              <div className="w-16 h-16 bg-green-500/10 rounded-full flex items-center justify-center mb-2">
+                <svg
+                  className="w-8 h-8 text-green-500"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="3"
+                    d="M5 13l4 4L19 7"
+                  ></path>
+                </svg>
+              </div>
+
+              <h3 className="text-2xl font-bold text-white">
+                Thanks for verification!
+              </h3>
+
+              <p className="text-gray-300 leading-relaxed">
+                The team is verifying the payment. After verifying we will send you the mail.
+              </p>
+
+              <button
+                onClick={() => navigate("/")}
+                className="mt-4 w-full py-3 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-semibold hover:from-indigo-600 hover:to-purple-600 shadow-lg transform active:scale-95 transition-all duration-200"
+              >
+                Back to Home
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
