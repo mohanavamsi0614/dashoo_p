@@ -184,7 +184,7 @@ export default function TeamReg({ state: propState }) {
   return (
     <div className="min-h-screen font-poppins flex justify-center items-center px-4 sm:px-6 py-10 sm:py-16 relative bg-[#212121]">
       <BackgroundBeams className="fixed inset-0 z-0" />
-      <div className="max-w-4xl w-full mx-auto bg-[#161616] border border-[#aeaeae4d] rounded-2xl shadow-2xl p-6 sm:p-10 relative z-10">
+      <div className="max-w-4xl w-full mx-auto bg-[#212121] border border-[#aeaeae4d] rounded-2xl shadow-2xl p-6 sm:p-10 relative z-10">
         <h2 className="text-2xl sm:text-3xl font-bold mb-2 text-center text-white">
           Team Registration
         </h2>
@@ -202,7 +202,7 @@ export default function TeamReg({ state: propState }) {
 
         {success ? (
           <div className="border border-green-500 bg-green-900/20 text-green-400 p-4 rounded-xl text-center text-lg font-medium">
-            ✅ Team registered successfully! Redirecting...
+             Team registered successfully! Redirecting...
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-8">
@@ -210,7 +210,7 @@ export default function TeamReg({ state: propState }) {
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-2">Team Name <span className="text-red-500">*</span></label>
               <input
-                className="w-full bg-[#2a2a2a] border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-indigo-500 transition-colors"
+                className="w-full bg-[#2a2a2a] border border-[#aeaeae4d] rounded-xl px-4 py-3 text-white focus:outline-none focus:border-indigo-500 transition-colors"
                 value={teamName}
                 onChange={(e) => setTeamName(e.target.value)}
                 placeholder="Enter your team name"
@@ -218,9 +218,9 @@ export default function TeamReg({ state: propState }) {
             </div>
 
             {/* Team Lead Section */}
-            <div className="bg-[#2a2a2a] p-6 rounded-xl border border-gray-700">
+            <div className="bg-[#2a2a2a] p-6 rounded-xl border border-[#aeaeae4d]">
               <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-                👑 Team Lead <span className="text-xs text-gray-400 font-normal">(Required)</span>
+                 Team Lead <span className="text-xs text-gray-400 font-normal">(Required)</span>
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {Object.keys(lead).map((field, idx) => (
@@ -229,7 +229,7 @@ export default function TeamReg({ state: propState }) {
                       {field === "rollNumber" ? "Roll / Reg No." : field} <span className="text-red-500">*</span>
                     </label>
                     <input
-                      className="w-full bg-[#1a1a1a] border border-gray-600 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-indigo-500 transition-colors"
+                      className="w-full bg-[#1a1a1a] border border-[#aeaeae4d] rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-indigo-500 transition-colors"
                       value={lead[field]}
                       onChange={(e) =>
                         setLead({ ...lead, [field]: e.target.value })
@@ -265,7 +265,7 @@ export default function TeamReg({ state: propState }) {
               {members.map((m, idx) => (
                 <div
                   key={idx}
-                  className="bg-[#2a2a2a] p-6 rounded-xl border border-gray-700 relative group"
+                  className="bg-[#2a2a2a] p-6 rounded-xl border border-[#aeaeae4d] relative group"
                 >
                   <button
                     type="button"
@@ -283,7 +283,7 @@ export default function TeamReg({ state: propState }) {
                           {field === "rollNumber" ? "Roll / Reg No." : field} <span className="text-red-500">*</span>
                         </label>
                         <input
-                          className="w-full bg-[#1a1a1a] border border-gray-600 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-indigo-500 transition-colors"
+                          className="w-full bg-[#1a1a1a] border border-[#aeaeae4d] rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-indigo-500 transition-colors"
                           value={m[field]}
                           onChange={(e) => updateMember(idx, field, e.target.value)}
                           placeholder={`Enter ${field}`}
@@ -297,7 +297,7 @@ export default function TeamReg({ state: propState }) {
 
             {/* Other Fields */}
             {state?.other && state.other.length > 0 && (
-              <div className="bg-[#2a2a2a] p-6 rounded-xl border border-gray-700">
+              <div className="bg-[#2a2a2a] p-6 rounded-xl border border-[#aeaeae4d]">
                 <h3 className="text-lg font-semibold text-white mb-4">Additional Details</h3>
                 <div className="space-y-4">
                   {state.other.map((i, idx) => (
@@ -310,7 +310,7 @@ export default function TeamReg({ state: propState }) {
                             setForm({ ...form, [i.key]: e.target.value })
                           }
                           placeholder={i.placeholder || ""}
-                          className="w-full bg-[#1a1a1a] border border-gray-600 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-indigo-500 transition-colors"
+                          className="w-full bg-[#1a1a1a] border border-[#aeaeae4d] rounded-lg px-4 py-2 text-white focus:outline-none focus:border-indigo-500 transition-colors"
                         />
                       )}
                     </div>
@@ -325,11 +325,11 @@ export default function TeamReg({ state: propState }) {
               </div>
             )}
 
-            <div className="flex flex-col sm:flex-row justify-end gap-4 pt-4 border-t border-gray-800">
+            <div className="flex flex-col sm:flex-row justify-end gap-4 pt-4 border-t border-[#aeaeae1e]">
               <button
                 type="button"
                 onClick={() => navigate(-1)}
-                className="px-6 py-3 rounded-xl border border-gray-600 text-gray-300 hover:bg-gray-800 transition-colors font-medium"
+                className="px-6 py-3 rounded-xl border border-[#aeaeae4d] text-gray-300 hover:bg-gray-800 transition-colors font-medium"
               >
                 Back
               </button>

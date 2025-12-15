@@ -78,9 +78,9 @@ function Payment() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black flex items-center justify-center px-4 py-10 text-[#ECE8E7] relative">
-      <div className="w-full max-w-3xl bg-[#020617]/90 border border-gray-800 rounded-3xl shadow-2xl p-6 sm:p-8">
-        <h1 className="text-2xl sm:text-3xl font-bold mb-2 text-center bg-gradient-to-r from-indigo-400 to-pink-400 bg-clip-text text-transparent">
+    <div className="min-h-screen bg-[#212121f6] flex items-center justify-center px-4 py-10 text-white font-poppins">
+      <div className="w-full max-w-3xl bg-[#212121] border border-[#aeaeae4d] rounded-3xl shadow-2xl p-6 sm:p-8">
+        <h1 className="text-2xl sm:text-3xl font-bold mb-2 text-center text-white">
           Hackathon Payment
         </h1>
         <p className="text-sm text-gray-400 text-center mb-6">
@@ -95,7 +95,7 @@ function Payment() {
         {data && (
           <div className="space-y-6">
             {/* Event + Team Info */}
-            <div className="bg-[#020617] border border-gray-800 rounded-2xl p-4 sm:p-5 space-y-2">
+            <div className="bg-[#212121] border border-[#aeaeae4d] rounded-2xl p-4 sm:p-5 space-y-2">
               <p className="text-sm text-gray-400">
                 <span className="font-medium text-gray-200">Event:</span>{" "}
                 {data.name}
@@ -111,13 +111,13 @@ function Payment() {
             </div>
 
             {/* Payment Methods */}
-            <div className="bg-[#020617] border border-gray-800 rounded-2xl p-4 sm:p-5">
+            <div className="bg-[#212121] border border-[#aeaeae4d] rounded-2xl p-4 sm:p-5">
               <h2 className="text-lg font-semibold mb-3">Available Payments</h2>
               <div className="space-y-5">
                 {data.payments.map((pay, idx) => (
                   <div
                     key={idx}
-                    className="border border-gray-800 rounded-xl p-4 flex flex-col md:flex-row gap-4 md:items-center"
+                    className="border border-[#aeaeae4d] rounded-xl p-4 flex flex-col md:flex-row gap-4 md:items-center"
                   >
                     <div className="flex-1 space-y-2">
                       <p className="text-sm text-gray-300">
@@ -136,7 +136,7 @@ function Payment() {
                       <img
                         src={pay.imgUrl}
                         alt="UPI QR"
-                        className="w-32 h-32 object-contain rounded-lg border border-gray-700 bg-black"
+                        className="w-32 h-32 object-contain rounded-lg border border-[#aeaeae4d] bg-black"
                       />
                     </div>
                   </div>
@@ -145,7 +145,7 @@ function Payment() {
             </div>
 
             {/* Your Payment Submission */}
-            <div className="bg-[#020617] border border-gray-800 rounded-2xl p-4 sm:p-5 space-y-4">
+            <div className="bg-[#212121] border border-[#aeaeae4d] rounded-2xl p-4 sm:p-5 space-y-4">
               <h2 className="text-lg font-semibold">Submit your payment</h2>
 
               <div className="space-y-3">
