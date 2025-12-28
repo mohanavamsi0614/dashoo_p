@@ -51,7 +51,6 @@ export default function TeamReg({ state: propState }) {
   const [form, setForm] = useState(() => getInitialState("form", {}));
   const [team, setTeam] = useState(null);
 
-  // Save to localStorage whenever relevant state changes
   useEffect(() => {
     const dataToSave = {
       teamName,
@@ -238,6 +237,23 @@ export default function TeamReg({ state: propState }) {
                     />
                   </div>
                 ))}
+                <div>
+                  {state.other.filter((item) => item.type == "EP").map((item) => (
+                    <div>
+                      <label className="block text-xs text-gray-400 mb-1 capitalize">
+                        {item.title} <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        className="w-full bg-[#1a1a1a] border border-gray-600 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-indigo-500 transition-colors"
+                        value={form[item.key]}
+                        onChange={(e) =>
+                          setForm({ ...form, [item.key]: e.target.value })
+                        }
+                        placeholder={`Enter ${item.title}`}
+                      />
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
 
@@ -290,6 +306,21 @@ export default function TeamReg({ state: propState }) {
                         />
                       </div>
                     ))}
+                    {state.other.filter((item) => item.type == "EP").map((item) => (
+                      <div>
+                        <label className="block text-xs text-gray-400 mb-1 capitalize">
+                          {item.title} <span className="text-red-500">*</span>
+                        </label>
+                        <input
+                          className="w-full bg-[#1a1a1a] border border-gray-600 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-indigo-500 transition-colors"
+                          value={form[item.key]}
+                          onChange={(e) =>
+                            setForm({ ...form, [item.key]: e.target.value })
+                          }
+                          placeholder={`Enter ${item.title}`}
+                        />
+                      </div>
+                    ))}
                   </div>
                 </div>
               ))}
@@ -304,6 +335,16 @@ export default function TeamReg({ state: propState }) {
                     <div key={idx}>
                       <label className="block text-sm font-medium text-gray-300 mb-2">{i.title}</label>
                       {i.type === 'text' && (
+                        <input
+                          value={form[i.key] || ""}
+                          onChange={(e) =>
+                            setForm({ ...form, [i.key]: e.target.value })
+                          }
+                          placeholder={i.placeholder || ""}
+                          className="w-full bg-[#1a1a1a] border border-gray-600 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-indigo-500 transition-colors"
+                        />
+                      )}
+                      {i.type === 'number' && (
                         <input
                           value={form[i.key] || ""}
                           onChange={(e) =>

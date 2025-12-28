@@ -22,11 +22,14 @@ function Event() {
           console.log(res.data);
           setState(res.data);
           setopen(res.data.status == "open")
+          socket.emit("join", res.data._id);
         })
         .catch((err) => console.error(err))
         .finally(() => setLoading(false));
     }
-    socket.emit("join", state._id);
+    if (state) {
+      socket.emit("join", state._id);
+    }
   }, [eventID, state]);
   socket.on("eventOpen", (data) => {
     setopen(true)

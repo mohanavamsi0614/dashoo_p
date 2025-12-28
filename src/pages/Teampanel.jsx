@@ -43,7 +43,7 @@ function Teampanel() {
                     setauth(true)
                     socket.emit("join", [res.data.team._id, eventId])
                     socket.emit("currAttd", { eventId, teamId: res.data.team._id })
-                    socket.emit("getUpdate", { teamId: team._id, eventId: eventId })
+                    socket.emit("getUpdate", { teamId: res.data.team._id, eventId: eventId })
                 })
                 .catch(err => {
                     console.log(err)
@@ -51,22 +51,16 @@ function Teampanel() {
         }
     }, [])
 
-    useEffect(() => {
-    }, [team])
-
 
     socket.on("currAttd", (id) => {
-        console.log(id)
         setCurrAttd(id)
     })
 
     socket.on("attd", (team) => {
-        console.log(team)
         setTeam(team)
     })
 
     socket.on("updateOn", (data) => {
-        console.log(data)
         setHtml(data)
     })
 
@@ -148,6 +142,7 @@ function Teampanel() {
                     />
                     <TeamLogo
                         team={team}
+                        eventId={eventId}
                         styles={customization.header}
                     />
                 </div>
