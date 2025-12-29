@@ -4,9 +4,9 @@ import StylePopup from './StylePopup';
 
 const UpdatesSection = ({ styles, html }) => {
     const [customStyle, setCustomStyle] = useState({
-        backgroundColor: styles?.backgroundColor || '#000000',
+        backgroundColor: styles?.backgroundColor || '#2a2a2a',
         color: styles?.color || '#ffffff',
-        font: styles?.font || 'inherit'
+        font: styles?.font || 'Poppins'
     });
 
     const handleStyleUpdate = (key, value) => {

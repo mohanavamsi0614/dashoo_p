@@ -4,9 +4,9 @@ import StylePopup from "./StylePopup";
 const TeamInfo = ({ team, styles }) => {
     // Independent local state, initialized with props but then independent
     const [customStyle, setCustomStyle] = useState({
-        backgroundColor: styles?.backgroundColor || "#000000",
+        backgroundColor: styles?.backgroundColor || "#2a2a2a",
         color: styles?.color || "#ffffff",
-        font: styles?.font || "Inter",
+        font: styles?.font || "Poppins",
     });
 
     const handleStyleUpdate = (key, value) => {
@@ -36,13 +36,13 @@ const TeamInfo = ({ team, styles }) => {
                 </h2>
 
                 <div className="flex items-center gap-4 p-4 rounded-xl bg-gray-900/30 border border-gray-800">
-                    <div className="w-12 h-12 rounded-full flex items-center justify-center bg-gradient-to-br from-blue-600 to-blue-700 text-white font-bold text-lg">
+                    <div className="w-12 h-12 rounded-full flex items-center justify-center bg-gradient-to-br from-blue-600 to-blue-700 text-white font-bold text-lg flex-shrink-0">
                         {team?.lead?.name?.charAt(0).toUpperCase()}
                     </div>
 
-                    <div>
-                        <p className="font-semibold text-lg">{team?.lead?.name}</p>
-                        <p className="text-sm opacity-80">{team?.lead?.email}</p>
+                    <div className="min-w-0">
+                        <p className="font-semibold text-lg truncate">{team?.lead?.name}</p>
+                        <p className="text-sm opacity-80 truncate">{team?.lead?.email}</p>
                     </div>
                 </div>
             </div>
@@ -59,13 +59,13 @@ const TeamInfo = ({ team, styles }) => {
                             key={index}
                             className="flex items-center gap-3 p-3 rounded-xl border border-transparent hover:border-gray-700 hover:bg-gray-900/40"
                         >
-                            <div className="w-10 h-10 rounded-full flex items-center justify-center bg-gray-800 text-gray-300">
+                            <div className="w-10 h-10 rounded-full flex items-center justify-center bg-gray-800 text-gray-300 flex-shrink-0">
                                 {member.name?.charAt(0).toUpperCase()}
                             </div>
 
-                            <div>
-                                <p className="font-medium">{member.name}</p>
-                                <p className="text-xs opacity-80">{member.email}</p>
+                            <div className="min-w-0">
+                                <p className="font-medium truncate">{member.name}</p>
+                                <p className="text-xs opacity-80 truncate">{member.email}</p>
                             </div>
                         </div>
                     ))}

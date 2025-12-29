@@ -5,7 +5,7 @@ import api from '@/lib/api';
 
 const TeamLogo = ({ team, styles, eventId }) => {
     const [customStyle, setCustomStyle] = useState({
-        backgroundColor: styles?.backgroundColor || '#000000',
+        backgroundColor: styles?.backgroundColor || '#2a2a2a',
         color: styles?.color || '#ffffff'
     });
     const [img, setImg] = useState("")
@@ -43,7 +43,7 @@ const TeamLogo = ({ team, styles, eventId }) => {
             }}
         >
             <StylePopup currentStyles={customStyle} onUpdate={handleStyleUpdate} />
-            <div className="w-48 h-48 bg-gray-900 rounded-full flex items-center justify-center text-blue-500 mb-6 shadow-2xl border-4 border-gray-800 relative overflow-hidden group">
+            <div className="w-32 h-32 md:w-48 md:h-48 bg-gray-900 rounded-full flex items-center justify-center text-blue-500 mb-6 shadow-2xl border-4 border-gray-800 relative overflow-hidden group">
                 {img || team?.logo ? (
                     <img src={img || team.logo} alt="Team Logo" className="w-full h-full object-cover rounded-full" />
                 ) : (

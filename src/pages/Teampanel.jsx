@@ -3,7 +3,7 @@ import api from "../lib/api";
 import Webcam from "react-webcam";
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router";
-import { Shield, LogIn, Loader2, X, Camera } from "lucide-react";
+import { Shield, LogIn, X, Camera } from "lucide-react";
 import socket from "@/lib/socket";
 
 // Components
@@ -27,10 +27,10 @@ function Teampanel() {
 
     // Customization State
     const [customization, setCustomization] = useState({
-        header: { backgroundColor: '#000000', color: '#ffffff', font: 'inherit' },
-        attendance: { backgroundColor: '#000000', color: '#ffffff', font: 'inherit' },
-        problem: { backgroundColor: '#000000', color: '#ffffff', font: 'inherit' },
-        updates: { backgroundColor: '#000000', color: '#ffffff', font: 'inherit' }
+        header: { backgroundColor: '#2a2a2a', color: '#ffffff', font: 'Poppins' },
+        attendance: { backgroundColor: '#2a2a2a', color: '#ffffff', font: 'Poppins' },
+        problem: { backgroundColor: '#2a2a2a', color: '#ffffff', font: 'Poppins' },
+        updates: { backgroundColor: '#2a2a2a', color: '#ffffff', font: 'Poppins' }
     });
 
     useEffect(() => {
@@ -88,8 +88,8 @@ function Teampanel() {
 
     if (!auth) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-gray-900 p-4">
-                <div className="bg-black p-8 rounded-2xl shadow-xl w-full max-w-md border border-gray-800">
+            <div className="min-h-screen flex items-center justify-center bg-[#212121] p-4">
+                <div className="bg-[#2a2a2a] p-8 rounded-2xl shadow-xl w-full max-w-md border border-gray-800">
                     <div className="text-center mb-8">
                         <div className="bg-blue-900/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 border border-blue-900/50">
                             <Shield className="w-8 h-8 text-blue-500" />
@@ -123,16 +123,12 @@ function Teampanel() {
     if (!team) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-black">
-                <div className="flex flex-col items-center gap-4">
-                    <Loader2 className="w-10 h-10 text-blue-600 animate-spin" />
-                    <p className="text-gray-400 font-medium">Loading team data...</p>
-                </div>
             </div>
         )
     }
 
     return (
-        <div className="min-h-screen bg-black p-6 md:p-12 pb-24">
+        <div className="min-h-screen bg-[#212121] p-6 md:p-12 pb-24">
             <div className="max-w-7xl mx-auto">
                 {/* Top Row: Team Info & Logo */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
@@ -210,7 +206,7 @@ function Model({ mem, setOpen, setTeam, attd, event }) {
 
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-black/80 backdrop-blur-sm z-50 p-4">
-            <div className="bg-gray-900 p-6 rounded-2xl shadow-2xl w-full max-w-md text-center border border-gray-800 animate-in fade-in zoom-in duration-200">
+            <div className="bg-[#2a2a2a] p-6 rounded-2xl shadow-2xl w-full max-w-md text-center border border-gray-800 animate-in fade-in zoom-in duration-200">
                 <div className="flex justify-between items-center mb-4">
                     <h1 className="text-xl font-bold text-white">Mark Attendance</h1>
                     <button onClick={() => setOpen(false)} className="text-gray-400 hover:text-gray-200 cursor-pointer">

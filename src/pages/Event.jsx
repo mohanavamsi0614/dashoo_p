@@ -42,7 +42,6 @@ function Event() {
   if (loading || !state) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-[#212121] text-white font-poppins">
-        <p>Loading event details...</p>
       </div>
     );
   }
@@ -165,7 +164,7 @@ function Event() {
           <div className="space-y-8">
 
             {/* Action Card */}
-            <div className="bg-[#2a2a2a] p-6 rounded-2xl border border-gray-700 shadow-xl sticky top-24">
+            <div className="bg-[#2a2a2a] p-6 rounded-2xl border border-gray-700 shadow-xl">
               <div className="mb-6">
                 <p className="text-gray-400 text-sm mb-1">Registration Fee</p>
                 <p className="text-3xl font-bold text-white">

@@ -78,9 +78,9 @@ function Payment() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black flex items-center justify-center px-4 py-10 text-[#ECE8E7] relative">
-      <div className="w-full max-w-3xl bg-[#020617]/90 border border-gray-800 rounded-3xl shadow-2xl p-6 sm:p-8">
-        <h1 className="text-2xl sm:text-3xl font-bold mb-2 text-center bg-gradient-to-r from-indigo-400 to-pink-400 bg-clip-text text-transparent">
+    <div className="min-h-screen font-poppins bg-[#212121] flex items-center justify-center px-4 py-10 text-[#ECE8E7] relative">
+      <div className="w-full max-w-3xl bg-[#2a2a2a] border border-gray-800 rounded-3xl shadow-2xl p-6 sm:p-8">
+        <h1 className="text-2xl sm:text-3xl font-bold mb-2 text-center ">
           Hackathon Payment
         </h1>
         <p className="text-sm text-gray-400 text-center mb-6">
@@ -88,14 +88,12 @@ function Payment() {
           details and QR provided.
         </p>
 
-        {!data && (
-          <p className="text-center text-gray-400">Loading payment details...</p>
-        )}
+
 
         {data && (
           <div className="space-y-6">
             {/* Event + Team Info */}
-            <div className="bg-[#020617] border border-gray-800 rounded-2xl p-4 sm:p-5 space-y-2">
+            <div className="bg-[#1a1a1a] border border-gray-800 rounded-2xl p-4 sm:p-5 space-y-2">
               <p className="text-sm text-gray-400">
                 <span className="font-medium text-gray-200">Event:</span>{" "}
                 {data.name}
@@ -111,7 +109,7 @@ function Payment() {
             </div>
 
             {/* Payment Methods */}
-            <div className="bg-[#020617] border border-gray-800 rounded-2xl p-4 sm:p-5">
+            <div className="bg-[#1a1a1a] border border-gray-800 rounded-2xl p-4 sm:p-5">
               <h2 className="text-lg font-semibold mb-3">Available Payments</h2>
               <div className="space-y-5">
                 {data.payments.map((pay, idx) => (
@@ -145,7 +143,7 @@ function Payment() {
             </div>
 
             {/* Your Payment Submission */}
-            <div className="bg-[#020617] border border-gray-800 rounded-2xl p-4 sm:p-5 space-y-4">
+            <div className="bg-[#1a1a1a] border border-gray-800 rounded-2xl p-4 sm:p-5 space-y-4">
               <h2 className="text-lg font-semibold">Submit your payment</h2>
 
               <div className="space-y-3">
@@ -155,7 +153,7 @@ function Payment() {
                   </label>
                   <input
                     type="text"
-                    className="w-full rounded-lg border border-gray-700 bg-[#020617] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#E16254]"
+                    className="w-full rounded-lg border border-gray-700 bg-[#2a2a2a] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#E16254]"
                     placeholder="Enter transaction ID / UPI reference"
                     value={payment.upi}
                     onChange={(e) =>
@@ -211,7 +209,7 @@ function Payment() {
 
       {showSuccessPopup && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
-          <div className="bg-[#0f172a] border border-gray-700 rounded-2xl p-6 sm:p-8 max-w-md w-full shadow-2xl transform transition-all scale-100 opacity-100">
+          <div className="bg-[#2a2a2a] border border-gray-700 rounded-2xl p-6 sm:p-8 max-w-md w-full shadow-2xl transform transition-all scale-100 opacity-100">
             <div className="flex flex-col items-center text-center space-y-4">
               <div className="w-16 h-16 bg-green-500/10 rounded-full flex items-center justify-center mb-2">
                 <svg

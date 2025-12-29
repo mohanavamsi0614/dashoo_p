@@ -50,8 +50,8 @@ function Home() {
             </p>
           </div>
         </div>
-        <div className="bg-[#ffffff] font-poppins mt-20 md:mt-40 lg:mt-100 text-black p-5 md:p-10 flex justify-center items-center flex-col gap-10 hidden md:block">
-          <div className="pt-10 md:pt-20 lg:pt-30 px-5 md:px-20 lg:px-30 mb-10 md:mb-20 lg:mb-35 text-center font-semibold text-2xl md:text-3xl lg:text-4xl">
+        <div className="bg-[#ffffff] font-poppins mt-20 md:mt-40 lg:mt-96 text-black p-5 md:p-10 flex justify-center items-center flex-col gap-10">
+          <div className="pt-10 md:pt-20 lg:pt-32 px-5 md:px-20 lg:px-32 mb-10 md:mb-20 lg:mb-32 text-center font-semibold text-2xl md:text-3xl lg:text-4xl">
             <p>
               <span className="font-nerko text-3xl md:text-4xl lg:text-5xl font-medium">
                 Dasho
@@ -65,11 +65,11 @@ function Home() {
         </div>
         <h1
           id="upcoming-events"
-          className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-nerko mt-10 md:mt-20 lg:mt-70 font-bold text-center text-white mb-6 md:mb-8 px-4"
+          className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-nerko mt-10 md:mt-20 lg:mt-52 font-bold text-center text-white mb-6 md:mb-8 px-4"
         >
           Upcoming Events
         </h1>
-        <div className="max-w-7xl mx-auto px-4 mb-20 md:mb-30 lg:mb-50 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-4 mb-20 md:mb-32 lg:mb-48 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
             {events.map((event) => (
               <div
