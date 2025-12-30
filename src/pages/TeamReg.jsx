@@ -245,9 +245,9 @@ export default function TeamReg({ state: propState }) {
                       </label>
                       <input
                         className="w-full bg-[#1a1a1a] border border-gray-600 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-indigo-500 transition-colors"
-                        value={lead[item.key]}
+                        value={lead[item.title]}
                         onChange={(e) =>
-                          setLead({ ...lead, [item.key]: e.target.value })
+                          setLead({ ...lead, [item.title]: e.target.value })
                         }
                         placeholder={`Enter ${item.title}`}
                       />
@@ -313,9 +313,9 @@ export default function TeamReg({ state: propState }) {
                         </label>
                         <input
                           className="w-full bg-[#1a1a1a] border border-gray-600 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-indigo-500 transition-colors"
-                          value={m[item.key]}
+                          value={m[item.title]}
                           onChange={(e) =>
-                            updateMember(idx, item.key, e.target.value)
+                            updateMember(idx, item.title, e.target.value)
                           }
                           placeholder={`Enter ${item.title}`}
                         />
@@ -327,7 +327,7 @@ export default function TeamReg({ state: propState }) {
             </div>
 
             {/* Other Fields */}
-            {state?.other && state.other.length > 0 && (
+            {state?.other.filter((item) => item.type == "AT").length > 0 && (
               <div className="bg-[#2a2a2a] p-6 rounded-xl border border-gray-700">
                 <h3 className="text-lg font-semibold text-white mb-4">Additional Details</h3>
                 <div className="space-y-4">
