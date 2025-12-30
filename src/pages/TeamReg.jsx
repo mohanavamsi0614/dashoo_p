@@ -52,12 +52,6 @@ export default function TeamReg({ state: propState }) {
   const [team, setTeam] = useState(null);
 
   useEffect(() => {
-    const dataToSave = {
-      teamName,
-      lead,
-      members,
-      form
-    };
     const othersec = state.other.filter((item) => item.type === "EP")
     setLead((prev) => {
       return {
@@ -79,6 +73,15 @@ export default function TeamReg({ state: propState }) {
         }
       })
     })
+  }, [])
+  useEffect(() => {
+    const dataToSave = {
+      teamName,
+      lead,
+      members,
+      form
+    };
+
     localStorage.setItem(STORAGE_KEY, JSON.stringify(dataToSave));
     socket.emit("join", state._id);
 
@@ -258,7 +261,7 @@ export default function TeamReg({ state: propState }) {
                     />
                   </div>
                 ))}
-                <div>
+                {/* <div>
                   {state.other.filter((item) => item.type == "EP").map((item) => (
                     <div>
                       <label className="block text-xs text-gray-400 mb-1 capitalize">
@@ -274,7 +277,7 @@ export default function TeamReg({ state: propState }) {
                       />
                     </div>
                   ))}
-                </div>
+                </div> */}
               </div>
             </div>
 
