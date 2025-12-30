@@ -58,6 +58,27 @@ export default function TeamReg({ state: propState }) {
       members,
       form
     };
+    const othersec = state.other.filter((item) => item.type === "EP")
+    setLead((prev) => {
+      return {
+        ...prev,
+        ...othersec.reduce((acc, item) => {
+          acc[item.title] = "";
+          return acc;
+        }, {})
+      }
+    })
+    setMembers((prev) => {
+      return prev.map((member) => {
+        return {
+          ...member,
+          ...othersec.reduce((acc, item) => {
+            acc[item.title] = "";
+            return acc;
+          }, {})
+        }
+      })
+    })
     localStorage.setItem(STORAGE_KEY, JSON.stringify(dataToSave));
     socket.emit("join", state._id);
 
@@ -306,7 +327,7 @@ export default function TeamReg({ state: propState }) {
                         />
                       </div>
                     ))}
-                    {state.other.filter((item) => item.type == "EP").map((item) => (
+                    {/* {state.other.filter((item) => item.type == "EP").map((item) => (
                       <div>
                         <label className="block text-xs text-gray-400 mb-1 capitalize">
                           {item.title} <span className="text-red-500">*</span>
@@ -320,7 +341,7 @@ export default function TeamReg({ state: propState }) {
                           placeholder={`Enter ${item.title}`}
                         />
                       </div>
-                    ))}
+                    ))} */}
                   </div>
                 </div>
               ))}
