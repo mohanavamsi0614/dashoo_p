@@ -245,9 +245,9 @@ export default function TeamReg({ state: propState }) {
                       </label>
                       <input
                         className="w-full bg-[#1a1a1a] border border-gray-600 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-indigo-500 transition-colors"
-                        value={form[item.key]}
+                        value={lead[item.key]}
                         onChange={(e) =>
-                          setForm({ ...form, [item.key]: e.target.value })
+                          setLead({ ...lead, [item.key]: e.target.value })
                         }
                         placeholder={`Enter ${item.title}`}
                       />
@@ -313,9 +313,9 @@ export default function TeamReg({ state: propState }) {
                         </label>
                         <input
                           className="w-full bg-[#1a1a1a] border border-gray-600 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-indigo-500 transition-colors"
-                          value={form[item.key]}
+                          value={m[item.key]}
                           onChange={(e) =>
-                            setForm({ ...form, [item.key]: e.target.value })
+                            updateMember(idx, item.key, e.target.value)
                           }
                           placeholder={`Enter ${item.title}`}
                         />
@@ -331,7 +331,7 @@ export default function TeamReg({ state: propState }) {
               <div className="bg-[#2a2a2a] p-6 rounded-xl border border-gray-700">
                 <h3 className="text-lg font-semibold text-white mb-4">Additional Details</h3>
                 <div className="space-y-4">
-                  {state.other.map((i, idx) => (
+                  {state.other.filter((item) => item.type == "AT").map((i, idx) => (
                     <div key={idx}>
                       <label className="block text-sm font-medium text-gray-300 mb-2">{i.title}</label>
                       {i.type === 'text' && (

@@ -30,6 +30,7 @@ function Event() {
     if (state) {
       socket.emit("join", state._id);
     }
+    window.scrollTo(0, 0);
   }, [eventID, state]);
   socket.on("eventOpen", (data) => {
     setopen(true)
