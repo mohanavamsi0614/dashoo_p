@@ -10,6 +10,7 @@ import { MultiStepLoader } from "./components/ui/multi-step-loader";
 import Payment from "./pages/Payment";
 import Teampanel from "./pages/Teampanel";
 import socket from "./lib/socket";
+import { Analytics } from "@vercel/analytics/react";
 
 // Reusable Protected Route Wrapper
 function ProtectedRoute({ children }) {

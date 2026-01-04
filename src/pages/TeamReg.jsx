@@ -4,6 +4,7 @@ import api from "../lib/api";
 import { useLocation, useParams, useNavigate } from "react-router-dom";
 import { BackgroundBeams } from "../components/ui/background-beams";
 import socket from "@/lib/socket";
+import RegistrationSuccessPopup from "../components/RegistrationSuccessPopup";
 
 export default function TeamReg({ state: propState }) {
   const { name: eventParam } = useParams();
@@ -50,6 +51,11 @@ export default function TeamReg({ state: propState }) {
   const [success, setSuccess] = useState(false);
   const [form, setForm] = useState(() => getInitialState("form", {}));
   const [team, setTeam] = useState(null);
+  const [successData, setSuccessData] = useState(null);
+
+  const handleClosePopup = () => {
+    navigate("/profile");
+  };
 
   useEffect(() => {
     const othersec = state.other.filter((item) => item.type === "EP")
@@ -173,6 +179,7 @@ export default function TeamReg({ state: propState }) {
       );
       if (res?.data) {
         console.log(res.data);
+        console.log(res.data.team);
         setTeam(res.data.team);
         localStorage.setItem(
           "lastRegistration",
@@ -184,13 +191,10 @@ export default function TeamReg({ state: propState }) {
         );
         localStorage.removeItem(STORAGE_KEY);
         socket.emit("regCheck", { eventId: state._id })
+
+        setSuccessData(res.data);
       }
       setSuccess(true);
-      if (isPaymentRequired) {
-        navigate("/payment/" + state._id + "/" + res.data.team);
-      } else {
-        setTimeout(() => navigate("/profile"), 1500);
-      }
     } catch (err) {
       console.error(err);
       setError(
@@ -223,7 +227,13 @@ export default function TeamReg({ state: propState }) {
           </div>
         )}
 
-        {success ? (
+        <RegistrationSuccessPopup
+          isOpen={!!successData}
+          onClose={handleClosePopup}
+          data={successData}
+        />
+
+        {false ? (
           <div className="border border-green-500 bg-green-900/20 text-green-400 p-4 rounded-xl text-center text-lg font-medium">
             ✅ Team registered successfully! Redirecting...
           </div>

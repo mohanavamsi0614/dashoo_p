@@ -4,6 +4,7 @@ import api from "../lib/api";
 import { useLocation, useParams, useNavigate } from "react-router-dom";
 import TeamReg from "./TeamReg";
 import { BackgroundBeams } from "../components/ui/background-beams";
+import RegistrationSuccessPopup from "../components/RegistrationSuccessPopup";
 
 export default function Reg() {
   const { eventID } = useParams();
@@ -36,6 +37,11 @@ export default function Reg() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
+  const [successData, setSuccessData] = useState(null);
+
+  const handleClosePopup = () => {
+    navigate("/profile");
+  };
 
   const eventTitle = state?.eventTitle || eventParam || "";
   const eventType =
@@ -81,9 +87,13 @@ export default function Reg() {
         );
         console.log("Registration response:", res.data);
         localStorage.setItem("user", JSON.stringify(res.data.user));
+
+        // Open the success popup with backend response data
+        setSuccessData(res.data);
       }
       setSuccess(true);
-      setTimeout(() => navigate("/profile"), 1500);
+      // Remove redirect to let popup handle it
+      // setTimeout(() => navigate("/profile"), 1500);
     } catch (err) {
       console.error(err);
       setError(
@@ -105,7 +115,13 @@ export default function Reg() {
           </span>
         </h1>
 
-        {success ? (
+        <RegistrationSuccessPopup
+          isOpen={!!successData}
+          onClose={handleClosePopup}
+          data={successData}
+        />
+
+        {false ? (
           <div className="p-3 sm:p-4 text-sm sm:text-base text-green-700 bg-transparent border border-green-700 rounded-lg text-center">
             ✅ Registration successful — redirecting to your profile...
           </div>
