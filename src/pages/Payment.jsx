@@ -106,7 +106,10 @@ function Payment() {
               </p>
               <p className="text-sm text-gray-400">
                 <span className="font-medium text-gray-200">Amount:</span>{" "}
-                ₹{data.cost}
+                ₹{data.cost * ((data.team.members?.length || 0) + 1)}
+                <span className="text-xs ml-1 text-gray-500">
+                  (₹{data.cost} × {(data.team.members?.length || 0) + 1})
+                </span>
               </p>
             </div>
 
@@ -120,6 +123,38 @@ function Payment() {
                     className="border border-gray-800 rounded-xl p-4 flex flex-col md:flex-row gap-4 md:items-center"
                   >
                     <div className="flex-1 space-y-2">
+                      {pay.bankName && (
+                        <p className="text-sm text-gray-300">
+                          <span className="font-medium text-gray-100">
+                            Bank Name:
+                          </span>{" "}
+                          {pay.bankName}
+                        </p>
+                      )}
+                      {pay.accountNumber && (
+                        <p className="text-sm text-gray-300">
+                          <span className="font-medium text-gray-100">
+                            Account Number:
+                          </span>{" "}
+                          {pay.accountNumber}
+                        </p>
+                      )}
+                      {pay.ifscCode && (
+                        <p className="text-sm text-gray-300">
+                          <span className="font-medium text-gray-100">
+                            IFSC Code:
+                          </span>{" "}
+                          {pay.ifscCode}
+                        </p>
+                      )}
+                      {pay.accountName && (
+                        <p className="text-sm text-gray-300">
+                          <span className="font-medium text-gray-100">
+                            Account Name:
+                          </span>{" "}
+                          {pay.accountName}
+                        </p>
+                      )}
                       <p className="text-sm text-gray-300">
                         <span className="font-medium text-gray-100">
                           UPI ID:
@@ -169,7 +204,7 @@ function Payment() {
 
                 <div className="space-y-2">
                   <label className="block text-sm text-gray-300">
-                    Upload payment screenshot (optional but recommended)
+                    Upload payment screenshot
                   </label>
                   <div className="flex flex-col sm:flex-row gap-3 sm:items-center">
                     <button
