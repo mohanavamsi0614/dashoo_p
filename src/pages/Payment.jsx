@@ -73,7 +73,7 @@ function Payment() {
       setShowSuccessPopup(true);
     } catch (err) {
       console.error(err);
-      alert("Payment submission failed");
+      alert("Payment submission failed", err);
     }
   };
 
