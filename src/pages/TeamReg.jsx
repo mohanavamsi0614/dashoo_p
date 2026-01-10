@@ -202,9 +202,9 @@ export default function TeamReg({ state: propState }) {
         );
         localStorage.removeItem(STORAGE_KEY);
         socket.emit("regCheck", { eventId: state._id })
-
-        setSuccessData(res.data);
+        console.log(`payment/${state._id}/${res.data.team}`)
         navigate(`/payment/${state._id}/${res.data.team}`)
+        setSuccessData(res.data);
       }
       setSuccess(true);
     } catch (err) {

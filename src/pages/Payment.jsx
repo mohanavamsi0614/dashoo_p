@@ -168,9 +168,9 @@ function Payment() {
 
                     <div className="flex flex-col items-center gap-2">
                       {pay.upi ?
-                        <a href={pay.imgUrl} download={pay.upi}>
+                        <div>
                           <img src={pay.imgUrl} />
-                        </a>
+                        </div>
                         :
                         <img
                           src={pay.imgUrl}
@@ -249,45 +249,47 @@ function Payment() {
         )}
       </div>
 
-      {showSuccessPopup && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
-          <div className="bg-[#0f172a] border border-gray-700 rounded-2xl p-6 sm:p-8 max-w-md w-full shadow-2xl transform transition-all scale-100 opacity-100">
-            <div className="flex flex-col items-center text-center space-y-4">
-              <div className="w-16 h-16 bg-green-500/10 rounded-full flex items-center justify-center mb-2">
-                <svg
-                  className="w-8 h-8 text-green-500"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
+      {
+        showSuccessPopup && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+            <div className="bg-[#0f172a] border border-gray-700 rounded-2xl p-6 sm:p-8 max-w-md w-full shadow-2xl transform transition-all scale-100 opacity-100">
+              <div className="flex flex-col items-center text-center space-y-4">
+                <div className="w-16 h-16 bg-green-500/10 rounded-full flex items-center justify-center mb-2">
+                  <svg
+                    className="w-8 h-8 text-green-500"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="3"
+                      d="M5 13l4 4L19 7"
+                    ></path>
+                  </svg>
+                </div>
+
+                <h3 className="text-2xl font-bold text-white">
+                  Thanks for verification!
+                </h3>
+
+                <p className="text-gray-300 leading-relaxed">
+                  The team is verifying the payment. After verifying we will send you the mail.
+                </p>
+
+                <button
+                  onClick={() => navigate("/")}
+                  className="mt-4 w-full py-3 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-semibold hover:from-indigo-600 hover:to-purple-600 shadow-lg transform active:scale-95 transition-all duration-200"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="3"
-                    d="M5 13l4 4L19 7"
-                  ></path>
-                </svg>
+                  Back to Home
+                </button>
               </div>
-
-              <h3 className="text-2xl font-bold text-white">
-                Thanks for verification!
-              </h3>
-
-              <p className="text-gray-300 leading-relaxed">
-                The team is verifying the payment. After verifying we will send you the mail.
-              </p>
-
-              <button
-                onClick={() => navigate("/")}
-                className="mt-4 w-full py-3 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-semibold hover:from-indigo-600 hover:to-purple-600 shadow-lg transform active:scale-95 transition-all duration-200"
-              >
-                Back to Home
-              </button>
             </div>
           </div>
-        </div>
-      )}
-    </div>
+        )
+      }
+    </div >
   );
 }
 
