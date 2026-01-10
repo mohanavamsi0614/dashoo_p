@@ -117,7 +117,7 @@ function Payment() {
             <div className="bg-[#020617] border border-gray-800 rounded-2xl p-4 sm:p-5">
               <h2 className="text-lg font-semibold mb-3">Available Payments</h2>
               <div className="space-y-5">
-                {data.payments.map((pay, idx) => (
+                {data.payments.reverse().map((pay, idx) => (
                   <div
                     key={idx}
                     className="border border-gray-800 rounded-xl p-4 flex flex-col md:flex-row gap-4 md:items-center"
@@ -168,11 +168,17 @@ function Payment() {
                     </div>
 
                     <div className="flex flex-col items-center gap-2">
-                      <img
-                        src={pay.imgUrl}
-                        alt="UPI QR"
-                        className="w-32 h-32 object-contain rounded-lg border border-gray-700 bg-black"
-                      />
+                      {pay.upi ?
+                        <a href={pay.imgUrl} download={pay.upi}>
+                          <img src={pay.imgUrl} />
+                        </a>
+                        :
+                        <img
+                          src={pay.imgUrl}
+                          alt="UPI QR"
+                          className="w-32 h-32 object-contain rounded-lg border border-gray-700 bg-black"
+                        />
+                      }
                     </div>
                   </div>
                 ))}

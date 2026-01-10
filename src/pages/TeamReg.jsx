@@ -19,16 +19,27 @@ export default function TeamReg({ state: propState }) {
   const [open, setopen] = useState(state?.status == "open")
   const STORAGE_KEY = `team_reg_${eventId}`;
 
-  const emptyMember = () => ({
-    name: "",
-    college: "",
-    year: "",
-    stream: "",
-    branch: "",
-    rollNumber: "",
-    email: "",
-    phone: "",
-  });
+  const emptyMember = () => {
+    const othersec = state?.other?.filter((item) => item.type === "EP") || [];
+    const extras = othersec.reduce((acc, item) => {
+      acc[item.title] = "";
+      return acc;
+    }, {});
+
+    return {
+      name: "",
+      college: "",
+      year: "",
+      stream: "",
+      branch: "",
+      rollNumber: "",
+      email: "",
+      phone: "",
+      ...extras,
+    };
+  };
+
+  const STANDARD_FIELDS = ["name", "email", "phone", "rollNumber", "college", "year", "stream", "branch"];
 
   const getInitialState = (key, defaultVal) => {
     try {
@@ -58,28 +69,28 @@ export default function TeamReg({ state: propState }) {
   };
 
   useEffect(() => {
-    const othersec = state.other.filter((item) => item.type === "EP")
+    const othersec = state.other.filter((item) => item.type === "EP");
     setLead((prev) => {
-      return {
-        ...prev,
-        ...othersec.reduce((acc, item) => {
-          acc[item.title] = "";
-          return acc;
-        }, {})
-      }
-    })
+      const updates = {};
+      othersec.forEach((item) => {
+        if (!(item.title in prev)) {
+          updates[item.title] = "";
+        }
+      });
+      return { ...prev, ...updates };
+    });
     setMembers((prev) => {
       return prev.map((member) => {
-        return {
-          ...member,
-          ...othersec.reduce((acc, item) => {
-            acc[item.title] = "";
-            return acc;
-          }, {})
-        }
-      })
-    })
-  }, [])
+        const updates = {};
+        othersec.forEach((item) => {
+          if (!(item.title in member)) {
+            updates[item.title] = "";
+          }
+        });
+        return { ...member, ...updates };
+      });
+    });
+  }, []);
   useEffect(() => {
     const dataToSave = {
       teamName,
@@ -193,6 +204,7 @@ export default function TeamReg({ state: propState }) {
         socket.emit("regCheck", { eventId: state._id })
 
         setSuccessData(res.data);
+        navigate(`/payment/${state._id}/${res.data.team._id}`)
       }
       setSuccess(true);
     } catch (err) {
@@ -256,8 +268,8 @@ export default function TeamReg({ state: propState }) {
                 👑 Team Lead <span className="text-xs text-gray-400 font-normal">(Required)</span>
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {Object.keys(lead).map((field, idx) => (
-                  <div key={idx}>
+                {STANDARD_FIELDS.map((field) => (
+                  <div key={field}>
                     <label className="block text-xs text-gray-400 mb-1 capitalize">
                       {field === "rollNumber" ? "Roll / Reg No." : field} <span className="text-red-500">*</span>
                     </label>
@@ -271,23 +283,21 @@ export default function TeamReg({ state: propState }) {
                     />
                   </div>
                 ))}
-                {/* <div>
-                  {state.other.filter((item) => item.type == "EP").map((item) => (
-                    <div>
-                      <label className="block text-xs text-gray-400 mb-1 capitalize">
-                        {item.title} <span className="text-red-500">*</span>
-                      </label>
-                      <input
-                        className="w-full bg-[#1a1a1a] border border-gray-600 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-indigo-500 transition-colors"
-                        value={lead[item.title]}
-                        onChange={(e) =>
-                          setLead({ ...lead, [item.title]: e.target.value })
-                        }
-                        placeholder={`Enter ${item.title}`}
-                      />
-                    </div>
-                  ))}
-                </div> */}
+                {state.other?.filter((item) => item.type === "EP").map((item) => (
+                  <div key={item.title}>
+                    <label className="block text-xs text-gray-400 mb-1 capitalize">
+                      {item.title} <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      className="w-full bg-[#1a1a1a] border border-gray-600 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-indigo-500 transition-colors"
+                      value={lead[item.title] || ""}
+                      onChange={(e) =>
+                        setLead({ ...lead, [item.title]: e.target.value })
+                      }
+                      placeholder={`Enter ${item.title}`}
+                    />
+                  </div>
+                ))}
               </div>
             </div>
 
@@ -327,8 +337,8 @@ export default function TeamReg({ state: propState }) {
                   </button>
                   <h4 className="text-md font-medium text-white mb-4">Member {idx + 2}</h4>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    {Object.keys(m).map((field, i) => (
-                      <div key={i}>
+                    {STANDARD_FIELDS.map((field) => (
+                      <div key={field}>
                         <label className="block text-xs text-gray-400 mb-1 capitalize">
                           {field === "rollNumber" ? "Roll / Reg No." : field} <span className="text-red-500">*</span>
                         </label>
@@ -340,21 +350,21 @@ export default function TeamReg({ state: propState }) {
                         />
                       </div>
                     ))}
-                    {/* {state.other.filter((item) => item.type == "EP").map((item) => (
-                      <div>
+                    {state.other?.filter((item) => item.type === "EP").map((item) => (
+                      <div key={item.title}>
                         <label className="block text-xs text-gray-400 mb-1 capitalize">
                           {item.title} <span className="text-red-500">*</span>
                         </label>
                         <input
                           className="w-full bg-[#1a1a1a] border border-gray-600 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-indigo-500 transition-colors"
-                          value={m[item.title]}
+                          value={m[item.title] || ""}
                           onChange={(e) =>
                             updateMember(idx, item.title, e.target.value)
                           }
                           placeholder={`Enter ${item.title}`}
                         />
                       </div>
-                    ))} */}
+                    ))}
                   </div>
                 </div>
               ))}
