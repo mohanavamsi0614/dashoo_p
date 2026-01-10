@@ -204,7 +204,7 @@ export default function TeamReg({ state: propState }) {
         socket.emit("regCheck", { eventId: state._id })
 
         setSuccessData(res.data);
-        navigate(`/payment/${state._id}/${res.data.team._id}`)
+        navigate(`/payment/${state._id}/${res.data.team}`)
       }
       setSuccess(true);
     } catch (err) {

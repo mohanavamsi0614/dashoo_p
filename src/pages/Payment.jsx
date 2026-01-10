@@ -87,7 +87,6 @@ function Payment() {
           Review the event details and complete your payment using the UPI
           details and QR provided.
         </p>
-
         {!data && (
           <p className="text-center text-gray-400">Loading payment details...</p>
         )}
