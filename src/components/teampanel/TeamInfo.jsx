@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import StylePopup from "./StylePopup";
 
-const TeamInfo = ({ team, styles }) => {
-    // Independent local state, initialized with props but then independent
+const TeamInfo = ({ team, styles, eventId }) => {
     const [customStyle, setCustomStyle] = useState({
         backgroundColor: styles?.backgroundColor || "#000000",
         color: styles?.color || "#ffffff",
@@ -10,6 +9,7 @@ const TeamInfo = ({ team, styles }) => {
     });
 
     const handleStyleUpdate = (key, value) => {
+        // localStorage.setItem(`${eventId}-styles`, JSON.stringify({ ...styles, teamInfo: { ...styles.teamInfo, [key]: value } }));
         setCustomStyle((prev) => ({ ...prev, [key]: value }));
     };
 
@@ -20,6 +20,11 @@ const TeamInfo = ({ team, styles }) => {
                 backgroundColor: customStyle.backgroundColor,
                 color: customStyle.color,
                 fontFamily: customStyle.font,
+                backgroundImage: customStyle.backgroundImage ? `url(${customStyle.backgroundImage})` : 'none',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundBlendMode: "difference",
+
             }}
         >
             <StylePopup currentStyles={customStyle} onUpdate={handleStyleUpdate} />

@@ -27,10 +27,10 @@ function Teampanel() {
 
     // Customization State
     const [customization, setCustomization] = useState({
-        header: { backgroundColor: '#000000', color: '#ffffff', font: 'inherit' },
-        attendance: { backgroundColor: '#000000', color: '#ffffff', font: 'inherit' },
-        problem: { backgroundColor: '#000000', color: '#ffffff', font: 'inherit' },
-        updates: { backgroundColor: '#000000', color: '#ffffff', font: 'inherit' }
+        header: { backgroundColor: '#000000', color: '#ffffff', font: 'inherit', backgroundImage: 'none' },
+        attendance: { backgroundColor: '#000000', color: '#ffffff', font: 'inherit', backgroundImage: 'none' },
+        problem: { backgroundColor: '#000000', color: '#ffffff', font: 'inherit', backgroundImage: 'none' },
+        updates: { backgroundColor: '#000000', color: '#ffffff', font: 'inherit', backgroundImage: 'none' }
     });
 
     useEffect(() => {
@@ -48,6 +48,10 @@ function Teampanel() {
                 .catch(err => {
                     console.log(err)
                 })
+        }
+        const customization = localStorage.getItem(`${eventId}-styles`)
+        if (customization) {
+            setCustomization(JSON.parse(customization))
         }
     }, [])
 
@@ -139,6 +143,7 @@ function Teampanel() {
                     <TeamInfo
                         team={team}
                         styles={customization.header}
+                        eventId={eventId}
                     />
                     <TeamLogo
                         team={team}
@@ -155,13 +160,14 @@ function Teampanel() {
                         currAttd={currAttd}
                         onMarkAttendance={handleMarkAttendance}
                         styles={customization.attendance}
+                        eventId={eventId}
                     />
                 </div>
 
                 {/* Bottom Rows: Problem Statement & Updates */}
                 <div className="space-y-8">
-                    <ProblemStatementSection styles={customization.problem} />
-                    <UpdatesSection styles={customization.updates} team={team} event={eventId} html={HTML} />
+                    <ProblemStatementSection styles={customization.problem} eventId={eventId} />
+                    <UpdatesSection styles={customization.updates} team={team} eventId={eventId} html={HTML} />
                 </div>
             </div>
 

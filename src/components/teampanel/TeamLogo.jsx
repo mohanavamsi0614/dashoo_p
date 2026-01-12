@@ -11,6 +11,7 @@ const TeamLogo = ({ team, styles, eventId }) => {
     const [img, setImg] = useState("")
     const wid = useRef()
     const handleStyleUpdate = (key, value) => {
+        // localStorage.setItem(`${eventId}-styles`, JSON.stringify({ ...style, logo: { ...styles.logo, [key]: value } }));
         setCustomStyle(prev => ({ ...prev, [key]: value }));
     };
     useEffect(() => {
@@ -39,7 +40,11 @@ const TeamLogo = ({ team, styles, eventId }) => {
             className="flex flex-col items-center justify-center p-8 rounded-2xl border border-gray-800 h-full transition-all relative group"
             style={{
                 backgroundColor: customStyle.backgroundColor,
-                color: customStyle.color
+                color: customStyle.color,
+                backgroundImage: customStyle.backgroundImage ? `url(${customStyle.backgroundImage})` : 'none',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+
             }}
         >
             <StylePopup currentStyles={customStyle} onUpdate={handleStyleUpdate} />

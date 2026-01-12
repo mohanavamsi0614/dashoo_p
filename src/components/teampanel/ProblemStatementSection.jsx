@@ -2,14 +2,17 @@ import React, { useState } from 'react';
 import { FileText } from 'lucide-react';
 import StylePopup from './StylePopup';
 
-const ProblemStatementSection = ({ styles }) => {
+const ProblemStatementSection = ({ styles, eventId }) => {
     const [customStyle, setCustomStyle] = useState({
         backgroundColor: styles?.backgroundColor || '#000000',
         color: styles?.color || '#ffffff',
-        font: styles?.font || 'inherit'
+        font: styles?.font || 'inherit',
+        backgroundImage: styles?.backgroundImage || 'none',
     });
 
     const handleStyleUpdate = (key, value) => {
+        // localStorage.setItem(`${eventId}-styles`, JSON.stringify({ ...styles, problemStatement: { ...styles.problemStatement, [key]: value } }));
+
         setCustomStyle(prev => ({ ...prev, [key]: value }));
     };
 
@@ -19,7 +22,11 @@ const ProblemStatementSection = ({ styles }) => {
             style={{
                 backgroundColor: customStyle.backgroundColor,
                 color: customStyle.color,
-                fontFamily: customStyle.font
+                fontFamily: customStyle.font,
+                backgroundImage: customStyle.backgroundImage ? `url(${customStyle.backgroundImage})` : 'none',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+
             }}
         >
             <StylePopup currentStyles={customStyle} onUpdate={handleStyleUpdate} />

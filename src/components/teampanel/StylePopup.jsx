@@ -4,10 +4,6 @@ import { Settings, X } from 'lucide-react';
 const StylePopup = ({ currentStyles, onUpdate }) => {
     const [isOpen, setIsOpen] = useState(false);
 
-    // Local state to manage edits before finding them
-    // or we can just directly call onUpdate for immediate feedback.
-    // Let's use direct updates for "live" feel as per previous TeamInfo implementation.
-
     const handleChange = (key, value) => {
         onUpdate(key, value);
     };
@@ -74,6 +70,16 @@ const StylePopup = ({ currentStyles, onUpdate }) => {
                                 <option value="Montserrat">Montserrat</option>
                                 <option value="Nunito">Nunito</option>
                             </select>
+                        </div>
+                        <div>
+                            <input type="file" onChange={(e) => {
+                                const file = e.target.files[0];
+                                const reader = new FileReader();
+                                reader.onload = (e) => {
+                                    handleChange("backgroundImage", e.target.result)
+                                };
+                                reader.readAsDataURL(file);
+                            }} />
                         </div>
 
                         {/* Buttons */}

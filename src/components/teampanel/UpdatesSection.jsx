@@ -6,11 +6,13 @@ const UpdatesSection = ({ styles, html }) => {
     const [customStyle, setCustomStyle] = useState({
         backgroundColor: styles?.backgroundColor || '#000000',
         color: styles?.color || '#ffffff',
-        font: styles?.font || 'inherit'
+        font: styles?.font || 'inherit',
+        backgroundImage: styles?.backgroundImage || 'none',
     });
 
-    const handleStyleUpdate = (key, value) => {
-        setCustomStyle(prev => ({ ...prev, [key]: value }));
+    const handleStyleUpdate = (key, eventId, value) => {
+        // localStorage.setItem(`${eventId}-styles`, JSON.stringify({ ...styles, updates: { ...styles.updates, [key]: value } }));
+        setCustomStyle(prev => ({ ...prev, updates: { ...prev.updates, [key]: value } }));
     };
 
     return (
@@ -19,7 +21,11 @@ const UpdatesSection = ({ styles, html }) => {
             style={{
                 backgroundColor: customStyle.backgroundColor,
                 color: customStyle.color,
-                fontFamily: customStyle.font
+                fontFamily: customStyle.font,
+                backgroundImage: customStyle.backgroundImage ? `url(${customStyle.backgroundImage})` : 'none',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+
             }}
         >
             <StylePopup currentStyles={customStyle} onUpdate={handleStyleUpdate} />
