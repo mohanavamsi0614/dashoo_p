@@ -107,7 +107,7 @@ function GoogleAuth({ text }) {
         }));
       } else {
         localStorage.setItem("user", JSON.stringify(res.data.user));
-        nav("/profile");
+        nav("/");
       }
     } catch (err) {
       console.error("Sign-in error:", err);
@@ -157,6 +157,7 @@ function GoogleAuth({ text }) {
             placeholder="Email"
             value={data.email}
             onChange={(e) => setData({ ...data, email: e.target.value })}
+            disabled
           />
           <input
             className="p-2 sm:p-3 text-sm sm:text-base rounded-lg bg-transparent text-gray-300 border border-[#aeaeae4d] focus:outline-none focus:ring-2 focus:ring-[#8989894d] transition-all duration-300 placeholder:opacity-40"

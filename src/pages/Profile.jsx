@@ -1,8 +1,9 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Profile() {
   const user = JSON.parse(localStorage.getItem("user"));
+  const navigate = useNavigate();
 
   if (!user) {
     return (
@@ -20,6 +21,7 @@ function Profile() {
             alt={user.name}
             className="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover border-4 border-[#aeaeae4d] flex-shrink-0"
           />
+          <button onClick={() => localStorage.removeItem("user") && navigate("/")} className=" bg-[#aeaeae4d] px-4 py-2 rounded-lg">Log Out</button>
           <div className="flex-1 min-w-0 text-center sm:text-left">
             <h1 className="text-3xl sm:text-4xl font-nerko font-medium">
               {user.name}
