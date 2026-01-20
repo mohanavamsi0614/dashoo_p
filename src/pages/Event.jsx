@@ -169,7 +169,7 @@ function Event() {
                   <div className="flex justify-between items-center mb-1">
                     <span className="text-sm text-gray-400">Spots Filled</span>
                     <span className="text-sm font-semibold text-white">
-                      {state?.count || 0} / {state?.maxTeams + 5}
+                      {state?.count + 5 || 0} / {state?.maxTeams + 5}
                     </span>
                   </div>
                   <div className="w-full bg-gray-700 rounded-full h-2.5 overflow-hidden">
