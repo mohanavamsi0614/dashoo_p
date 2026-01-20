@@ -1,8 +1,26 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { CheckCircle, AlertCircle, Mail, CreditCard, X } from "lucide-react";
 
 export default function RegistrationSuccessPopup({ isOpen, onClose, data }) {
+    const [timeLeft, setTimeLeft] = useState(10);
+
+    useEffect(() => {
+        if (isOpen) {
+            setTimeLeft(10);
+            const timer = setInterval(() => {
+                setTimeLeft((prev) => {
+                    if (prev <= 1) {
+                        clearInterval(timer);
+                        return 0;
+                    }
+                    return prev - 1;
+                });
+            }, 1000);
+            return () => clearInterval(timer);
+        }
+    }, [isOpen]);
+
     if (!isOpen || !data) return null;
 
     const { payment, mail, message, user, team } = data;
@@ -15,7 +33,7 @@ export default function RegistrationSuccessPopup({ isOpen, onClose, data }) {
 
     if (payment && mail) {
         title = "Payment & Registration Complete";
-        description = "User registered for event successfully and payment mail has been sent. Please check your inbox.";
+        description = "User registration successful and payment mail has been sent, pay the amount from the mail. Please check your inbox.";
         icon = <CreditCard className="w-16 h-16 text-indigo-500" />;
         type = "success";
     } else if (!payment && !mail && data.payment !== undefined) {
@@ -41,7 +59,7 @@ export default function RegistrationSuccessPopup({ isOpen, onClose, data }) {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        onClick={onClose}
+                        onClick={timeLeft === 0 ? onClose : undefined}
                         className="absolute inset-0 bg-black/60 backdrop-blur-sm"
                     />
 
@@ -58,7 +76,8 @@ export default function RegistrationSuccessPopup({ isOpen, onClose, data }) {
 
                         <button
                             onClick={onClose}
-                            className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors"
+                            disabled={timeLeft > 0}
+                            className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             <X size={20} />
                         </button>
@@ -75,12 +94,13 @@ export default function RegistrationSuccessPopup({ isOpen, onClose, data }) {
 
                             <button
                                 onClick={onClose}
-                                className={`w-full py-3 px-6 rounded-xl font-semibold text-white shadow-lg transition-all transform hover:scale-[1.02] active:scale-[0.98] ${type === 'warning'
+                                disabled={timeLeft > 0}
+                                className={`w-full py-3 px-6 rounded-xl font-semibold text-white shadow-lg transition-all transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:hover:scale-100 disabled:cursor-not-allowed ${type === 'warning'
                                         ? "bg-yellow-600 hover:bg-yellow-700 shadow-yellow-500/20"
                                         : "bg-indigo-600 hover:bg-indigo-700 shadow-indigo-500/20"
                                     }`}
                             >
-                                Continue to Dashboard
+                                {timeLeft > 0 ? `Please wait read the instructions above ${timeLeft}s` : "Continue to Dashboard"}
                             </button>
                         </div>
                     </motion.div>

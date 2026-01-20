@@ -1,5 +1,6 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
+import BackButton from "../components/BackButton";
 
 function Profile() {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -14,6 +15,9 @@ function Profile() {
   return (
     <div className="min-h-screen bg-[#212121] font-poppins text-white px-4 sm:px-6 py-6 sm:py-10">
       {/* Profile Section */}
+      <div className="max-w-3xl mx-auto mb-6">
+        <BackButton />
+      </div>
       <div className="max-w-3xl mx-auto bg-[#212121] border border-[#aeaeae4d] shadow-md rounded-2xl p-4 sm:p-6">
         <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6">
           <img
