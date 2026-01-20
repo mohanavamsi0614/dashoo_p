@@ -124,52 +124,45 @@ function Teampanel() {
         )
     }
 
-    if (!team) {
-        return (
-            <div className="min-h-screen flex items-center justify-center bg-black">
-                <div className="flex flex-col items-center gap-4">
-                    <Loader2 className="w-10 h-10 text-blue-600 animate-spin" />
-                    <p className="text-gray-400 font-medium">Loading team data...</p>
-                </div>
-            </div>
-        )
-    }
+
 
     return (
         <div className="min-h-screen bg-black p-6 md:p-12 pb-24">
-            <div className="max-w-7xl mx-auto">
-                {/* Top Row: Team Info & Logo */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-                    <TeamInfo
-                        team={team}
-                        styles={customization.header}
-                        eventId={eventId}
-                    />
-                    <TeamLogo
-                        team={team}
-                        eventId={eventId}
-                        styles={customization.header}
-                    />
-                </div>
+            {team && (
+                <div className="max-w-7xl mx-auto">
+                    {/* Top Row: Team Info & Logo */}
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                        <TeamInfo
+                            team={team}
+                            styles={customization.header}
+                            eventId={eventId}
+                        />
+                        <TeamLogo
+                            team={team}
+                            eventId={eventId}
+                            styles={customization.header}
+                        />
+                    </div>
 
-                {/* Middle Row: Attendance */}
-                <div className="mb-8">
-                    <AttendanceSection
-                        team={team}
-                        attd={attd}
-                        currAttd={currAttd}
-                        onMarkAttendance={handleMarkAttendance}
-                        styles={customization.attendance}
-                        eventId={eventId}
-                    />
-                </div>
+                    {/* Middle Row: Attendance */}
+                    <div className="mb-8">
+                        <AttendanceSection
+                            team={team}
+                            attd={attd}
+                            currAttd={currAttd}
+                            onMarkAttendance={handleMarkAttendance}
+                            styles={customization.attendance}
+                            eventId={eventId}
+                        />
+                    </div>
 
-                {/* Bottom Rows: Problem Statement & Updates */}
-                <div className="space-y-8">
-                    <ProblemStatementSection styles={customization.problem} eventId={eventId} />
-                    <UpdatesSection styles={customization.updates} team={team} eventId={eventId} html={HTML} />
+                    {/* Bottom Rows: Problem Statement & Updates */}
+                    <div className="space-y-8">
+                        <ProblemStatementSection styles={customization.problem} eventId={eventId} />
+                        <UpdatesSection styles={customization.updates} team={team} eventId={eventId} html={HTML} />
+                    </div>
                 </div>
-            </div>
+            )}
 
 
 

@@ -2,6 +2,7 @@ import axios from "axios";
 import api from "../lib/api";
 import { useEffect, useRef, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import BackButton from "../components/BackButton";
 function Payment() {
   const navigate = useNavigate();
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
@@ -79,6 +80,9 @@ function Payment() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black flex items-center justify-center px-4 py-10 text-[#ECE8E7] relative">
+      <div className="absolute top-4 left-4 sm:top-8 sm:left-8">
+        <BackButton />
+      </div>
       <div className="w-full max-w-3xl bg-[#020617]/90 border border-gray-800 rounded-3xl shadow-2xl p-6 sm:p-8">
         <h1 className="text-2xl sm:text-3xl font-bold mb-2 text-center bg-gradient-to-r from-indigo-400 to-pink-400 bg-clip-text text-transparent">
           Hackathon Payment
@@ -87,9 +91,7 @@ function Payment() {
           Review the event details and complete your payment using the UPI
           details and QR provided.
         </p>
-        {!data && (
-          <p className="text-center text-gray-400">Loading payment details...</p>
-        )}
+
 
         {data && (
           <div className="space-y-6">
