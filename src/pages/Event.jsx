@@ -172,6 +172,20 @@ function Event() {
                 <p className="text-3xl font-bold text-white">
                   {state.cost === "0" || !state.cost ? "Free" : `₹${state.cost}`}
                 </p>
+                <div className="mt-4 mb-2">
+                  <div className="flex justify-between items-center mb-1">
+                    <span className="text-sm text-gray-400">Spots Filled</span>
+                    <span className="text-sm font-semibold text-white">
+                      {state.count || 0} / {state.maxTeams + 10}
+                    </span>
+                  </div>
+                  <div className="w-full bg-gray-700 rounded-full h-2.5 overflow-hidden">
+                    <div
+                      className="bg-indigo-500 h-2.5 rounded-full transition-all duration-500"
+                      style={{ width: `${Math.min(((state.count || 0) / (state.maxTeams + 10)) * 100, 100)}%` }}
+                    ></div>
+                  </div>
+                </div>
               </div>
               {open ? (
                 <button
@@ -288,3 +302,4 @@ function Event() {
 }
 
 export default Event;
+

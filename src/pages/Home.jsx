@@ -118,7 +118,7 @@ function Home() {
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
-                      nav(`/event/${event.eventId}`, { state: event });
+                      nav(`/event/${event.eventId}`);
                     }}
                     className="mt-4 md:mt-5 cursor-pointer w-full bg-transparent border border-[#aeaeae4d] group-hover:text-black group-hover:border-[#212121] hover:text-white hover:bg-[#212121] text-white font-semibold py-2 rounded-lg transition duration-200 text-sm md:text-base"
                   >
