@@ -9,7 +9,7 @@ function Payment() {
   const wid = useRef(null);
   const { eventId, teamId } = useParams();
   const [data, setData] = useState(null);
-
+  const [paid, setPaid] = useState(false);
   const [payment, setPayment] = useState({
     upi: "",
     imgUrl: "",
@@ -18,11 +18,13 @@ function Payment() {
   useEffect(() => {
     api.get(`/participant/payment/hackthon/${eventId}/${teamId}`)
       .then((res) => {
-        console.log(res.data);
-        setData(res.data);
+        if (res.data)
+          setData(res.data);
       })
       .catch((err) => {
-        console.error("Error fetching payment data:", err);
+        console.error("Error fetching payment data:", err.response);
+        if (err.response.data.error === "Team already paid")
+          setPaid(true);
       });
 
     if (typeof window === "undefined") return;
@@ -91,8 +93,13 @@ function Payment() {
           Review the event details and complete your payment using the UPI
           details and QR provided.
         </p>
-
-
+        {paid && (
+          <div className="space-y-6">
+            <div className="bg-[#020617] border border-gray-800 rounded-2xl p-4 sm:p-5 space-y-2">
+              Already Paid
+            </div>
+          </div>
+        )}
         {data && (
           <div className="space-y-6">
             {/* Event + Team Info */}

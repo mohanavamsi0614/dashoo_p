@@ -1,16 +1,19 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import BackButton from "../components/BackButton";
+import api from "@/lib/api";
 
 function Profile() {
   const user = JSON.parse(localStorage.getItem("user"));
   const navigate = useNavigate();
+
 
   if (!user) {
     return (
       <p className="text-center text-white mt-10">No user data available</p>
     );
   }
+  console.log(api.getUri());
 
   return (
     <div className="min-h-screen bg-[#212121] font-poppins text-white px-4 sm:px-6 py-6 sm:py-10">
@@ -100,6 +103,9 @@ function Profile() {
                   <p className="mt-4 sm:mt-5 text-xs sm:text-sm font-medium text-white">
                     Status: {event.status ? "Open" : "Close"}
                   </p>
+                </div>
+                <div className=" flex justify-center p-2 border border-[#aeaeae4d] rounded-lg">
+                  <a href={`${api.getUri()}/participant/payemntlink/${event._id}/${user._id}`} className="text-white">Pay Now</a>
                 </div>
               </div>
             ))}
