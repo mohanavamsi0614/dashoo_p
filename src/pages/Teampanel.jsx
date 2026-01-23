@@ -187,23 +187,32 @@ export default Teampanel
 
 function Model({ mem, setOpen, setTeam, attd, event }) {
     const webcamRef = useRef(null);
+    const [isCapturing, setIsCapturing] = useState(false);
+
     console.log(mem)
 
     const attdCapture = async () => {
-        const imageSrc = webcamRef.current.getScreenshot();
-        const formData = new FormData();
-        formData.append("file", imageSrc);
-        formData.append("upload_preset", "qbvu3y5j");
+        setIsCapturing(true);
+        try {
+            const imageSrc = webcamRef.current.getScreenshot();
+            const formData = new FormData();
+            formData.append("file", imageSrc);
+            formData.append("upload_preset", "qbvu3y5j");
 
-        const res = await axios.post(`https://api.cloudinary.com/v1_1/dfseckyjx/image/upload`, formData);
-        const updatedattd = { ...mem.attd }
-        updatedattd[attd] = { img: res.data.url, status: "" }
-        const participant = { ...mem, attd: updatedattd }
-        let data = await api.post(`/participant/attd/${event}/${localStorage.getItem(`${event}-pass`)}`, { participant, role: mem.role });
-        data = data.data.team
-        console.log(data)
-        setTeam(data)
-        setOpen(false);
+            const res = await axios.post(`https://api.cloudinary.com/v1_1/dfseckyjx/image/upload`, formData);
+            const updatedattd = { ...mem.attd }
+            updatedattd[attd] = { img: res.data.url, status: "" }
+            const participant = { ...mem, attd: updatedattd }
+            let data = await api.post(`/participant/attd/${event}/${localStorage.getItem(`${event}-pass`)}`, { participant, role: mem.role });
+            data = data.data.team
+            console.log(data)
+            setTeam(data)
+            setOpen(false);
+        } catch (error) {
+            console.error("Error capturing/uploading image:", error);
+        } finally {
+            setIsCapturing(false);
+        }
     };
 
 
@@ -212,7 +221,11 @@ function Model({ mem, setOpen, setTeam, attd, event }) {
             <div className="bg-gray-900 p-6 rounded-2xl shadow-2xl w-full max-w-md text-center border border-gray-800 animate-in fade-in zoom-in duration-200">
                 <div className="flex justify-between items-center mb-4">
                     <h1 className="text-xl font-bold text-white">Mark Attendance</h1>
-                    <button onClick={() => setOpen(false)} className="text-gray-400 hover:text-gray-200 cursor-pointer">
+                    <button 
+                        onClick={() => setOpen(false)} 
+                        className="text-gray-400 hover:text-gray-200 cursor-pointer"
+                        disabled={isCapturing}
+                    >
                         <X className="w-6 h-6" />
                     </button>
                 </div>
@@ -231,13 +244,24 @@ function Model({ mem, setOpen, setTeam, attd, event }) {
                 <div className="flex gap-3 justify-center">
                     <button
                         onClick={attdCapture}
-                        className="flex-1 px-4 py-3 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 rounded-xl text-white font-semibold transition-colors flex items-center justify-center gap-2 cursor-pointer"
+                        disabled={isCapturing}
+                        className="flex-1 px-4 py-3 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 rounded-xl text-white font-semibold transition-colors flex items-center justify-center gap-2 cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed"
                     >
-                        <Camera className="w-5 h-5" />
-                        Capture & Upload
+                        {isCapturing ? (
+                            <>
+                                <Loader2 className="w-5 h-5 animate-spin" />
+                                Loading...
+                            </>
+                        ) : (
+                            <>
+                                <Camera className="w-5 h-5" />
+                                Capture & Upload
+                            </>
+                        )}
                     </button>
                 </div>
             </div>
         </div>
     );
 }
+
