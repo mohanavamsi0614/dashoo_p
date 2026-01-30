@@ -113,4 +113,3 @@ const AttendanceSection = ({ team, attd, currAttd, onMarkAttendance, styles, eve
 };
 
 export default AttendanceSection;
-

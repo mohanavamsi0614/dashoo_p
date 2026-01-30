@@ -9,7 +9,6 @@ const TeamInfo = ({ team, styles, eventId }) => {
     });
 
     const handleStyleUpdate = (key, value) => {
-        // localStorage.setItem(`${eventId}-styles`, JSON.stringify({ ...styles, teamInfo: { ...styles.teamInfo, [key]: value } }));
         setCustomStyle((prev) => ({ ...prev, [key]: value }));
     };
 
@@ -34,7 +33,6 @@ const TeamInfo = ({ team, styles, eventId }) => {
                 Team Info
             </h1>
 
-            {/* Team Lead Section */}
             <div className="mb-8">
                 <h2 className="text-xs font-semibold opacity-70 uppercase tracking-wider mb-4 ml-1">
                     Team Name
@@ -58,7 +56,6 @@ const TeamInfo = ({ team, styles, eventId }) => {
                 </div>
             </div>
 
-            {/* Team Members */}
             <div>
                 <h2 className="text-xs font-semibold opacity-70 uppercase tracking-wider mb-4 ml-1">
                     Team Members

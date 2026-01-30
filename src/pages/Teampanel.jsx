@@ -24,6 +24,7 @@ function Teampanel() {
     const [current, setCurent] = useState({})
     const [HTML, setHtml] = useState("")
     const [currAttd, setCurrAttd] = useState()
+    const [PS, setPS] = useState()
 
     // Customization State
     const [customization, setCustomization] = useState({
@@ -40,6 +41,7 @@ function Teampanel() {
                     setTeam(res.data.team)
                     setAttd(res.data.attd)
                     setCurrAttd(res.data.currAttd || "")
+                    setPS(res.data.PS)
                     setauth(true)
                     socket.emit("join", [res.data.team._id, eventId])
                     socket.emit("currAttd", { eventId, teamId: res.data.team._id })
@@ -88,7 +90,27 @@ function Teampanel() {
         setCurent({ ...member, role: member.role })
         setOpen(true)
     }
+    const [isSubmittingPS, setIsSubmittingPS] = useState(false);
 
+    const handleSelectPS = async (selectedPS) => {
+        setIsSubmittingPS(true);
+        const previousTeam = { ...team };
+
+        // Optimistic update
+        setTeam(prev => ({ ...prev, PS: selectedPS }));
+
+        try {
+            await api.post(`/participant/ps/${eventId}/${team._id}`, { PS: selectedPS });
+            // Success - keep the optimistic update
+        } catch (err) {
+            console.error(err);
+            // Revert on error
+            setTeam(previousTeam);
+            alert("Failed to select Problem Statement. Please try again.");
+        } finally {
+            setIsSubmittingPS(false);
+        }
+    }
 
     if (!auth) {
         return (
@@ -158,7 +180,14 @@ function Teampanel() {
 
                     {/* Bottom Rows: Problem Statement & Updates */}
                     <div className="space-y-8">
-                        <ProblemStatementSection styles={customization.problem} eventId={eventId} />
+                        <ProblemStatementSection
+                            styles={customization.problem}
+                            PS={PS}
+                            eventId={eventId}
+                            team={team}
+                            onSelectPS={handleSelectPS}
+                            isSubmitting={isSubmittingPS}
+                        />
                         <UpdatesSection styles={customization.updates} team={team} eventId={eventId} html={HTML} />
                     </div>
                 </div>
@@ -221,8 +250,8 @@ function Model({ mem, setOpen, setTeam, attd, event }) {
             <div className="bg-gray-900 p-6 rounded-2xl shadow-2xl w-full max-w-md text-center border border-gray-800 animate-in fade-in zoom-in duration-200">
                 <div className="flex justify-between items-center mb-4">
                     <h1 className="text-xl font-bold text-white">Mark Attendance</h1>
-                    <button 
-                        onClick={() => setOpen(false)} 
+                    <button
+                        onClick={() => setOpen(false)}
                         className="text-gray-400 hover:text-gray-200 cursor-pointer"
                         disabled={isCapturing}
                     >

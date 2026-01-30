@@ -11,7 +11,6 @@ const TeamLogo = ({ team, styles, eventId }) => {
     const [img, setImg] = useState("")
     const wid = useRef()
     const handleStyleUpdate = (key, value) => {
-        // localStorage.setItem(`${eventId}-styles`, JSON.stringify({ ...style, logo: { ...styles.logo, [key]: value } }));
         setCustomStyle(prev => ({ ...prev, [key]: value }));
     };
     useEffect(() => {
