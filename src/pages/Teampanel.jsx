@@ -43,7 +43,7 @@ function Teampanel() {
                     setCurrAttd(res.data.currAttd || "")
                     setPS(res.data.PS)
                     setauth(true)
-                    socket.emit("join", [res.data.team._id, eventId])
+                    socket.emit("join", [eventId, res.data.team._id])
                     socket.emit("currAttd", { eventId, teamId: res.data.team._id })
                     socket.emit("getUpdate", { teamId: res.data.team._id, eventId: eventId })
                 })

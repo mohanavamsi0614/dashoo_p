@@ -11,7 +11,6 @@ const UpdatesSection = ({ styles, html }) => {
     });
 
     const handleStyleUpdate = (key, eventId, value) => {
-        // localStorage.setItem(`${eventId}-styles`, JSON.stringify({ ...styles, updates: { ...styles.updates, [key]: value } }));
         setCustomStyle(prev => ({ ...prev, updates: { ...prev.updates, [key]: value } }));
     };
 
