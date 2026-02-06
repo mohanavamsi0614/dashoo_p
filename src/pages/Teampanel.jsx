@@ -217,6 +217,8 @@ export default Teampanel
 function Model({ mem, setOpen, setTeam, attd, event }) {
     const webcamRef = useRef(null);
     const [isCapturing, setIsCapturing] = useState(false);
+    const [loc, setloc] = useState()
+
 
     console.log(mem)
 
@@ -230,11 +232,23 @@ function Model({ mem, setOpen, setTeam, attd, event }) {
 
             const res = await axios.post(`https://api.cloudinary.com/v1_1/dfseckyjx/image/upload`, formData);
             const updatedattd = { ...mem.attd }
-            updatedattd[attd] = { img: res.data.url, status: "" }
+            let loc = {};
+            try {
+                const position = await new Promise((resolve, reject) => {
+                    navigator.geolocation.getCurrentPosition(resolve, reject);
+                });
+                const { latitude, longitude } = position.coords;
+                const geoRes = await axios.get(`https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`);
+                console.log(geoRes.data);
+                loc = { longitude, latitude, name: geoRes.data.display_name };
+            } catch (err) {
+                console.error("Location error: ", err);
+            }
+            updatedattd[attd] = { img: res.data.url, status: "Present", loc: loc }
             const participant = { ...mem, attd: updatedattd }
+            console.log(participant)
             let data = await api.post(`/participant/attd/${event}/${localStorage.getItem(`${event}-pass`)}`, { participant, role: mem.role });
             data = data.data.team
-            console.log(data)
             setTeam(data)
             setOpen(false);
         } catch (error) {
