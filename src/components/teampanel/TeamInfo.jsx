@@ -38,7 +38,7 @@ const TeamInfo = ({ team, styles, eventId }) => {
                     Team Name
                 </h2>
                 <h2 className="text-xs font-semibold opacity-70 uppercase tracking-wider mb-4 ml-1">
-                    {team?.teamName}
+                    {team.teamName}
                 </h2>
                 <h2 className="text-xs font-semibold opacity-70 uppercase tracking-wider mb-4 ml-1">
                     Team Lead

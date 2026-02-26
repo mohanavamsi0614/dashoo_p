@@ -202,7 +202,7 @@ function Teampanel() {
                         setOpen={setOpen}
                         setTeam={setTeam}
                         attd={currAttd}
-                        team={team._id}
+                        team={team}
                         event={eventId}
                     />
                 )
@@ -214,7 +214,7 @@ function Teampanel() {
 export default Teampanel
 
 
-function Model({ mem, setOpen, setTeam, attd, event }) {
+function Model({ mem, setOpen, setTeam, team, attd, event }) {
     const webcamRef = useRef(null);
     const [isCapturing, setIsCapturing] = useState(false);
     const [loc, setloc] = useState()
@@ -247,8 +247,16 @@ function Model({ mem, setOpen, setTeam, attd, event }) {
             updatedattd[attd] = { img: res.data.url, status: "Present", loc: loc }
             const participant = { ...mem, attd: updatedattd }
             console.log(participant)
+            if (mem.role == "lead") {
+                socket.emit("markAttd", { teamId: team._id, team: { ...team, lead: { ...participant } } })
+            }
+            else {
+                const participants = team.members.map((p) => p.name == mem.name ? participant : p)
+                socket.emit("markAttd", { teamId: team._id, team: { ...team, members: participants } })
+            }
             let data = await api.post(`/participant/attd/${event}/${localStorage.getItem(`${event}-pass`)}`, { participant, role: mem.role });
             data = data.data.team
+
             setTeam(data)
             setOpen(false);
         } catch (error) {
