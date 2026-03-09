@@ -6,6 +6,7 @@ import Auth from "./pages/Auth";
 import Profile from "./pages/Profile";
 import Event from "./pages/Event";
 import Reg from "./pages/Reg";
+import JoinTeam from "./pages/JoinTeam";
 
 import Payment from "./pages/Payment";
 import Teampanel from "./pages/Teampanel";
@@ -72,6 +73,14 @@ function App() {
           element={
             <ProtectedRoute>
               <Reg />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/jointeam/:eventID"
+          element={
+            <ProtectedRoute>
+              <JoinTeam />
             </ProtectedRoute>
           }
         />

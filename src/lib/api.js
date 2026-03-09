@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-    baseURL: "https://dasho-backend-3amp.onrender.com",
+    baseURL: "http://localhost:6100",
 })
 
 export default api;

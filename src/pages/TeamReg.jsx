@@ -56,7 +56,6 @@ export default function TeamReg({ state: propState }) {
 
   const [teamName, setTeamName] = useState(() => getInitialState("teamName", ""));
   const [lead, setLead] = useState(() => getInitialState("lead", emptyMember()));
-  const [members, setMembers] = useState(() => getInitialState("members", []));
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
@@ -79,48 +78,34 @@ export default function TeamReg({ state: propState }) {
       });
       return { ...prev, ...updates };
     });
-    setMembers((prev) => {
-      return prev.map((member) => {
-        const updates = {};
-        othersec.forEach((item) => {
-          if (!(item.title in member)) {
-            updates[item.title] = "";
-          }
-        });
-        return { ...member, ...updates };
+    setLead((prev) => {
+      const updates = {};
+      othersec.forEach((item) => {
+        if (!(item.title in prev)) {
+          updates[item.title] = "";
+        }
       });
+      return { ...prev, ...updates };
     });
   }, []);
+
   useEffect(() => {
     const dataToSave = {
       teamName,
       lead,
-      members,
       form
     };
 
     localStorage.setItem(STORAGE_KEY, JSON.stringify(dataToSave));
     socket.emit("join", state._id);
 
-  }, [teamName, lead, members, form, STORAGE_KEY]);
+  }, [teamName, lead, form, STORAGE_KEY]);
   socket.on("eventOpen", (data) => {
     setopen(true)
   })
   socket.on("eventClosed", (data) => {
     setopen(false)
   })
-  useEffect(() => {
-    if (minMembers > 1 && members.length === 0) {
-      const initialMembers = [];
-      for (let i = 0; i < minMembers - 1; i++) {
-        initialMembers.push(emptyMember());
-      }
-      if (initialMembers.length > 0) {
-        setMembers(initialMembers);
-      }
-    }
-  }, [minMembers]);
-
   function validate() {
     if (!teamName.trim()) return "Team name is required";
 
@@ -133,38 +118,10 @@ export default function TeamReg({ state: propState }) {
     if (!lead.branch.trim()) return "Lead branch is required";
     if (!lead.phone.trim()) return "Lead phone number is required";
 
-    // Validate Team Size
-    const totalMembers = members.length + 1;
-    if (totalMembers < minMembers) return `Minimum ${minMembers} members required (including lead)`;
-    if (totalMembers > maxMembers) return `Maximum ${maxMembers} members allowed (including lead)`;
-
-    // Validate Members
-    for (let i = 0; i < members.length; i++) {
-      const m = members[i];
-      if (!m.name.trim()) return `Member ${i + 2} name is required`;
-      if (!m.rollNumber.trim()) return `Member ${i + 2} roll number is required`;
-      if (!m.email.trim()) return `Member ${i + 2} email is required`;
-      if (!m.college.trim()) return `Member ${i + 2} college is required`;
-    }
-
     return "";
   }
 
-  const addMember = () => {
-    if (members.length + 1 >= maxMembers) return;
-    setMembers([...members, emptyMember()]);
-  };
 
-  const removeMember = (idx) => {
-    setMembers(members.filter((_, i) => i !== idx));
-  };
-
-  const updateMember = (idx, field, value) => {
-    const next = members.map((m, i) =>
-      i === idx ? { ...m, [field]: value } : m
-    );
-    setMembers(next);
-  };
 
   const handleSubmit = async (e) => {
     const isPaymentRequired = state?.cost && state.cost > 0;
@@ -179,8 +136,8 @@ export default function TeamReg({ state: propState }) {
     try {
       const payload = {
         teamName,
-        lead,
-        members,
+        lead: lead,
+        member: lead, // Backend DB expects 'member', Backend Email expects 'lead'
         userId: JSON.parse(localStorage.getItem("user"))?._id,
       };
       const res = await api.post(
@@ -203,7 +160,6 @@ export default function TeamReg({ state: propState }) {
         localStorage.removeItem(STORAGE_KEY);
         socket.emit("regCheck", { eventId: state._id })
         console.log(`payment/${state._id}/${res.data.team}`)
-        // navigate(`/payment/${state._id}/${res.data.team}`)
         setSuccessData(res.data);
       }
       setSuccess(true);
@@ -217,27 +173,34 @@ export default function TeamReg({ state: propState }) {
     }
   };
   if (!open) {
-    return <div>Registrations are not open !</div>
+    return <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center text-white">Registrations are not open!</div>
   }
 
+  const inputClasses = "w-full bg-[#111] border border-white/10 text-gray-200 rounded-xl p-3 sm:p-3 outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all duration-300 placeholder:text-gray-600 text-sm shadow-inner";
+  const labelClasses = "block text-xs sm:text-sm text-gray-300 font-medium mb-1.5 ml-1 capitalize";
+  const cardClasses = "bg-white/5 border border-white/10 p-6 rounded-2xl relative shadow-lg";
+
   return (
-    <div className="min-h-screen font-poppins flex justify-center items-center px-4 sm:px-6 py-10 sm:py-16 relative bg-[#212121]">
-      <BackgroundBeams className="fixed inset-0 z-0" />
-      <div className="max-w-4xl w-full mx-auto bg-[#161616] border border-[#aeaeae4d] rounded-2xl shadow-2xl p-6 sm:p-10 relative z-10">
-        <h2 className="text-2xl sm:text-3xl font-bold mb-2 text-center text-white">
-          Team Registration
-        </h2>
-        {eventTitle && (
-          <div className="text-center mb-8">
-            <span className="text-gray-400">Event:</span>{" "}
-            <span className="font-nerko text-3xl text-indigo-400">
+    <div className="min-h-screen font-poppins bg-[#0a0a0a] flex justify-center items-center px-4 sm:px-6 py-10 sm:py-16 relative overflow-hidden text-gray-200">
+      <BackgroundBeams className="fixed inset-0 z-0 opacity-40" />
+
+      {/* Decorative glows */}
+      <div className="absolute top-1/4 -right-32 w-96 h-96 bg-indigo-600/10 rounded-full blur-[120px] pointer-events-none"></div>
+      <div className="absolute bottom-1/4 -left-32 w-96 h-96 bg-purple-600/10 rounded-full blur-[120px] pointer-events-none"></div>
+
+      <div className="max-w-4xl w-full mx-auto glass-card rounded-3xl p-6 sm:p-10 relative z-10 shadow-2xl">
+        <div className="text-center mb-10">
+          <span className="px-4 py-1.5 rounded-full text-xs font-semibold bg-white/5 border border-white/10 text-gray-300 mb-4 inline-block tracking-wider uppercase">Team Registration</span>
+          <h2 className="text-2xl sm:text-4xl font-bold text-white leading-tight">
+            Register for{" "}
+            <span className="font-nerko text-4xl sm:text-5xl font-medium text-gradient text-glow block mt-2">
               {eventTitle}
             </span>
-            <p className="text-sm text-gray-500 mt-2">
-              Team Size: {minMembers} - {maxMembers} members
-            </p>
-          </div>
-        )}
+          </h2>
+          <p className="text-sm text-indigo-300 mt-4 bg-indigo-500/10 inline-block px-4 py-2 rounded-full border border-indigo-500/20">
+            Team Size: {minMembers} - {maxMembers} members
+          </p>
+        </div>
 
         <RegistrationSuccessPopup
           isOpen={!!successData}
@@ -245,189 +208,119 @@ export default function TeamReg({ state: propState }) {
           data={successData}
         />
 
-        {false ? (
-          <div className="border border-green-500 bg-green-900/20 text-green-400 p-4 rounded-xl text-center text-lg font-medium">
-            ✅ Team registered successfully! Redirecting...
+        <form onSubmit={handleSubmit} className="space-y-8">
+          {/* Team Name */}
+          <div className="mb-8">
+            <label className="block text-sm sm:text-base text-gray-300 font-medium mb-2 ml-1">Team Name <span className="text-red-500">*</span></label>
+            <input
+              className={`${inputClasses} text-base sm:text-lg p-4`}
+              value={teamName}
+              onChange={(e) => setTeamName(e.target.value)}
+              placeholder="Enter your team name"
+            />
           </div>
-        ) : (
-          <form onSubmit={handleSubmit} className="space-y-8">
-            {/* Team Name */}
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">Team Name <span className="text-red-500">*</span></label>
-              <input
-                className="w-full bg-[#2a2a2a] border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-indigo-500 transition-colors"
-                value={teamName}
-                onChange={(e) => setTeamName(e.target.value)}
-                placeholder="Enter your team name"
-              />
-            </div>
 
-            {/* Team Lead Section */}
-            <div className="bg-[#2a2a2a] p-6 rounded-xl border border-gray-700">
-              <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-                👑 Team Lead <span className="text-xs text-gray-400 font-normal">(Required)</span>
-              </h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {STANDARD_FIELDS.map((field) => (
-                  <div key={field}>
-                    <label className="block text-xs text-gray-400 mb-1 capitalize">
-                      {field === "rollNumber" ? "Roll / Reg No." : field} <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      className="w-full bg-[#1a1a1a] border border-gray-600 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-indigo-500 transition-colors"
-                      value={lead[field]}
-                      onChange={(e) =>
-                        setLead({ ...lead, [field]: e.target.value })
-                      }
-                      placeholder={`Enter ${field}`}
-                    />
-                  </div>
-                ))}
-                {state.other?.filter((item) => item.type === "EP").map((item) => (
-                  <div key={item.title}>
-                    <label className="block text-xs text-gray-400 mb-1 capitalize">
-                      {item.title} <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      className="w-full bg-[#1a1a1a] border border-gray-600 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-indigo-500 transition-colors"
-                      value={lead[item.title] || ""}
-                      onChange={(e) =>
-                        setLead({ ...lead, [item.title]: e.target.value })
-                      }
-                      placeholder={`Enter ${item.title}`}
-                    />
-                  </div>
-                ))}
-              </div>
-            </div>
+          {/* Team Lead Section */}
+          <div className={`${cardClasses} ring-1 ring-indigo-500/30 overflow-hidden`}>
+            {/* Background flare for lead card */}
+            <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/10 blur-[50px] pointer-events-none"></div>
 
-            {/* Members */}
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold text-white">
-                  Team Members <span className="text-sm font-normal text-gray-400">({members.length + 1}/{maxMembers})</span>
-                </h3>
-                {members.length + 1 < maxMembers && (
-                  <button
-                    type="button"
-                    onClick={addMember}
-                    className="text-sm bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg transition-colors"
-                  >
-                    + Add Member
-                  </button>
-                )}
-              </div>
-
-              {members.length === 0 && minMembers > 1 && (
-                <p className="text-yellow-500 text-sm italic">Please add at least {minMembers - 1} more member(s).</p>
-              )}
-
-              {members.map((m, idx) => (
-                <div
-                  key={idx}
-                  className="bg-[#2a2a2a] p-6 rounded-xl border border-gray-700 relative group"
-                >
-                  <button
-                    type="button"
-                    onClick={() => removeMember(idx)}
-                    className="absolute top-4 right-4 text-gray-500 hover:text-red-500 transition-colors"
-                    title="Remove Member"
-                  >
-                    ✕
-                  </button>
-                  <h4 className="text-md font-medium text-white mb-4">Member {idx + 2}</h4>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    {STANDARD_FIELDS.map((field) => (
-                      <div key={field}>
-                        <label className="block text-xs text-gray-400 mb-1 capitalize">
-                          {field === "rollNumber" ? "Roll / Reg No." : field} <span className="text-red-500">*</span>
-                        </label>
-                        <input
-                          className="w-full bg-[#1a1a1a] border border-gray-600 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-indigo-500 transition-colors"
-                          value={m[field]}
-                          onChange={(e) => updateMember(idx, field, e.target.value)}
-                          placeholder={`Enter ${field}`}
-                        />
-                      </div>
-                    ))}
-                    {state.other?.filter((item) => item.type === "EP").map((item) => (
-                      <div key={item.title}>
-                        <label className="block text-xs text-gray-400 mb-1 capitalize">
-                          {item.title} <span className="text-red-500">*</span>
-                        </label>
-                        <input
-                          className="w-full bg-[#1a1a1a] border border-gray-600 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-indigo-500 transition-colors"
-                          value={m[item.title] || ""}
-                          onChange={(e) =>
-                            updateMember(idx, item.title, e.target.value)
-                          }
-                          placeholder={`Enter ${item.title}`}
-                        />
-                      </div>
-                    ))}
-                  </div>
+            <h3 className="text-xl font-semibold text-white mb-6 flex items-center gap-3 relative z-10">
+              <span className="text-2xl">👑</span> Team Lead <span className="text-xs text-indigo-400 font-normal ml-2 bg-indigo-500/10 px-2 py-1 rounded-md border border-indigo-500/20">Required</span>
+            </h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 relative z-10">
+              {STANDARD_FIELDS.map((field) => (
+                <div key={field}>
+                  <label className={labelClasses}>
+                    {field === "rollNumber" ? "Roll / Reg No." : field} <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    className={inputClasses}
+                    value={lead[field]}
+                    onChange={(e) =>
+                      setLead({ ...lead, [field]: e.target.value })
+                    }
+                    placeholder={`Enter ${field}`}
+                  />
+                </div>
+              ))}
+              {state.other?.filter((item) => item.type === "EP").map((item) => (
+                <div key={item.title}>
+                  <label className={labelClasses}>
+                    {item.title} <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    className={inputClasses}
+                    value={lead[item.title] || ""}
+                    onChange={(e) =>
+                      setLead({ ...lead, [item.title]: e.target.value })
+                    }
+                    placeholder={`Enter ${item.title}`}
+                  />
                 </div>
               ))}
             </div>
+          </div>
 
-            {/* Other Fields */}
-            {state?.other.filter((item) => item.type == "AT").length > 0 && (
-              <div className="bg-[#2a2a2a] p-6 rounded-xl border border-gray-700">
-                <h3 className="text-lg font-semibold text-white mb-4">Additional Details</h3>
-                <div className="space-y-4">
-                  {state.other.filter((item) => item.type == "AT").map((i, idx) => (
-                    <div key={idx}>
-                      <label className="block text-sm font-medium text-gray-300 mb-2">{i.title}</label>
-                      {i.type === 'text' && (
-                        <input
-                          value={form[i.key] || ""}
-                          onChange={(e) =>
-                            setForm({ ...form, [i.key]: e.target.value })
-                          }
-                          placeholder={i.placeholder || ""}
-                          className="w-full bg-[#1a1a1a] border border-gray-600 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-indigo-500 transition-colors"
-                        />
-                      )}
-                      {i.type === 'number' && (
-                        <input
-                          value={form[i.key] || ""}
-                          onChange={(e) =>
-                            setForm({ ...form, [i.key]: e.target.value })
-                          }
-                          placeholder={i.placeholder || ""}
-                          className="w-full bg-[#1a1a1a] border border-gray-600 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-indigo-500 transition-colors"
-                        />
-                      )}
-                    </div>
-                  ))}
-                </div>
+
+
+          {/* Other Fields */}
+          {state?.other.filter((item) => item.type == "AT").length > 0 && (
+            <div className={`${cardClasses} mt-8 pt-8 border-t border-white/10`}>
+              <h3 className="text-xl font-nerko text-white mb-6">Additional Details</h3>
+              <div className="space-y-6">
+                {state.other.filter((item) => item.type == "AT").map((i, idx) => (
+                  <div key={idx}>
+                    <label className={labelClasses}>{i.title}</label>
+                    {i.type === 'text' && (
+                      <input
+                        value={form[i.key] || ""}
+                        onChange={(e) =>
+                          setForm({ ...form, [i.key]: e.target.value })
+                        }
+                        placeholder={i.placeholder || ""}
+                        className={inputClasses}
+                      />
+                    )}
+                    {i.type === 'number' && (
+                      <input
+                        value={form[i.key] || ""}
+                        onChange={(e) =>
+                          setForm({ ...form, [i.key]: e.target.value })
+                        }
+                        placeholder={i.placeholder || ""}
+                        className={inputClasses}
+                      />
+                    )}
+                  </div>
+                ))}
               </div>
-            )}
-
-            {error && (
-              <div className="bg-red-900/20 border border-red-500 text-red-400 p-4 rounded-xl text-center">
-                {error}
-              </div>
-            )}
-
-            <div className="flex flex-col sm:flex-row justify-end gap-4 pt-4 border-t border-gray-800">
-              <button
-                type="button"
-                onClick={() => navigate(-1)}
-                className="px-6 py-3 rounded-xl border border-gray-600 text-gray-300 hover:bg-gray-800 transition-colors font-medium"
-              >
-                Back
-              </button>
-              <button
-                type="submit"
-                disabled={loading}
-                className="px-8 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold shadow-lg hover:shadow-indigo-500/30 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {loading ? "Registering..." : "Register Team"}
-              </button>
             </div>
-          </form>
-        )}
+          )}
+
+          {error && (
+            <div className="bg-red-500/10 border border-red-500/30 text-red-400 p-4 rounded-xl text-center shadow-inner mt-8">
+              {error}
+            </div>
+          )}
+
+          <div className="flex flex-col sm:flex-row gap-4 pt-10 border-t border-white/10">
+            <button
+              type="button"
+              onClick={() => navigate(-1)}
+              className="px-6 py-4 rounded-xl border border-white/10 bg-white/5 text-gray-300 hover:bg-white/10 hover:text-white transition-all font-medium text-sm sm:text-base w-full sm:w-1/3 order-2 sm:order-1"
+            >
+              Back
+            </button>
+            <button
+              type="submit"
+              disabled={loading}
+              className="flex-1 px-6 py-4 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-400 hover:to-purple-500 text-white font-bold transition-all shadow-lg hover:shadow-indigo-500/40 text-sm sm:text-base disabled:opacity-50 disabled:cursor-not-allowed transform hover:-translate-y-1 w-full order-1 sm:order-2"
+            >
+              {loading ? "Registering Team..." : "Complete Team Registration"}
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   );

@@ -107,6 +107,7 @@ function GoogleAuth({ text }) {
         }));
       } else {
         localStorage.setItem("user", JSON.stringify(res.data.user));
+                localStorage.setItem('token',res.data.token)
         nav("/");
       }
     } catch (err) {

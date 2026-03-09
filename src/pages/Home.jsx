@@ -9,128 +9,184 @@ import Footer from "../components/Footer";
 function Home() {
   const nav = useNavigate();
   const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     api
       .get("/participant/eventslist")
       .then((response) => {
         setEvents(response.data.events);
+        setLoading(false);
       })
-      .catch((err) => console.error(err));
+      .catch((err) => {
+        console.error(err);
+        setLoading(false);
+      });
   }, []);
 
   return (
-    <div className="bg-[#212121] relative min-h-screen">
-      <BackgroundBeams className="fixed inset-0 z-0" />
-      <div className="relative z-10">
-        <Navbar />
-        <div className="flex text-white justify-center items-center flex-col mt-40 md:mt-60 lg:mt-80 px-4">
-          <div className="text-xl sm:text-2xl md:text-3xl font-poppins font-bold mb-5 text-center">
-            <p>
-              The dashboard that does it all -{" "}
-              <span className="font-nerko text-3xl sm:text-4xl md:text-5xl font-medium">
-                Dasho
-              </span>
-            </p>
+    <div className="bg-[#0a0a0a] min-h-screen font-poppins selection:bg-indigo-500/30">
+      <Navbar />
+
+      {/* Hero Section */}
+      <div className="relative pt-32 pb-20 md:pt-48 md:pb-32 overflow-hidden">
+        {/* Abstract Glow Background */}
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-indigo-600/20 rounded-full blur-[120px] pointer-events-none mix-blend-screen"></div>
+        <div className="absolute bottom-0 right-1/4 w-[600px] h-[300px] bg-purple-600/20 rounded-full blur-[120px] pointer-events-none mix-blend-screen"></div>
+        <BackgroundBeams className="absolute inset-0 z-0 opacity-50" />
+
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-8">
+            <span className="w-2 h-2 rounded-full bg-indigo-500 animate-pulse"></span>
+            <span className="text-sm font-medium text-gray-300">Next-gen Event Platform</span>
           </div>
-          <div className="text-xl sm:text-2xl md:text-3xl font-poppins font-bold mb-5 text-center">
-            <p>
-              <TypeAnimation
-                sequence={[
-                  "Manage less, acheive more",
-                  1000,
-                  "Manage, Grow, Track",
-                  1000,
-                ]}
-                wrapper="span"
-                speed={50}
-                className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl"
-                repeat={Infinity}
-              />
-            </p>
+
+          <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold text-white mb-6 leading-tight tracking-tight">
+            The dashboard that does it all <br />
+            <span className="font-nerko text-6xl sm:text-7xl md:text-9xl text-gradient block mt-4 text-glow">
+              Dasho
+            </span>
+          </h1>
+
+          <div className="h-20 sm:h-24 flex items-center justify-center">
+            <TypeAnimation
+              sequence={[
+                "Manage less, achieve more",
+                1500,
+                "Organize gracefully",
+                1500,
+                "Track seamlessly",
+                1500,
+              ]}
+              wrapper="h2"
+              speed={50}
+              className="text-2xl sm:text-3xl md:text-4xl text-gray-400 font-light"
+              repeat={Infinity}
+            />
           </div>
-        </div>
-        <div className="bg-[#ffffff] font-poppins mt-20 md:mt-40 lg:mt-100 text-black p-5 md:p-10 flex justify-center items-center flex-col gap-10 hidden md:block">
-          <div className="pt-10 md:pt-20 lg:pt-30 px-5 md:px-20 lg:px-30 mb-10 md:mb-20 lg:mb-35 text-center font-semibold text-2xl md:text-3xl lg:text-4xl">
-            <p>
-              <span className="font-nerko text-3xl md:text-4xl lg:text-5xl font-medium">
-                Dasho
-              </span>{" "}
-              empowers organizers, judges, and participants with interactive
-              dashboards that handle everything — from event registration and
-              attendance to scoring and results. It's your one-stop solution for
-              running hackathons effortlessly and efficiently.
-            </p>
-          </div>
-        </div>
-        <h1
-          id="upcoming-events"
-          className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-nerko mt-10 md:mt-20 lg:mt-70 font-bold text-center text-white mb-6 md:mb-8 px-4"
-        >
-          Upcoming Events
-        </h1>
-        <div className="max-w-7xl mx-auto px-4 mb-20 md:mb-30 lg:mb-50 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-            {events.map((event) => (
-              <div
-                key={event._id}
-                onClick={() =>
-                  nav(`/event/${event.eventTitle}`, { state: event })
-                }
-                className="bg-transparent rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl hover:bg-white transition-all duration-300 border border-[#aeaeae4d] group cursor-pointer"
-              >
-                <img
-                  src={event.bannerUrl}
-                  alt={event.eventTitle}
-                  className="w-full h-48 md:h-56 object-cover"
-                />
 
-                <div className="p-4 md:p-5 font-poppins">
-                  <div className="flex items-center justify-between gap-2">
-                    <h2 className="text-xl md:text-2xl font-light font-nerko text-white group-hover:text-black transition-colors duration-300 truncate">
-                      {event.eventTitle}
-                    </h2>
-                    <span className="text-xs md:text-sm text-white group-hover:text-black px-2 py-1 rounded-md font-medium whitespace-nowrap">
-                      {event.cost === "0"
-                        ? "Free"
-                        : `₹${event.cost || "N/A"}`}
-                    </span>
-                  </div>
-
-                  <p className="text-sm md:text-base text-gray-300 group-hover:text-gray-700 transition-colors duration-300 mt-2 line-clamp-3">
-                    {event.description}
-                  </p>
-
-                  <div className="mt-4 flex items-center justify-between text-xs md:text-sm text-gray-300 group-hover:text-gray-600 transition-colors duration-300">
-                    <div className="min-w-0">
-                      <p className="font-medium truncate">{event.venue}</p>
-                      <p className="truncate">{event.startDate}</p>
-                    </div>
-                    <div className="flex items-center gap-2 flex-shrink-0">
-                      <img
-                        src={event.logoUrl}
-                        alt="Logo"
-                        className="w-6 h-6 md:w-8 md:h-8 rounded-full border border-gray-300"
-                      />
-                    </div>
-                  </div>
-
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      nav(`/event/${event.eventId}`);
-                    }}
-                    className="mt-4 md:mt-5 cursor-pointer w-full bg-transparent border border-[#aeaeae4d] group-hover:text-black group-hover:border-[#212121] hover:text-white hover:bg-[#212121] text-white font-semibold py-2 rounded-lg transition duration-200 text-sm md:text-base"
-                  >
-                    View Details
-                  </button>
-                </div>
-              </div>
-            ))}
+          <div className="mt-10 flex items-center justify-center gap-4">
+            <button
+              onClick={() => document.getElementById('upcoming-events').scrollIntoView({ behavior: 'smooth' })}
+              className="px-8 py-4 rounded-xl font-medium text-white bg-white/10 backdrop-blur-md border border-white/10 hover:bg-white/20 transition-all shadow-lg hover:shadow-indigo-500/20"
+            >
+              Explore Events
+            </button>
+            <button
+              onClick={() => nav('/auth')}
+              className="px-8 py-4 rounded-xl font-medium text-white bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-400 hover:to-purple-500 transition-all shadow-lg hover:shadow-indigo-500/40 transform hover:-translate-y-1"
+            >
+              Get Started
+            </button>
           </div>
         </div>
-        <Footer />
       </div>
+
+      {/* Feature Section */}
+      <div className="relative z-10 py-20 bg-gradient-to-b from-transparent via-[#111] to-[#0a0a0a]">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="glass-card rounded-3xl p-8 md:p-12 text-center border border-white/5 shadow-2xl relative overflow-hidden group">
+            <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
+            <h3 className="text-2xl md:text-4xl font-semibold text-white leading-relaxed">
+              <span className="font-nerko text-indigo-400 text-4xl md:text-5xl mr-2">Dasho</span>
+              empowers organizers, judges, and participants with interactive
+              dashboards that handle everything.
+            </h3>
+            <p className="mt-6 text-gray-400 text-lg">From event registration and attendance to scoring and results. It's your one-stop solution.</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Events Section */}
+      <div id="upcoming-events" className="relative z-10 pb-32 pt-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col md:flex-row justify-between items-end mb-12 border-b border-white/10 pb-6">
+            <div>
+              <h2 className="text-4xl md:text-6xl font-nerko font-bold text-white tracking-tight">
+                Upcoming Events
+              </h2>
+              <p className="text-gray-400 mt-2">Discover and participate in top-tier hackathons.</p>
+            </div>
+          </div>
+
+          {loading ? (
+            <div className="flex justify-center items-center py-20">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-500"></div>
+            </div>
+          ) : events.length === 0 ? (
+            <div className="text-center py-20 glass-card rounded-2xl">
+              <p className="text-gray-400 text-lg">No upcoming events found. Check back later!</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {events.map((event) => (
+                <div
+                  key={event._id}
+                  onClick={() => nav(`/event/${event.eventId}`)}
+                  className="glass-card rounded-2xl overflow-hidden group cursor-pointer flex flex-col h-full"
+                >
+                  <div className="relative h-56 overflow-hidden">
+                    <img
+                      src={event.bannerUrl}
+                      alt={event.eventTitle}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#151515] via-transparent to-transparent opacity-80"></div>
+
+                    <div className="absolute top-4 right-4">
+                      <span className="px-3 py-1 rounded-full text-xs font-semibold backdrop-blur-md bg-black/50 border border-white/20 text-white shadow-lg">
+                        {event.cost === "0" || !event.cost ? "Free" : `₹${event.cost}`}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="p-6 flex-1 flex flex-col">
+                    <div className="flex items-start justify-between gap-4 mb-3">
+                      <h3 className="text-2xl font-nerko text-white font-medium truncate group-hover:text-indigo-400 transition-colors">
+                        {event.eventTitle}
+                      </h3>
+                      {event.logoUrl && (
+                        <img
+                          src={event.logoUrl}
+                          alt="Logo"
+                          className="w-10 h-10 rounded-full border-2 border-white/10 bg-white/5 object-contain flex-shrink-0 shadow-md group-hover:border-indigo-400 transition-colors"
+                        />
+                      )}
+                    </div>
+
+                    <p className="text-sm text-gray-400 line-clamp-2 mb-6 flex-1">
+                      {event.description}
+                    </p>
+
+                    <div className="space-y-2 mt-auto">
+                      <div className="flex items-center text-xs text-gray-400 gap-2">
+                        <span className="text-indigo-400">📍</span>
+                        <span className="truncate">{event.venue}</span>
+                      </div>
+                      <div className="flex items-center text-xs text-gray-400 gap-2">
+                        <span className="text-indigo-400">📅</span>
+                        <span>{event.startDate}</span>
+                      </div>
+                    </div>
+
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        nav(`/event/${event.eventId}`);
+                      }}
+                      className="mt-6 w-full py-3 rounded-xl bg-white/5 border border-white/10 text-white font-medium group-hover:bg-indigo-600 group-hover:border-indigo-500 transition-all duration-300 shadow-lg group-hover:shadow-indigo-500/25"
+                    >
+                      View Details
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+
+      <Footer />
     </div>
   );
 }

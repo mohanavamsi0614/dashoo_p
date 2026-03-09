@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { CheckCircle, AlertCircle, Mail, CreditCard, X } from "lucide-react";
+import { CheckCircle, AlertCircle, Mail, CreditCard, X, Copy } from "lucide-react";
 
 export default function RegistrationSuccessPopup({ isOpen, onClose, data }) {
     const [timeLeft, setTimeLeft] = useState(10);
@@ -23,7 +23,7 @@ export default function RegistrationSuccessPopup({ isOpen, onClose, data }) {
 
     if (!isOpen || !data) return null;
 
-    const { payment, mail, message, user, team } = data;
+    const { payment, mail, message, user, team, teamCode } = data;
 
     // Determine the content based on the flags
     let title = "Registration Successful!";
@@ -88,16 +88,38 @@ export default function RegistrationSuccessPopup({ isOpen, onClose, data }) {
                             </div>
 
                             <h2 className="text-2xl font-bold text-white mb-2">{title}</h2>
-                            <p className="text-gray-400 mb-8 leading-relaxed">
+                            <p className="text-gray-400 mb-6 leading-relaxed">
                                 {description}
                             </p>
+
+                            {teamCode && (
+                                <div className="mb-8 w-full bg-[#111] border border-white/10 rounded-xl p-4 shadow-inner text-left">
+                                    <p className="text-xs text-gray-500 uppercase tracking-wider mb-2 font-semibold">Your Team Code</p>
+                                    <div className="flex items-center justify-between bg-black/50 p-3 rounded-lg border border-white/5">
+                                        <span className="font-mono text-2xl tracking-widest text-indigo-400 font-bold ml-2">
+                                            {teamCode}
+                                        </span>
+                                        <button
+                                            onClick={() => {
+                                                navigator.clipboard.writeText(teamCode);
+                                                alert("Team code copied!");
+                                            }}
+                                            className="p-2 bg-white/5 hover:bg-white/10 rounded-md text-gray-400 hover:text-white transition-colors border border-white/5"
+                                            title="Copy Code"
+                                        >
+                                            <Copy size={18} />
+                                        </button>
+                                    </div>
+                                    <p className="text-xs text-indigo-400/80 mt-2">Share this code with your members so they can join.</p>
+                                </div>
+                            )}
 
                             <button
                                 onClick={onClose}
                                 disabled={timeLeft > 0}
                                 className={`w-full py-3 px-6 rounded-xl font-semibold text-white shadow-lg transition-all transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:hover:scale-100 disabled:cursor-not-allowed ${type === 'warning'
-                                        ? "bg-yellow-600 hover:bg-yellow-700 shadow-yellow-500/20"
-                                        : "bg-indigo-600 hover:bg-indigo-700 shadow-indigo-500/20"
+                                    ? "bg-yellow-600 hover:bg-yellow-700 shadow-yellow-500/20"
+                                    : "bg-indigo-600 hover:bg-indigo-700 shadow-indigo-500/20"
                                     }`}
                             >
                                 {timeLeft > 0 ? `Please wait read the instructions above ${timeLeft}s` : "Continue to Dashboard"}
