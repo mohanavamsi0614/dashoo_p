@@ -1,7 +1,6 @@
 import { useState } from "react";
 import api from "../lib/api";
 import { useLocation, useParams, useNavigate } from "react-router-dom";
-import { BackgroundBeams } from "../components/ui/background-beams";
 import RegistrationSuccessPopup from "../components/RegistrationSuccessPopup";
 
 export default function JoinTeam() {
@@ -72,23 +71,19 @@ export default function JoinTeam() {
         }
     };
 
-    const inputClasses = "w-full bg-[#111] border border-white/10 text-gray-200 rounded-xl p-3 sm:p-4 outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all duration-300 placeholder:text-gray-600 text-sm sm:text-base shadow-inner";
-    const labelClasses = "block text-sm sm:text-base text-gray-300 font-medium mb-1.5 ml-1";
+    const inputClasses = "w-full bg-white border-2 border-black text-black rounded-none p-3 sm:p-4 outline-none focus:ring-0 focus:border-indigo-500 transition-all duration-300 placeholder:font-serif placeholder:italic shadow-[4px_4px_0_0_#000] mb-2";
+    const labelClasses = "block text-sm sm:text-base text-black font-bold uppercase tracking-widest mb-2";
 
     return (
-        <div className="min-h-screen font-poppins bg-[#0a0a0a] flex justify-center items-center px-4 sm:px-6 py-10 sm:py-16 relative overflow-hidden">
-            <BackgroundBeams className="fixed inset-0 z-0 opacity-40" />
-
-            {/* Decorative glows */}
-            <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-600/10 rounded-full blur-[100px] pointer-events-none"></div>
-            <div className="absolute bottom-0 left-0 w-64 h-64 bg-purple-600/10 rounded-full blur-[100px] pointer-events-none"></div>
-
-            <div className="w-full max-w-2xl glass-card rounded-3xl p-6 sm:p-10 relative z-10 shadow-2xl">
-                <div className="text-center mb-10">
-                    <span className="px-4 py-1.5 rounded-full text-xs font-semibold bg-white/5 border border-white/10 text-gray-300 mb-4 inline-block tracking-wider uppercase">Join a Team</span>
-                    <h1 className="text-2xl sm:text-3xl font-bold text-white leading-tight">
+        <div className="min-h-screen font-sans bg-[#f4efe6] flex justify-center items-center px-4 sm:px-6 py-10 pt-28">
+            <div className="w-full max-w-2xl bg-white border-4 border-black p-6 sm:p-10 shadow-[8px_8px_0_0_#000]">
+                <div className="text-center mb-10 border-b-4 border-black pb-8">
+                    <span className="px-3 py-1 text-xs font-bold uppercase tracking-widest bg-black text-white inline-block mb-4">
+                        Join a Team
+                    </span>
+                    <h1 className="text-3xl sm:text-4xl font-bold uppercase tracking-tighter text-black leading-tight">
                         Join Team for{" "}
-                        <span className="font-nerko text-4xl sm:text-5xl font-medium text-gradient text-glow block mt-2">
+                        <span className="font-black text-5xl sm:text-6xl text-[#7a6cf0] block mt-2">
                             {eventTitle || "the event"}
                         </span>
                     </h1>
@@ -101,17 +96,19 @@ export default function JoinTeam() {
                 />
 
                 <form onSubmit={handleSubmit} className="space-y-6">
-                    <div className="bg-white/5 border border-white/10 p-6 rounded-2xl relative overflow-hidden mb-6">
-                        <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/10 blur-[40px] pointer-events-none"></div>
+                    <div className="bg-[#c3cfa1] border-4 border-black p-6 sm:p-8 relative overflow-hidden mb-8 shadow-[4px_4px_0_0_#000]">
+                        <h3 className="font-black uppercase tracking-tighter text-2xl mb-4 border-b-2 border-black pb-2">Connect to a team</h3>
                         <label className={labelClasses}>Team Code <span className="text-red-500">*</span></label>
                         <input
                             type="text"
                             value={teamCode}
                             onChange={(e) => setTeamCode(e.target.value.toUpperCase())}
                             placeholder="e.g. ABCD12"
-                            className={`${inputClasses} font-mono tracking-widest text-lg uppercase`}
+                            className="w-full bg-white border-2 border-black text-black font-mono font-bold tracking-[0.2em] text-2xl uppercase rounded-none p-4 mt-2 outline-none shadow-[2px_2px_0_0_#000] focus:shadow-none focus:translate-x-[2px] focus:translate-y-[2px] transition-all"
                         />
-                        <p className="text-xs text-gray-400 mt-2 ml-1">Ask your team lead for the unique Team Code.</p>
+                        <p className="text-xs font-bold uppercase tracking-widest text-black mt-3 flex items-center gap-2">
+                           <span>ℹ</span> Ask your team lead for the unique Team Code.
+                        </p>
                     </div>
 
                     <div>
@@ -204,8 +201,8 @@ export default function JoinTeam() {
                     </div>
 
                     {state?.other?.length > 0 && (
-                        <div className="pt-4 border-t border-white/10 space-y-6">
-                            <h3 className="text-white font-medium">Additional Information</h3>
+                        <div className="pt-6 border-t-2 border-black space-y-6">
+                            <h3 className="text-black font-black uppercase tracking-tighter text-2xl">Additional Information</h3>
                             {state.other.map((i, idx) => (
                                 <div key={idx}>
                                     <label className={labelClasses}>{i.title}</label>
@@ -218,10 +215,10 @@ export default function JoinTeam() {
                                         />
                                     )}
                                     {i.type === "upload" && (
-                                        <div className="flex items-center gap-2 mt-2">
+                                        <div className="mt-2 bg-[#f4efe6] p-4 border-2 border-black shadow-[4px_4px_0_0_#000]">
                                             <input
                                                 type="file"
-                                                className="block w-full text-sm text-gray-400 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-white/5 file:text-indigo-300 hover:file:bg-white/10 file:transition-colors file:cursor-pointer"
+                                                className="block w-full text-sm font-bold uppercase tracking-widest file:mr-4 file:py-2 file:px-4 file:border-2 file:border-black file:text-sm file:font-bold file:uppercase file:bg-white file:text-black hover:file:bg-[#c3cfa1] file:transition-colors file:cursor-pointer file:shadow-[2px_2px_0_0_#000]"
                                                 onChange={(e) => setForm({ ...form, [i.title]: e.target.files[0] })}
                                             />
                                         </div>
@@ -232,25 +229,25 @@ export default function JoinTeam() {
                     )}
 
                     {error && (
-                        <div className="text-sm sm:text-base text-red-400 bg-red-500/10 border border-red-500/30 p-4 rounded-xl text-center shadow-inner">
+                        <div className="text-sm sm:text-base text-white bg-red-600 border-2 border-black p-4 text-center shadow-[4px_4px_0_0_#000] font-bold uppercase tracking-widest">
                             {error}
                         </div>
                     )}
 
-                    <div className="flex flex-col sm:flex-row gap-4 pt-6 border-t border-white/10">
+                    <div className="flex flex-col sm:flex-row gap-4 pt-8 border-t-4 border-black mt-8">
                         <button
                             type="button"
                             onClick={() => navigate(-1)}
-                            className="px-6 py-3 sm:py-4 rounded-xl border border-white/10 bg-white/5 text-gray-300 hover:bg-white/10 hover:text-white transition-all font-medium text-sm sm:text-base w-full sm:w-1/3 order-2 sm:order-1"
+                            className="px-6 py-4 border-2 border-black bg-white text-black hover:bg-black hover:text-white transition-colors font-black uppercase tracking-widest text-sm shadow-[4px_4px_0_0_#000] w-full sm:w-1/3 order-2 sm:order-1"
                         >
-                            Back
+                            Cancel
                         </button>
                         <button
                             type="submit"
                             disabled={loading}
-                            className="flex-1 px-6 py-3 sm:py-4 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-400 hover:to-purple-500 text-white font-bold transition-all shadow-lg hover:shadow-indigo-500/40 text-sm sm:text-base disabled:opacity-50 disabled:cursor-not-allowed transform hover:-translate-y-1 w-full order-1 sm:order-2"
+                            className="flex-1 px-6 py-4 bg-[#7a6cf0] border-2 border-black hover:bg-[#c3cfa1] text-black font-black uppercase tracking-widest shadow-[4px_4px_0_0_#000] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all text-sm disabled:opacity-50 disabled:cursor-not-allowed order-1 sm:order-2"
                         >
-                            {loading ? "Joining Team..." : "Join Team"}
+                            {loading ? "Joining..." : "Join Team"}
                         </button>
                     </div>
                 </form>

@@ -5,6 +5,7 @@ import Home from "./pages/Home";
 import Auth from "./pages/Auth";
 import Profile from "./pages/Profile";
 import Event from "./pages/Event";
+import Events from "./pages/Events";
 import Reg from "./pages/Reg";
 import JoinTeam from "./pages/JoinTeam";
 
@@ -40,6 +41,12 @@ function App() {
           path="/"
           element={
             <Home />
+          }
+        />
+        <Route
+          path="/events"
+          element={
+            <Events />
           }
         />
         <Route

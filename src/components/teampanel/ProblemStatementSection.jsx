@@ -1,23 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { FileText } from 'lucide-react';
-import StylePopup from './StylePopup';
+import React, { useState } from 'react';
 import ProblemDescriptionModal from './ProblemDescriptionModal';
 
-const ProblemStatementSection = ({ styles, PS, eventId, team, onSelectPS, isSubmitting }) => {
-    const [customStyle, setCustomStyle] = useState({
-        backgroundColor: styles?.backgroundColor || '#000000',
-        color: styles?.color || '#ffffff',
-        font: styles?.font || 'inherit',
-        backgroundImage: styles?.backgroundImage || 'none',
-    });
-
-    // State for modal
+const ProblemStatementSection = ({ PS, team, onSelectPS, isSubmitting }) => {
     const [selectedPS, setSelectedPS] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
-
-    const handleStyleUpdate = (key, value) => {
-        setCustomStyle(prev => ({ ...prev, [key]: value }));
-    };
 
     const handlePSClick = (ps) => {
         setSelectedPS(ps);
@@ -27,26 +13,12 @@ const ProblemStatementSection = ({ styles, PS, eventId, team, onSelectPS, isSubm
     const handlePSSelect = async (ps) => {
         if (onSelectPS) {
             await onSelectPS(ps);
-            setIsModalOpen(false); // Close modal after selection
+            setIsModalOpen(false); 
         }
     };
 
     return (
-        <div
-            className="rounded-2xl border border-gray-800 p-6 mb-8 transition-all relative group"
-            style={{
-                backgroundColor: customStyle.backgroundColor,
-                color: customStyle.color,
-                fontFamily: customStyle.font,
-                backgroundImage: customStyle.backgroundImage ? `url(${customStyle.backgroundImage})` : 'none',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-
-            }}
-        >
-            <StylePopup currentStyles={customStyle} onUpdate={handleStyleUpdate} />
-
-            {/* Modal Component */}
+        <div className="bg-white border-4 border-black p-6 sm:p-8 mb-8 shadow-[8px_8px_0_0_#000] text-black transition-all">
             <ProblemDescriptionModal
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
@@ -55,49 +27,50 @@ const ProblemStatementSection = ({ styles, PS, eventId, team, onSelectPS, isSubm
                 isSubmitting={isSubmitting}
             />
 
-            <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
-                <FileText className="w-5 h-5 opacity-70" />
+            <h2 className="text-3xl font-black uppercase tracking-tighter mb-6 flex items-center gap-3 border-b-4 border-black pb-4">
+                <span className="w-4 h-4 bg-yellow-400 border-2 border-black inline-block"></span>
                 Problem Statement
             </h2>
-            <div className="p-6 bg-gray-900/50 rounded-xl border border-gray-800 min-h-[150px] flex items-center justify-center text-center opacity-60 text-gray-400">
+            
+            <div className="p-6 bg-[#f4efe6] border-4 border-black min-h-[150px] flex items-center justify-center text-center shadow-[4px_4px_0_0_#000]">
                 {team?.PS ? (
                     <div
                         onClick={() => handlePSClick(team.PS)}
-                        className="cursor-pointer hover:opacity-80 transition-opacity"
+                        className="cursor-pointer hover:-translate-y-1 transition-transform w-full bg-white border-4 border-black p-6 shadow-[4px_4px_0_0_#000]"
                     >
-                        <h3 className="text-lg font-semibold text-white">
+                        <h3 className="text-2xl font-black uppercase tracking-tighter text-black mb-2">
                             {team.PS.title}
                         </h3>
-                        <p className="text-sm text-gray-300">
+                        <p className="font-serif italic text-sm text-gray-800 line-clamp-2">
                             {team.PS.description}
                         </p>
-                        <div className="mt-2 text-xs text-blue-400">
+                        <div className="mt-4 inline-block px-3 py-1 bg-black text-white font-bold uppercase tracking-widest text-xs border-2 border-black">
                             Click to view full description
                         </div>
                     </div>
                 ) : (
                     PS?.length ? (
-                        <div className="w-full space-y-4">
+                        <div className="w-full space-y-6">
                             {PS.map((ps, index) => (
                                 <div
                                     key={index}
                                     onClick={() => handlePSClick(ps)}
-                                    className="p-4 rounded-lg bg-gray-800/50 hover:bg-gray-800 border border-gray-700/50 hover:border-gray-600 cursor-pointer transition-all hover:scale-[1.01] text-left group/item"
+                                    className="p-6 bg-white border-4 border-black hover:-translate-y-1 hover:shadow-none shadow-[6px_6px_0_0_#000] cursor-pointer transition-all text-left group"
                                 >
-                                    <h2 className="text-lg font-semibold text-white mb-1 group-hover/item:text-blue-400 transition-colors">
+                                    <h2 className="text-2xl font-black uppercase tracking-tighter text-black mb-2 group-hover:text-[#7a6cf0] transition-colors">
                                         {ps.title}
                                     </h2>
-                                    <p className="text-sm text-gray-400 line-clamp-2">
+                                    <p className="font-serif italic text-sm text-gray-800 line-clamp-2">
                                         {ps.description}
                                     </p>
-                                    <div className="mt-2 text-xs text-blue-400 opacity-0 group-hover/item:opacity-100 transition-opacity">
+                                    <div className="mt-4 inline-block px-3 py-1 bg-black text-white font-bold uppercase tracking-widest text-xs border-2 border-black group-hover:bg-[#7a6cf0] transition-colors">
                                         Click to view details
                                     </div>
                                 </div>
                             ))}
                         </div>
                     ) : (
-                        <p>No Problem Statement</p>
+                        <p className="font-black uppercase tracking-widest text-2xl text-gray-400">No Problem Statement</p>
                     )
                 )}
             </div>
