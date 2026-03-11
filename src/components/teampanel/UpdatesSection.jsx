@@ -1,43 +1,19 @@
-import { Bell } from 'lucide-react';
-import { useState } from 'react';
-import StylePopup from './StylePopup';
+import React from 'react';
 
-const UpdatesSection = ({ styles, html }) => {
-    const [customStyle, setCustomStyle] = useState({
-        backgroundColor: styles?.backgroundColor || '#000000',
-        color: styles?.color || '#ffffff',
-        font: styles?.font || 'inherit',
-        backgroundImage: styles?.backgroundImage || 'none',
-    });
-
-    const handleStyleUpdate = (key, eventId, value) => {
-        setCustomStyle(prev => ({ ...prev, updates: { ...prev.updates, [key]: value } }));
-    };
-
+const UpdatesSection = ({ html }) => {
     return (
-        <div
-            className="rounded-2xl border border-gray-800 p-6 mb-8 transition-all relative group"
-            style={{
-                backgroundColor: customStyle.backgroundColor,
-                color: customStyle.color,
-                fontFamily: customStyle.font,
-                backgroundImage: customStyle.backgroundImage ? `url(${customStyle.backgroundImage})` : 'none',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-
-            }}
-        >
-            <StylePopup currentStyles={customStyle} onUpdate={handleStyleUpdate} />
-
-            <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
-                <Bell className="w-5 h-5 opacity-70" />
+        <div className="bg-[#c3cfa1] border-4 border-black p-6 sm:p-8 mb-8 shadow-[8px_8px_0_0_#000] text-black transition-all">
+            <h2 className="text-3xl font-black uppercase tracking-tighter mb-6 flex items-center gap-3 border-b-4 border-black pb-4">
+                <span className="w-4 h-4 bg-white border-2 border-black inline-block"></span>
                 Updates & Announcements
             </h2>
-            <div dangerouslySetInnerHTML={{ __html: html }}>
+            <div 
+                className="bg-white border-4 border-black p-6 shadow-[4px_4px_0_0_#000] prose max-w-none text-black font-sans"
+                dangerouslySetInnerHTML={{ __html: html }}
+            >
             </div>
         </div>
     );
 };
 
 export default UpdatesSection;
-

@@ -1,32 +1,28 @@
 import GoogleAuth from "../config/firebase";
-import { BackgroundBeams } from "../components/ui/background-beams";
 import { Link } from "react-router-dom";
 
 function Auth() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-[#0a0a0a] text-white p-4 sm:p-6 relative overflow-hidden">
-      {/* Abstract background glows */}
-      <div className="absolute top-1/4 -left-20 w-72 h-72 bg-indigo-600/30 rounded-full blur-[100px]"></div>
-      <div className="absolute bottom-1/4 -right-20 w-72 h-72 bg-purple-600/30 rounded-full blur-[100px]"></div>
-
-      <BackgroundBeams className="fixed inset-0 z-0 opacity-60" />
-
-      <div className="glass-card p-6 sm:p-10 md:p-12 rounded-3xl font-poppins w-full max-w-md relative z-10 flex flex-col items-center text-center">
-        <Link to="/" className="w-16 h-16 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-500 flex items-center justify-center shadow-lg shadow-indigo-500/30 mb-6 hover:scale-105 transition-transform">
-          <span className="text-white font-bold text-3xl font-nerko">D</span>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-[#f4efe6] text-black p-4 sm:p-6 font-sans">
+      <div className="border border-black bg-white p-8 sm:p-12 md:p-16 rounded-3xl w-full max-w-lg relative flex flex-col items-center text-center shadow-[8px_8px_0_0_#000]">
+        
+        <Link to="/" className="w-16 h-16 rounded-full bg-black flex items-center justify-center mb-8 hover:scale-105 transition-transform shadow-[4px_4px_0_0_rgba(0,0,0,0.2)]">
+          <span className="text-white font-bold text-3xl font-serif italic">D</span>
         </Link>
-        <h1 className="text-2xl sm:text-3xl md:text-3xl font-medium mb-3 text-gray-200">
-          Welcome back to
+        
+        <h1 className="text-2xl sm:text-3xl font-bold uppercase tracking-widest mb-2 border-b-2 border-black pb-2 px-4 inline-block">
+          Welcome back
         </h1>
-        <h2 className="font-nerko text-4xl sm:text-5xl md:text-6xl text-gradient text-glow mb-8">
+        
+        <h2 className="font-black uppercase text-5xl sm:text-6xl md:text-7xl tracking-tighter mb-10">
           Dasho
         </h2>
 
-        <div className="w-full">
+        <div className="w-full flex justify-center border-t border-black pt-8">
           <GoogleAuth />
         </div>
 
-        <p className="mt-8 text-xs text-gray-500 max-w-[250px]">
+        <p className="mt-8 text-xs font-serif italic text-gray-700 max-w-[250px]">
           By continuing, you agree to Dasho's Terms of Service and Privacy Policy.
         </p>
       </div>

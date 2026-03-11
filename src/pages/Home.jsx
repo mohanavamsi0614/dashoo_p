@@ -1,190 +1,241 @@
-import api from "../lib/api";
-import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import Navbar from "../components/Navbar";
-import { TypeAnimation } from "react-type-animation";
-import { BackgroundBeams } from "../components/ui/background-beams";
 import Footer from "../components/Footer";
+import { useState } from "react";
 
 function Home() {
   const nav = useNavigate();
-  const [events, setEvents] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [openFaq, setOpenFaq] = useState(null);
 
-  useEffect(() => {
-    api
-      .get("/participant/eventslist")
-      .then((response) => {
-        setEvents(response.data.events);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error(err);
-        setLoading(false);
-      });
-  }, []);
+  const toggleFaq = (index) => {
+    if (openFaq === index) {
+      setOpenFaq(null);
+    } else {
+      setOpenFaq(index);
+    }
+  };
 
   return (
-    <div className="bg-[#0a0a0a] min-h-screen font-poppins selection:bg-indigo-500/30">
+    <div className="bg-[#f4efe6] min-h-screen font-sans text-black selection:bg-[#7a6cf0]/30 selection:text-white">
       <Navbar />
 
-      {/* Hero Section */}
-      <div className="relative pt-32 pb-20 md:pt-48 md:pb-32 overflow-hidden">
-        {/* Abstract Glow Background */}
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-indigo-600/20 rounded-full blur-[120px] pointer-events-none mix-blend-screen"></div>
-        <div className="absolute bottom-0 right-1/4 w-[600px] h-[300px] bg-purple-600/20 rounded-full blur-[120px] pointer-events-none mix-blend-screen"></div>
-        <BackgroundBeams className="absolute inset-0 z-0 opacity-50" />
+      {/* HERO SECTION */}
+      <div className="pt-32 pb-20 md:pt-48 md:pb-32 px-6 max-w-7xl mx-auto">
+        
+        <h1 className="text-6xl sm:text-7xl md:text-[9rem] font-black uppercase tracking-tighter leading-[0.85] mb-8">
+          The Dashboard<br />
+          that does it all
+        </h1>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-8">
-            <span className="w-2 h-2 rounded-full bg-indigo-500 animate-pulse"></span>
-            <span className="text-sm font-medium text-gray-300">Next-gen Event Platform</span>
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8">
+          <div className="max-w-md">
+            <p className="font-serif italic text-2xl md:text-3xl text-gray-800 leading-snug">
+              Manage less, achieve more with <span className="font-bold">Dasho</span>. Organize events effortlessly.
+            </p>
+            <div className="mt-8">
+              <button
+                onClick={() => nav("/auth")}
+                className="px-8 py-3 rounded-full font-bold text-white bg-[#7a6cf0] hover:bg-black transition-colors shadow-sm text-sm uppercase tracking-wider"
+              >
+                Get Started
+              </button>
+            </div>
           </div>
-
-          <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold text-white mb-6 leading-tight tracking-tight">
-            The dashboard that does it all <br />
-            <span className="font-nerko text-6xl sm:text-7xl md:text-9xl text-gradient block mt-4 text-glow">
-              Dasho
-            </span>
-          </h1>
-
-          <div className="h-20 sm:h-24 flex items-center justify-center">
-            <TypeAnimation
-              sequence={[
-                "Manage less, achieve more",
-                1500,
-                "Organize gracefully",
-                1500,
-                "Track seamlessly",
-                1500,
-              ]}
-              wrapper="h2"
-              speed={50}
-              className="text-2xl sm:text-3xl md:text-4xl text-gray-400 font-light"
-              repeat={Infinity}
-            />
-          </div>
-
-          <div className="mt-10 flex items-center justify-center gap-4">
-            <button
-              onClick={() => document.getElementById('upcoming-events').scrollIntoView({ behavior: 'smooth' })}
-              className="px-8 py-4 rounded-xl font-medium text-white bg-white/10 backdrop-blur-md border border-white/10 hover:bg-white/20 transition-all shadow-lg hover:shadow-indigo-500/20"
-            >
-              Explore Events
-            </button>
-            <button
-              onClick={() => nav('/auth')}
-              className="px-8 py-4 rounded-xl font-medium text-white bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-400 hover:to-purple-500 transition-all shadow-lg hover:shadow-indigo-500/40 transform hover:-translate-y-1"
-            >
-              Get Started
-            </button>
+          
+          <div className="border border-black p-6 rounded-2xl bg-[#f4efe6] max-w-xs relative md:translate-y-12">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-full bg-black"></div>
+              <div>
+                <p className="font-bold text-sm leading-tight uppercase">Trusted by Orgs</p>
+                <p className="text-xs text-gray-600">Event Organizers</p>
+              </div>
+            </div>
+            <p className="text-sm italic font-serif">
+              "Dasho completely changed how we run our hackathons. It's so much easier now."
+            </p>
           </div>
         </div>
       </div>
 
-      {/* Feature Section */}
-      <div className="relative z-10 py-20 bg-gradient-to-b from-transparent via-[#111] to-[#0a0a0a]">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="glass-card rounded-3xl p-8 md:p-12 text-center border border-white/5 shadow-2xl relative overflow-hidden group">
-            <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
-            <h3 className="text-2xl md:text-4xl font-semibold text-white leading-relaxed">
-              <span className="font-nerko text-indigo-400 text-4xl md:text-5xl mr-2">Dasho</span>
-              empowers organizers, judges, and participants with interactive
-              dashboards that handle everything.
-            </h3>
-            <p className="mt-6 text-gray-400 text-lg">From event registration and attendance to scoring and results. It's your one-stop solution.</p>
+      {/* PROBLEM SECTION */}
+      <section className="py-24 bg-[#c3cfa1] border-y border-black">
+        <div className="max-w-5xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
+          <div>
+            <p className="font-serif italic text-3xl md:text-5xl leading-tight text-gray-900 mb-8">
+              Running Hackathons can feel like a rollercoaster ride. Compounded when tools fail you.
+            </p>
+            <h2 className="text-5xl md:text-7xl font-black uppercase tracking-tighter">
+              Dasho Won't.
+            </h2>
+          </div>
+          {/* Decorative box */}
+          <div className="h-[300px] bg-black rounded-lg border border-black max-w-md ml-auto w-full relative overflow-hidden">
+             <div className="absolute inset-0 opacity-20 bg-[url('https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=3540&auto=format&fit=crop')] bg-cover bg-center mix-blend-luminosity"></div>
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* Events Section */}
-      <div id="upcoming-events" className="relative z-10 pb-32 pt-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row justify-between items-end mb-12 border-b border-white/10 pb-6">
-            <div>
-              <h2 className="text-4xl md:text-6xl font-nerko font-bold text-white tracking-tight">
-                Upcoming Events
-              </h2>
-              <p className="text-gray-400 mt-2">Discover and participate in top-tier hackathons.</p>
-            </div>
+      {/* FEATURES SECTION 1 */}
+      <section className="py-28 px-6 max-w-7xl mx-auto">
+        <div className="grid md:grid-cols-2 gap-12 items-center">
+          <div>
+            <h2 className="text-6xl md:text-7xl font-black uppercase tracking-tighter leading-[0.85]">
+              Powerful<br/>Event<br/>Tools
+            </h2>
           </div>
-
-          {loading ? (
-            <div className="flex justify-center items-center py-20">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-500"></div>
+          
+          <div className="bg-black text-white p-10 rounded-3xl">
+            <div className="flex justify-between items-center mb-10 pb-6 border-b border-gray-800">
+              <h3 className="font-serif italic text-3xl">Dasho Features</h3>
+              <div className="w-12 h-6 bg-white rounded-full flex items-center px-1">
+                <div className="w-4 h-4 rounded-full bg-black ml-auto"></div>
+              </div>
             </div>
-          ) : events.length === 0 ? (
-            <div className="text-center py-20 glass-card rounded-2xl">
-              <p className="text-gray-400 text-lg">No upcoming events found. Check back later!</p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {events.map((event) => (
-                <div
-                  key={event._id}
-                  onClick={() => nav(`/event/${event.eventId}`)}
-                  className="glass-card rounded-2xl overflow-hidden group cursor-pointer flex flex-col h-full"
-                >
-                  <div className="relative h-56 overflow-hidden">
-                    <img
-                      src={event.bannerUrl}
-                      alt={event.eventTitle}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#151515] via-transparent to-transparent opacity-80"></div>
-
-                    <div className="absolute top-4 right-4">
-                      <span className="px-3 py-1 rounded-full text-xs font-semibold backdrop-blur-md bg-black/50 border border-white/20 text-white shadow-lg">
-                        {event.cost === "0" || !event.cost ? "Free" : `₹${event.cost}`}
-                      </span>
+            
+            <div className="space-y-6">
+              {[
+                { title: "Registration", desc: "Automated team creation & signups." },
+                { title: "Attendance", desc: "Track participant check-ins live." },
+                { title: "Judging", desc: "Score projects via structured panels." },
+                { title: "Results", desc: "Calculate winners automatically." }
+              ].map((feat, i) => (
+                 <div key={i} className="flex gap-6 border-b border-gray-800 pb-6 last:border-0 last:pb-0">
+                    <div className="text-gray-500 font-mono text-xs w-24 shrink-0 mt-1 uppercase">0{i+1} Feature</div>
+                    <div>
+                      <h4 className="font-bold text-lg mb-1">{feat.title}</h4>
+                      <p className="text-gray-400 text-sm">{feat.desc}</p>
                     </div>
-                  </div>
-
-                  <div className="p-6 flex-1 flex flex-col">
-                    <div className="flex items-start justify-between gap-4 mb-3">
-                      <h3 className="text-2xl font-nerko text-white font-medium truncate group-hover:text-indigo-400 transition-colors">
-                        {event.eventTitle}
-                      </h3>
-                      {event.logoUrl && (
-                        <img
-                          src={event.logoUrl}
-                          alt="Logo"
-                          className="w-10 h-10 rounded-full border-2 border-white/10 bg-white/5 object-contain flex-shrink-0 shadow-md group-hover:border-indigo-400 transition-colors"
-                        />
-                      )}
-                    </div>
-
-                    <p className="text-sm text-gray-400 line-clamp-2 mb-6 flex-1">
-                      {event.description}
-                    </p>
-
-                    <div className="space-y-2 mt-auto">
-                      <div className="flex items-center text-xs text-gray-400 gap-2">
-                        <span className="text-indigo-400">📍</span>
-                        <span className="truncate">{event.venue}</span>
-                      </div>
-                      <div className="flex items-center text-xs text-gray-400 gap-2">
-                        <span className="text-indigo-400">📅</span>
-                        <span>{event.startDate}</span>
-                      </div>
-                    </div>
-
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        nav(`/event/${event.eventId}`);
-                      }}
-                      className="mt-6 w-full py-3 rounded-xl bg-white/5 border border-white/10 text-white font-medium group-hover:bg-indigo-600 group-hover:border-indigo-500 transition-all duration-300 shadow-lg group-hover:shadow-indigo-500/25"
-                    >
-                      View Details
-                    </button>
-                  </div>
-                </div>
+                 </div>
               ))}
             </div>
-          )}
+          </div>
         </div>
-      </div>
+      </section>
+
+      {/* FEATURES SECTION 2 (Core Belief styled) */}
+      <section className="py-24 bg-[#c3cfa1] border-y border-black">
+        <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-[1fr_2fr] gap-12">
+          
+          <h2 className="text-6xl md:text-7xl font-black uppercase tracking-tighter leading-[0.85]">
+            Core<br/>Platform
+          </h2>
+          
+          <div>
+            <p className="font-serif italic text-3xl mb-12 text-gray-900 border-b border-black pb-8">
+              Deep organization features coupled with solid infrastructure for reliable event operations.
+            </p>
+            
+            <div className="grid md:grid-cols-2 gap-8 items-start relative">
+              <div className="border border-black p-8 rounded-2xl bg-[#c3cfa1]">
+                <div className="flex items-center gap-2 mb-4">
+                  <div className="w-8 h-8 rounded-full border border-black flex items-center justify-center text-xs">A</div>
+                  <h4 className="font-bold uppercase text-sm tracking-wide">Live Leaderboards</h4>
+                </div>
+                <h3 className="font-serif italic text-2xl mb-4">How do we track scores?</h3>
+                <ul className="text-sm space-y-2 list-disc pl-5">
+                  <li>Display rankings instantly.</li>
+                  <li>Real-time judging updates.</li>
+                  <li>Public and private view modes.</li>
+                </ul>
+              </div>
+
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 bg-[#c3cfa1] border border-black rounded-full hidden md:flex items-center justify-center z-10">
+                 <div className="w-8 h-8 rounded-full border border-black flex items-center justify-center text-[10px]">⚖️</div>
+              </div>
+
+              <div className="border border-black p-8 rounded-2xl bg-[#c3cfa1]">
+                <div className="flex items-center gap-2 mb-4">
+                  <div className="w-8 h-8 rounded-full border border-black flex items-center justify-center text-xs">B</div>
+                  <h4 className="font-bold uppercase text-sm tracking-wide">Team Management</h4>
+                </div>
+                <h3 className="font-serif italic text-2xl mb-4">How do we organize?</h3>
+                <ul className="text-sm space-y-2 list-disc pl-5">
+                  <li>Organize submissions easily.</li>
+                  <li>Drag and drop participants.</li>
+                  <li>Mentor assignment portals.</li>
+                </ul>
+              </div>
+            </div>
+            
+            <div className="text-center mt-12">
+               <button onClick={() => nav("/auth")} className="px-6 py-2 rounded-full border border-black text-xs font-bold uppercase tracking-wider hover:bg-black hover:text-white transition-colors">
+                 See All Features
+               </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ROLES SECTION */}
+      <section className="py-28 px-6 max-w-7xl mx-auto">
+        <h2 className="text-6xl md:text-8xl font-black uppercase tracking-tighter leading-[0.85] mb-16 md:mb-24">
+          Built for<br/>Everyone
+        </h2>
+
+        <div className="grid md:grid-cols-3 gap-8">
+          {[
+            { title: "Organizers", desc: "Manage participants, track attendance, and run events smoothly from one dashboard." },
+            { title: "Judges", desc: "Evaluate projects easily with structured judging rubrics and automated score calculation." },
+            { title: "Participants", desc: "Join events, manage teams, submit projects, and view results in real time." }
+          ].map((role, i) => (
+             <div key={i} className="text-center">
+               <div className="border-t border-black pt-6 mb-8 mt-12">
+                  <h3 className="font-serif italic text-2xl mb-4">{role.title}</h3>
+                  <p className="text-sm text-gray-600 max-w-xs mx-auto">{role.desc}</p>
+               </div>
+             </div>
+          ))}
+        </div>
+      </section>
+
+      {/* FAQS / HOW IT WORKS */}
+      <section className="py-24 max-w-4xl mx-auto px-6 border-t border-black">
+        <div className="grid md:grid-cols-[1fr_2fr] gap-12">
+           <h2 className="text-5xl font-black uppercase tracking-tighter">
+             How it<br/>Works
+           </h2>
+           
+           <div className="space-y-0 border-t border-black">
+             {[
+               "1. Create Event",
+               "2. Participants Register",
+               "3. Judges Evaluate",
+               "4. Results Generated"
+             ].map((step, i) => (
+                <div key={i} className="border-b border-black">
+                  <button 
+                    onClick={() => toggleFaq(i)}
+                    className="w-full py-6 flex justify-between items-center text-left hover:bg-black/5 px-4 transition-colors"
+                  >
+                    <span className="font-serif italic text-xl">{step}</span>
+                    <span className="text-2xl font-light">{openFaq === i ? '−' : '+'}</span>
+                  </button>
+                  {openFaq === i && (
+                    <div className="px-4 pb-6 text-sm text-gray-600">
+                      Dasho simplifies this step with powerful automation and an intuitive interface designed specifically for this task.
+                    </div>
+                  )}
+                </div>
+             ))}
+           </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="py-32 bg-[#7a6cf0] text-center px-6">
+         <h2 className="text-5xl md:text-8xl font-black uppercase tracking-tighter text-white mb-6">
+           Ready for<br/>an Uplift?
+         </h2>
+         <p className="font-serif italic text-white text-xl md:text-2xl mb-12 max-w-2xl mx-auto">
+           Organize hackathons effortlessly and become the event coordinator your community needs.
+         </p>
+         <button
+           onClick={() => nav("/auth")}
+           className="px-10 py-4 rounded-full font-bold text-white bg-black hover:bg-gray-800 transition-colors uppercase tracking-wider text-sm shadow-[0_4px_0_0_rgba(255,255,255,0.2)]"
+         >
+           Get Started Now
+         </button>
+      </section>
 
       <Footer />
     </div>

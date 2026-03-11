@@ -1,74 +1,47 @@
-import React, { useState } from 'react';
-import { Check, Loader2, Camera, X } from 'lucide-react';
-import StylePopup from './StylePopup';
+import React from 'react';
 
-const AttendanceSection = ({ team, attd, currAttd, onMarkAttendance, styles, eventId }) => {
-    const [customStyle, setCustomStyle] = useState({
-        backgroundColor: styles?.backgroundColor || '#000000',
-        color: styles?.color || '#ffffff',
-        font: styles?.font || 'inherit',
-        backgroundImage: styles?.backgroundImage || 'none',
-    });
-
-    const handleStyleUpdate = (key, value) => {
-        // localStorage.setItem(`${eventId}-styles`, JSON.stringify({ ...styles, attendance: { ...styles.attendance, [key]: value } }));
-        setCustomStyle(prev => ({ ...prev, [key]: value }));
-    };
-
+const AttendanceSection = ({ team, attd, currAttd, onMarkAttendance, eventId }) => {
     const allMembers = [
         { ...team?.lead, role: 'lead', isLead: true },
         ...(team?.members?.map(m => ({ ...m, role: 'member', isLead: false })) || [])
     ];
 
     return (
-        <div
-            className="rounded-2xl border border-gray-800 overflow-hidden mb-8 transition-all relative group"
-            style={{
-                backgroundColor: customStyle.backgroundColor,
-                color: customStyle.color,
-                fontFamily: customStyle.font,
-                backgroundImage: customStyle.backgroundImage,
-                backgroundImage: customStyle.backgroundImage ? `url(${customStyle.backgroundImage})` : 'none',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-
-            }}
-        >
-            <StylePopup currentStyles={customStyle} onUpdate={handleStyleUpdate} />
-
-            <div className="p-6 border-b border-gray-800">
-                <h2 className="text-xl font-bold flex items-center gap-2">
+        <div className="bg-white border-4 border-black overflow-hidden mb-8 shadow-[8px_8px_0_0_#000] text-black">
+            <div className="p-6 sm:p-8 border-b-4 border-black bg-[#f4efe6]">
+                <h2 className="text-3xl font-black uppercase tracking-tighter flex items-center gap-3">
+                    <span className="w-4 h-4 bg-black inline-block"></span>
                     Attendance Record
                 </h2>
             </div>
 
             <div className="overflow-x-auto">
-                <table className="w-full text-left border-collapse">
+                <table className="w-full text-left border-collapse min-w-[600px]">
                     <thead>
-                        <tr className="bg-gray-900/50 border-b border-gray-800">
-                            <th className="p-4 font-semibold text-sm opacity-80 min-w-[200px] text-gray-300">Member</th>
-                            <th className="p-4 font-semibold text-sm opacity-80 text-gray-300">Role</th>
+                        <tr className="bg-[#c3cfa1] border-b-4 border-black">
+                            <th className="p-4 font-black uppercase tracking-widest text-sm border-r-4 border-black w-[40%]">Member</th>
+                            <th className="p-4 font-black uppercase tracking-widest text-sm border-r-4 border-black">Role</th>
                             {attd?.map((sessionId, idx) => (
-                                <th key={idx} className="p-4 font-semibold text-sm opacity-80 min-w-[150px] text-gray-300">
-                                    Session {sessionId}
+                                <th key={idx} className="p-4 font-black uppercase tracking-widest text-sm text-center border-r-2 border-black last:border-r-0">
+                                    S-{sessionId}
                                 </th>
                             ))}
                         </tr>
                     </thead>
                     <tbody>
                         {allMembers.map((member, idx) => (
-                            <tr key={idx} className="border-b border-gray-800 hover:bg-gray-900/30 transition-colors">
-                                <td className="p-4">
+                            <tr key={idx} className="border-b-4 border-black hover:bg-[#f4efe6] transition-colors last:border-b-0">
+                                <td className="p-4 border-r-4 border-black">
                                     <div className="flex items-center gap-3">
-                                        <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${member.isLead ? 'bg-blue-900/50 text-blue-400' : 'bg-indigo-900/50 text-indigo-400'}`}>
+                                        <div className={`w-10 h-10 flex-shrink-0 flex items-center justify-center font-black text-xl border-2 border-black ${member.isLead ? 'bg-black text-white' : 'bg-white text-black'}`}>
                                             {member.name?.charAt(0).toUpperCase()}
                                         </div>
-                                        <span className="font-medium text-gray-200">{member.name}</span>
+                                        <span className="font-bold uppercase tracking-widest text-sm sm:text-base break-all">{member.name}</span>
                                     </div>
                                 </td>
-                                <td className="p-4">
-                                    <span className={`text-xs px-2 py-1 rounded-full font-medium ${member.isLead ? 'bg-blue-900/30 text-blue-300 border border-blue-800' : 'bg-gray-800 text-gray-300 border border-gray-700'}`}>
-                                        {member.isLead ? 'Team Lead' : 'Member'}
+                                <td className="p-4 border-r-4 border-black">
+                                    <span className={`text-xs px-2 py-1 font-black uppercase tracking-widest border-2 border-black inline-block ${member.isLead ? 'bg-[#7a6cf0] text-white' : 'bg-white text-black'}`}>
+                                        {member.isLead ? 'Lead' : 'Member'}
                                     </span>
                                 </td>
                                 {attd?.map((sessionId, sIdx) => {
@@ -78,27 +51,25 @@ const AttendanceSection = ({ team, attd, currAttd, onMarkAttendance, styles, eve
                                     const isOpen = currAttd === sessionId;
 
                                     return (
-                                        <td key={sIdx} className="p-4">
+                                        <td key={sIdx} className="p-4 border-r-2 border-black last:border-r-0 text-center text-xs font-bold uppercase tracking-widest">
                                             {statusObj?.status ? (
-                                                <div className={`flex items-center gap-1.5 text-sm font-medium ${isPresent ? 'text-green-400' : 'text-red-400'}`}>
-                                                    {isPresent ? <Check className="w-4 h-4" /> : <X className="w-4 h-4" />}
+                                                <div className={`inline-block px-2 py-1 border-2 border-black shadow-[2px_2px_0_0_#000] ${isPresent ? 'bg-[#c3cfa1] text-black' : 'bg-red-500 text-white'}`}>
+                                                    {isPresent ? '✓ ' : '✗ '}
                                                     <span className="capitalize">{statusObj.status}</span>
                                                 </div>
                                             ) : isVerifying ? (
-                                                <div className="flex items-center gap-1.5 text-amber-400 text-sm font-medium">
-                                                    <Loader2 className="w-4 h-4 animate-spin" />
-                                                    <span>Verifying</span>
+                                                <div className="inline-block px-2 py-1 bg-yellow-400 border-2 border-black shadow-[2px_2px_0_0_#000] animate-pulse">
+                                                    Verifying
                                                 </div>
                                             ) : isOpen ? (
                                                 <button
                                                     onClick={() => onMarkAttendance(member, sessionId)}
-                                                    className="flex items-center gap-1.5 px-3 py-1.5 bg-gray-900 border border-gray-700 hover:border-blue-500 hover:text-blue-400 text-gray-400 rounded-lg text-sm transition-all shadow-sm cursor-pointer"
+                                                    className="px-3 py-1 bg-black text-white hover:bg-[#7a6cf0] border-2 border-black shadow-[2px_2px_0_0_#000] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] transition-all cursor-pointer font-black text-xs"
                                                 >
-                                                    <Camera className="w-3.5 h-3.5" />
-                                                    <span>Mark</span>
+                                                    Mark
                                                 </button>
                                             ) : (
-                                                <span className="text-gray-600 text-sm italic">Closed</span>
+                                                <span className="font-serif italic text-gray-500 normal-case">Closed</span>
                                             )}
                                         </td>
                                     );

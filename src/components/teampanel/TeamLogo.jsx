@@ -1,18 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Shield } from 'lucide-react';
-import StylePopup from './StylePopup';
 import api from '@/lib/api';
 
-const TeamLogo = ({ team, styles, eventId }) => {
-    const [customStyle, setCustomStyle] = useState({
-        backgroundColor: styles?.backgroundColor || '#000000',
-        color: styles?.color || '#ffffff'
-    });
+const TeamLogo = ({ team, eventId }) => {
     const [img, setImg] = useState("")
     const wid = useRef()
-    const handleStyleUpdate = (key, value) => {
-        setCustomStyle(prev => ({ ...prev, [key]: value }));
-    };
+    
     useEffect(() => {
         const widget = window.cloudinary.createUploadWidget(
             {
@@ -34,36 +26,29 @@ const TeamLogo = ({ team, styles, eventId }) => {
         );
         wid.current = widget;
     }, [])
+    
     return (
-        <div
-            className="flex flex-col items-center justify-center p-8 rounded-2xl border border-gray-800 h-full transition-all relative group"
-            style={{
-                backgroundColor: customStyle.backgroundColor,
-                color: customStyle.color,
-                backgroundImage: customStyle.backgroundImage ? `url(${customStyle.backgroundImage})` : 'none',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-
-            }}
-        >
-            <StylePopup currentStyles={customStyle} onUpdate={handleStyleUpdate} />
-            <div className="w-48 h-48 bg-gray-900 rounded-full flex items-center justify-center text-blue-500 mb-6 shadow-2xl border-4 border-gray-800 relative overflow-hidden group">
+        <div className="flex flex-col items-center justify-center p-8 bg-[#c3cfa1] border-4 border-black h-full shadow-[8px_8px_0_0_#000] relative group text-black">
+            <h3 className="text-3xl font-black uppercase tracking-tighter mb-8 border-b-4 border-black pb-2 w-full text-center">
+                Team Logo
+            </h3>
+            
+            <div className="w-48 h-48 sm:w-56 sm:h-56 bg-white flex items-center justify-center mb-8 border-4 border-black shadow-[8px_8px_0_0_#000] relative overflow-hidden group">
                 {img || team?.logo ? (
-                    <img src={img || team.logo} alt="Team Logo" className="w-full h-full object-cover rounded-full" />
+                    <img src={img || team.logo} alt="Team Logo" className="w-full h-full object-cover filter grayscale hover:grayscale-0 transition-all duration-500" />
                 ) : (
-                    <div className="flex flex-col items-center gap-3 z-10">
-                        <Shield className="w-20 h-20 opacity-30 group-hover:opacity-50 transition-opacity text-gray-400" />
-                        <button className="px-4 py-1.5 bg-blue-600 hover:bg-blue-500 text-white text-sm font-medium rounded-full transition-all shadow-lg shadow-blue-900/20 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 cursor-pointer"
-                            onClick={() => wid.current.open()}
-                        >
-                            Upload Logo
-                        </button>
+                    <div className="flex flex-col items-center gap-3 z-10 w-full h-full justify-center">
+                        <span className="text-6xl sm:text-8xl opacity-30 group-hover:opacity-100 transition-opacity text-black font-black">?</span>
                     </div>
                 )}
-                <div className="absolute inset-0 rounded-full ring-1 ring-inset ring-white/10"></div>
             </div>
-            <h3 className="text-xl font-semibold text-gray-200 tracking-wide">Team Logo</h3>
-            <button onClick={() => wid.current.open()} className='px-4 py-1.5 bg-blue-600 hover:bg-blue-500 text-white text-sm font-medium rounded-full transition-all shadow-lg shadow-blue-900/20 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 cursor-pointer'>Re-Upload</button>
+            
+            <button 
+                onClick={() => wid.current.open()} 
+                className='px-6 py-3 bg-black text-white hover:bg-[#7a6cf0] font-black uppercase tracking-widest text-sm border-2 border-black transition-all shadow-[4px_4px_0_0_#000] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] cursor-pointer'
+            >
+                {img || team?.logo ? "Re-Upload Logo" : "Upload Logo"}
+            </button>
         </div>
     );
 };

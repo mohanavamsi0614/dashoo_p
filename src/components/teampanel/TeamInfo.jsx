@@ -1,85 +1,58 @@
-import React, { useState, useEffect } from "react";
-import StylePopup from "./StylePopup";
+import React from "react";
 
-const TeamInfo = ({ team, styles, eventId }) => {
-    const [customStyle, setCustomStyle] = useState({
-        backgroundColor: styles?.backgroundColor || "#000000",
-        color: styles?.color || "#ffffff",
-        font: styles?.font || "Inter",
-    });
-
-    const handleStyleUpdate = (key, value) => {
-        setCustomStyle((prev) => ({ ...prev, [key]: value }));
-    };
-
+const TeamInfo = ({ team, eventId }) => {
     return (
-        <div
-            className="rounded-2xl border border-gray-800 p-6 h-full transition-all relative group"
-            style={{
-                backgroundColor: customStyle.backgroundColor,
-                color: customStyle.color,
-                fontFamily: customStyle.font,
-                backgroundImage: customStyle.backgroundImage ? `url(${customStyle.backgroundImage})` : 'none',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                backgroundBlendMode: "difference",
-
-            }}
-        >
-            <StylePopup currentStyles={customStyle} onUpdate={handleStyleUpdate} />
-
-            <h1 className="text-2xl font-bold mb-6 flex items-center gap-2">
-                <span className="w-1 h-8 bg-blue-600 rounded-full"></span>
+        <div className="bg-white border-4 border-black p-6 sm:p-8 h-full shadow-[8px_8px_0_0_#000] text-black">
+            <h1 className="text-3xl font-black uppercase tracking-tighter mb-8 flex items-center gap-3 border-b-4 border-black pb-4">
+                <span className="w-4 h-4 bg-[#7a6cf0] border-2 border-black inline-block"></span>
                 Team Info
             </h1>
 
-            <div className="mb-8">
-                <h2 className="text-xs font-semibold opacity-70 uppercase tracking-wider mb-4 ml-1">
+            <div className="mb-10">
+                <h2 className="text-xs font-bold uppercase tracking-widest mb-2 bg-black text-white inline-block px-2 py-1">
                     Team Name
                 </h2>
-                <h2 className="text-xs font-semibold opacity-70 uppercase tracking-wider mb-4 ml-1">
+                <h2 className="text-2xl font-black uppercase tracking-tighter mb-6 ml-2 break-all">
                     {team.teamName}
                 </h2>
-                <h2 className="text-xs font-semibold opacity-70 uppercase tracking-wider mb-4 ml-1">
+                
+                <h2 className="text-xs font-bold uppercase tracking-widest mb-2 bg-black text-white inline-block px-2 py-1">
                     Team Lead
                 </h2>
-
-                <div className="flex items-center gap-4 p-4 rounded-xl bg-gray-900/30 border border-gray-800">
-                    <div className="w-12 h-12 rounded-full flex items-center justify-center bg-gradient-to-br from-blue-600 to-blue-700 text-white font-bold text-lg">
+                <div className="flex items-center gap-4 p-4 mt-2 bg-[#f4efe6] border-4 border-black shadow-[4px_4px_0_0_#000]">
+                    <div className="w-16 h-16 flex-shrink-0 flex items-center justify-center bg-[#c3cfa1] border-4 border-black text-black font-black text-3xl uppercase">
                         {team?.lead?.name?.charAt(0).toUpperCase()}
                     </div>
-
-                    <div>
-                        <p className="font-semibold text-lg">{team?.lead?.name}</p>
-                        <p className="text-sm opacity-80">{team?.lead?.email}</p>
+                    <div className="min-w-0">
+                        <p className="font-black uppercase tracking-widest text-lg truncate">{team?.lead?.name}</p>
+                        <p className="font-serif italic text-sm truncate">{team?.lead?.email}</p>
                     </div>
                 </div>
             </div>
 
             <div>
-                <h2 className="text-xs font-semibold opacity-70 uppercase tracking-wider mb-4 ml-1">
+                <h2 className="text-xs font-bold uppercase tracking-widest mb-4 bg-black text-white inline-block px-2 py-1">
                     Team Members
                 </h2>
 
-                <div className="space-y-3">
+                <div className="space-y-4 mt-2">
                     {team?.members?.map((member, index) => (
                         <div
                             key={index}
-                            className="flex items-center gap-3 p-3 rounded-xl border border-transparent hover:border-gray-700 hover:bg-gray-900/40"
+                            className="flex items-center gap-4 p-4 bg-white border-4 border-black hover:-translate-y-1 transition-transform shadow-[4px_4px_0_0_#000]"
                         >
-                            <div className="w-10 h-10 rounded-full flex items-center justify-center bg-gray-800 text-gray-300">
+                            <div className="w-12 h-12 flex-shrink-0 flex items-center justify-center bg-gray-200 border-2 border-black text-black font-black text-xl uppercase">
                                 {member.name?.charAt(0).toUpperCase()}
                             </div>
-
-                            <div>
-                                <p className="font-medium">{member.name}</p>
-                                <p className="text-xs opacity-80">{member.email}</p>
+                            <div className="min-w-0">
+                                <p className="font-bold uppercase tracking-widest truncate">{member.name}</p>
+                                <p className="font-serif italic text-xs truncate">{member.email}</p>
                             </div>
                         </div>
                     ))}
 
                     {(!team?.members || team.members.length === 0) && (
-                        <p className="text-gray-500 text-sm italic pl-2">
+                        <p className="font-serif italic p-4 border-2 border-dashed border-black text-center">
                             No members added yet.
                         </p>
                     )}

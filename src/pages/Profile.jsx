@@ -36,19 +36,19 @@ function Profile() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center font-poppins relative overflow-hidden">
-        <div className="w-16 h-16 border-4 border-indigo-500/20 border-t-indigo-500 rounded-full animate-spin"></div>
+      <div className="min-h-screen bg-[#f4efe6] flex items-center justify-center font-sans">
+        <div className="text-4xl font-black uppercase tracking-tighter animate-pulse">Loading...</div>
       </div>
     );
   }
 
   if (!user) {
     return (
-      <div className="min-h-screen bg-[#0a0a0a] flex flex-col items-center justify-center font-poppins text-center p-6">
-        <p className="text-gray-400 text-lg mb-6">No user data available or session expired.</p>
+      <div className="min-h-screen bg-[#f4efe6] flex flex-col items-center justify-center font-sans text-center p-6 text-black">
+        <p className="text-xl font-bold uppercase tracking-widest mb-6">No user data available.</p>
         <button
           onClick={() => navigate("/auth")}
-          className="px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-medium transition-colors"
+          className="px-8 py-3 bg-[#7a6cf0] border border-black text-white font-bold uppercase tracking-widest shadow-[4px_4px_0_0_#000] hover:bg-black transition-colors"
         >
           Login
         </button>
@@ -57,47 +57,42 @@ function Profile() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] font-poppins text-gray-200 px-4 sm:px-6 py-6 sm:py-10 relative overflow-hidden">
-      {/* Abstract Background */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-indigo-600/10 rounded-full blur-[120px] pointer-events-none"></div>
-      <div className="absolute bottom-1/4 left-10 w-72 h-72 bg-purple-600/10 rounded-full blur-[100px] pointer-events-none"></div>
-
-      <div className="max-w-4xl mx-auto mb-6 relative z-10">
+    <div className="min-h-screen bg-[#f4efe6] font-sans text-black px-4 sm:px-6 py-6 sm:py-10 pt-28">
+      <div className="max-w-4xl mx-auto mb-6">
         <BackButton />
       </div>
 
       {/* Profile Header Card */}
-      <div className="max-w-4xl mx-auto glass-card rounded-3xl p-6 sm:p-10 relative z-10">
+      <div className="max-w-4xl mx-auto bg-white border-4 border-black p-6 sm:p-10 shadow-[8px_8px_0_0_#000] mb-16">
         <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6 sm:gap-10">
           <div className="relative">
-            <div className="absolute inset-0 bg-gradient-to-tr from-indigo-500 to-purple-500 rounded-full blur-md opacity-50"></div>
             <img
               src={user.imgUrl || "https://api.dicebear.com/7.x/avataaars/svg?seed=" + user.name}
               alt={user.name}
-              className="w-24 h-24 sm:w-32 sm:h-32 rounded-full object-cover border-4 border-[#0a0a0a] relative z-10 shadow-xl bg-white/5"
+              className="w-32 h-32 sm:w-40 sm:h-40 rounded-full object-cover border-4 border-black bg-[#c3cfa1]"
             />
           </div>
 
           <div className="flex-1 min-w-0 text-center sm:text-left">
-            <h1 className="text-4xl sm:text-5xl font-nerko text-white mb-2 tracking-wide text-glow">
+            <h1 className="text-5xl sm:text-6xl font-black uppercase tracking-tighter leading-none mb-4">
               {user.name}
             </h1>
-            <div className="space-y-1 mb-4">
-              <p className="text-sm sm:text-base text-gray-400 truncate flex items-center justify-center sm:justify-start gap-2">
-                <span className="text-indigo-400">✉</span> {user.email}
+            <div className="space-y-1 mb-6 font-bold uppercase tracking-widest text-sm">
+              <p className="flex items-center justify-center sm:justify-start gap-2">
+                ✉ {user.email}
               </p>
               {user.phone && (
-                <p className="text-sm sm:text-base text-gray-400 flex items-center justify-center sm:justify-start gap-2">
-                  <span className="text-indigo-400">☏</span> {user.phone}
+                <p className="flex items-center justify-center sm:justify-start gap-2">
+                  ☏ {user.phone}
                 </p>
               )}
             </div>
 
-            <p className="mt-2 text-sm sm:text-base text-gray-300 break-words leading-relaxed max-w-2xl">
+            <p className="font-serif italic text-lg leading-relaxed max-w-2xl border-l-[3px] border-black pl-4">
               {user.bio || "No bio provided."}
             </p>
             {user.group && (
-              <p className="mt-3 inline-block px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs text-indigo-300">
+              <p className="mt-4 inline-block px-4 py-2 bg-black text-white font-bold uppercase tracking-widest text-xs border border-white">
                 Group: {user.group}
               </p>
             )}
@@ -110,7 +105,7 @@ function Profile() {
                 localStorage.removeItem("token");
                 navigate("/");
               }}
-              className="px-6 py-2.5 rounded-xl border border-red-500/30 text-red-400 hover:bg-red-500/10 hover:border-red-500 transition-colors font-medium text-sm"
+              className="px-6 py-2 border-2 border-black bg-white hover:bg-red-500 hover:text-white transition-colors font-bold uppercase tracking-widest text-xs shadow-[2px_2px_0_0_#000]"
             >
               Log Out
             </button>
@@ -119,77 +114,71 @@ function Profile() {
       </div>
 
       {/* Registered Events */}
-      <div className="max-w-4xl mx-auto mt-16 relative z-10">
-        <h2 className="text-3xl sm:text-5xl font-nerko text-white mb-8 flex items-center gap-4">
-          <span className="w-10 h-1 bg-indigo-500 rounded-full"></span>
-          Registered Events
+      <div className="max-w-4xl mx-auto">
+        <h2 className="text-4xl sm:text-5xl font-black uppercase tracking-tighter mb-8 border-b-4 border-black pb-2 inline-block">
+          Events
         </h2>
 
         {user.registeredEvents && user.registeredEvents.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {user.registeredEvents.map((event, idx) => {
               const paymentStatus = event.payment;
               return (
                 <div
                   key={idx}
-                  className="glass-card rounded-2xl overflow-hidden group flex flex-col border border-white/5 hover:border-indigo-500/30 transition-colors shadow-lg"
+                  className="bg-white border-2 border-black flex flex-col shadow-[6px_6px_0_0_#000] hover:-translate-y-1 hover:shadow-[8px_8px_0_0_#000] transition-all"
                 >
                   {/* Banner */}
                   {event.bannerUrl && (
-                    <div className="relative h-40 overflow-hidden bg-gray-900">
+                    <div className="relative h-48 border-b-2 border-black overflow-hidden bg-black">
                       <img
                         src={event.bannerUrl}
                         alt={event.eventName}
-                        className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 opacity-80"
+                        className="w-full h-full object-cover filter grayscale hover:grayscale-0 transition-all duration-500 opacity-80"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#151515] via-[#151515]/50 to-transparent"></div>
                     </div>
                   )}
 
                   {/* Content */}
-                  <div className="p-6 flex-1 flex flex-col relative z-10 -mt-6">
-                    {/* Header Details */}
-                    <div className="min-w-0 mb-4 bg-[#0a0a0a]/80 backdrop-blur-md px-4 py-3 rounded-xl border border-white/10 shadow-lg">
-                      <h3 className="text-xl sm:text-2xl font-nerko text-white truncate group-hover:text-indigo-400 transition-colors tracking-wide">
+                  <div className="p-6 flex-1 flex flex-col">
+                    <div className="mb-4">
+                      <h3 className="text-2xl font-black uppercase tracking-tighter mb-2 line-clamp-1">
                         {event.eventName}
                       </h3>
-                      <div className="flex items-center gap-3 mt-1">
-                        <span className={`px-2 py-0.5 rounded border text-[10px] uppercase tracking-wider font-bold ${paymentStatus ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400' : 'bg-red-500/10 border-red-500/30 text-red-400'}`}>
-                          {paymentStatus ? "Paid" : "Pending Payment"}
-                        </span>
-                      </div>
+                      <span className={`inline-block px-3 py-1 border border-black text-xs font-bold uppercase tracking-widest ${paymentStatus ? 'bg-[#c3cfa1]' : 'bg-red-400 text-white'}`}>
+                        {paymentStatus ? "Paid" : "Pending Payment"}
+                      </span>
                     </div>
 
-                    <div className="space-y-3 mb-6 text-sm bg-white/5 p-4 rounded-xl border border-white/5">
+                    <div className="space-y-3 mb-8 font-serif italic text-sm text-gray-800">
                       {event.venue && (
-                        <p className="text-gray-300 flex items-start gap-3">
-                          <span className="text-indigo-400 mt-0.5">📍</span>
-                          <span className="flex-1">{event.venue}</span>
+                        <p className="flex items-start gap-2">
+                          <span className="font-sans not-italic">📍</span> {event.venue}
                         </p>
                       )}
 
                       {event.teamId && (
-                        <p className="text-gray-300 flex items-center gap-3">
-                          <span className="text-purple-400">👥</span>
-                          <span>Team Reference: <span className="font-mono text-xs bg-black/50 px-2 py-1 rounded ml-1 border border-white/5">{event.teamId.slice(-6).toUpperCase()}</span></span>
+                        <p className="flex items-center gap-2">
+                          <span className="font-sans not-italic">👥</span>
+                          Team Ref: <span className="font-mono bg-gray-200 px-1 border border-black font-bold not-italic text-black">{event.teamId.slice(-6).toUpperCase()}</span>
                         </p>
                       )}
                     </div>
 
-                    <div className="flex items-center justify-between pt-4 mt-auto">
+                    <div className="flex items-center justify-between pt-4 mt-auto border-t border-black">
                       <Link
                         to={`/event/${event.eventId}`}
-                        className="text-sm font-medium text-gray-400 hover:text-white transition-colors flex items-center gap-1"
+                        className="font-bold uppercase tracking-widest text-xs hover:underline underline-offset-4"
                       >
-                        View Details <span>→</span>
+                        Details →
                       </Link>
 
                       {!paymentStatus && (
                         <Link
                           to={`/payment/${event.eventId}/${event.teamId}`}
-                          className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-400 hover:to-purple-500 text-white text-sm font-bold shadow-[0_0_15px_rgba(99,102,241,0.3)] transform hover:-translate-y-0.5 transition-all"
+                          className="px-6 py-2 bg-[#7a6cf0] text-white border border-black text-xs font-bold uppercase tracking-widest shadow-[2px_2px_0_0_#000] hover:bg-black hover:text-white transition-colors"
                         >
-                          Pay Now
+                          Pay
                         </Link>
                       )}
                     </div>
@@ -199,27 +188,25 @@ function Profile() {
             })}
           </div>
         ) : (
-          <div className="glass-card p-10 rounded-2xl text-center border border-white/5 border-dashed">
-            <div className="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-4 border border-white/10 text-2xl">
-              🎯
-            </div>
-            <h3 className="text-xl font-medium text-white mb-2">No Events Yet</h3>
-            <p className="text-gray-400 text-sm mb-6 max-w-sm mx-auto">
+          <div className="bg-white border-2 border-black p-12 text-center shadow-[6px_6px_0_0_#000]">
+            <div className="text-5xl mb-4">🎯</div>
+            <h3 className="text-2xl font-black uppercase tracking-tighter mb-2">No Events Yet</h3>
+            <p className="font-serif italic text-gray-700 mb-8 max-w-sm mx-auto">
               You haven't registered or joined any teams for events yet. Explore upcoming opportunities!
             </p>
-            <Link to="/" className="inline-block px-8 py-3 rounded-xl bg-white/10 hover:bg-white text-white hover:text-black font-medium transition-all shadow-lg hover:shadow-[0_0_20px_rgba(255,255,255,0.3)]">
+            <Link to="/" className="inline-block px-8 py-3 bg-black text-white font-bold uppercase tracking-widest text-sm hover:bg-[#7a6cf0] border border-black shadow-[4px_4px_0_0_#000] transition-all">
               Explore Events
             </Link>
           </div>
         )}
       </div>
 
-      <div className="text-center mt-16 sm:mt-24 pb-8 relative z-10 border-t border-white/5 pt-8">
+      <div className="text-center mt-20 border-t-2 border-black pt-8">
         <Link
           to="/"
-          className="text-gray-500 hover:text-white transition-colors text-sm flex items-center justify-center gap-2 group"
+          className="font-bold uppercase tracking-widest text-sm hover:underline underline-offset-4 flex justify-center items-center gap-2"
         >
-          <span className="group-hover:-translate-x-1 transition-transform">←</span> Back to Home
+          <span>←</span> Back Home
         </Link>
       </div>
     </div>

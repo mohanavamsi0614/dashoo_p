@@ -2,8 +2,7 @@ import axios from "axios";
 import api from "../lib/api";
 import Webcam from "react-webcam";
 import { useEffect, useRef, useState } from "react";
-import { useParams } from "react-router";
-import { Shield, LogIn, Loader2, X, Camera } from "lucide-react";
+import { useParams, useNavigate } from "react-router-dom";
 import socket from "@/lib/socket";
 
 // Components
@@ -12,6 +11,7 @@ import TeamLogo from "../components/teampanel/TeamLogo";
 import AttendanceSection from "../components/teampanel/AttendanceSection";
 import ProblemStatementSection from "../components/teampanel/ProblemStatementSection";
 import UpdatesSection from "../components/teampanel/UpdatesSection";
+import BackButton from "../components/BackButton";
 
 
 function Teampanel() {
@@ -25,14 +25,7 @@ function Teampanel() {
     const [HTML, setHtml] = useState("")
     const [currAttd, setCurrAttd] = useState()
     const [PS, setPS] = useState()
-
-    // Customization State
-    const [customization, setCustomization] = useState({
-        header: { backgroundColor: '#000000', color: '#ffffff', font: 'inherit', backgroundImage: 'none' },
-        attendance: { backgroundColor: '#000000', color: '#ffffff', font: 'inherit', backgroundImage: 'none' },
-        problem: { backgroundColor: '#000000', color: '#ffffff', font: 'inherit', backgroundImage: 'none' },
-        updates: { backgroundColor: '#000000', color: '#ffffff', font: 'inherit', backgroundImage: 'none' }
-    });
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (localStorage.getItem(`${eventId}-pass`)) {
@@ -51,25 +44,28 @@ function Teampanel() {
                     console.log(err)
                 })
         }
-        const customization = localStorage.getItem(`${eventId}-styles`)
-        if (customization) {
-            setCustomization(JSON.parse(customization))
+    }, [eventId])
+
+
+    useEffect(() => {
+        socket.on("currAttd", (id) => {
+            setCurrAttd(id)
+        })
+
+        socket.on("attd", (team) => {
+            setTeam(team)
+        })
+
+        socket.on("updateOn", (data) => {
+            setHtml(data)
+        })
+
+        return () => {
+             socket.off("currAttd");
+             socket.off("attd");
+             socket.off("updateOn");
         }
     }, [])
-
-
-    socket.on("currAttd", (id) => {
-        setCurrAttd(id)
-    })
-
-    socket.on("attd", (team) => {
-        setTeam(team)
-    })
-
-    socket.on("updateOn", (data) => {
-        setHtml(data)
-    })
-
 
     const handlePassSubmit = () => {
         api.get("/participant/dashboard/" + eventId + "/" + pass)
@@ -83,6 +79,7 @@ function Teampanel() {
             })
             .catch(err => {
                 console.log(err)
+                alert("Invalid Password")
             })
     }
 
@@ -114,30 +111,32 @@ function Teampanel() {
 
     if (!auth) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-gray-900 p-4">
-                <div className="bg-black p-8 rounded-2xl shadow-xl w-full max-w-md border border-gray-800">
-                    <div className="text-center mb-8">
-                        <div className="bg-blue-900/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 border border-blue-900/50">
-                            <Shield className="w-8 h-8 text-blue-500" />
+            <div className="min-h-screen flex items-center justify-center bg-[#f4efe6] p-4 font-sans text-black pt-28">
+                <div className="absolute top-6 left-6 z-20">
+                    <BackButton />
+                </div>
+                <div className="bg-white p-8 sm:p-10 shadow-[8px_8px_0_0_#000] w-full max-w-md border-4 border-black">
+                    <div className="text-center mb-8 border-b-4 border-black pb-6">
+                        <div className="bg-[#7a6cf0] w-16 h-16 flex items-center justify-center mx-auto mb-4 border-4 border-black shadow-[4px_4px_0_0_#000]">
+                            <span className="text-3xl text-white font-black">?</span>
                         </div>
-                        <h2 className="text-2xl font-bold text-white">Team Access</h2>
-                        <p className="text-gray-400 mt-2">Enter your event password to continue</p>
+                        <h2 className="text-3xl font-black uppercase tracking-tighter">Team Access</h2>
+                        <p className="font-serif italic mt-2 text-gray-800">Enter your event password to continue</p>
                     </div>
-                    <div className="space-y-4">
+                    <div className="space-y-6">
                         <div>
                             <input
                                 type="password"
-                                placeholder="Enter Password"
-                                className="w-full px-4 py-3 rounded-xl border border-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-900/50 outline-none transition-all bg-gray-900 text-white placeholder-gray-600"
+                                placeholder="ENTER PASSWORD"
+                                className="w-full px-4 py-4 border-2 border-black focus:border-[#7a6cf0] focus:ring-0 outline-none transition-all bg-white text-black font-mono font-bold tracking-widest uppercase shadow-[4px_4px_0_0_#000] placeholder:font-serif placeholder:italic placeholder:normal-case placeholder:font-normal"
                                 onChange={(e) => setpass(e.target.value)}
                                 value={pass}
                             />
                         </div>
                         <button
                             onClick={handlePassSubmit}
-                            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-xl transition-colors flex items-center justify-center gap-2 shadow-lg shadow-blue-900/20 cursor-pointer"
+                            className="w-full bg-black hover:bg-[#c3cfa1] hover:text-black text-white font-black uppercase tracking-widest py-4 border-2 border-black transition-all shadow-[4px_4px_0_0_#000] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] cursor-pointer"
                         >
-                            <LogIn className="w-5 h-5" />
                             Access Dashboard
                         </button>
                     </div>
@@ -146,23 +145,23 @@ function Teampanel() {
         )
     }
 
-
-
     return (
-        <div className="min-h-screen bg-black p-6 md:p-12 pb-24">
+        <div className="min-h-screen bg-[#f4efe6] p-4 sm:p-6 md:p-12 pt-28 pb-24 font-sans text-black">
+            <div className="absolute top-6 left-6 z-20">
+                <BackButton />
+            </div>
+
             {team && (
                 <div className="max-w-7xl mx-auto">
                     {/* Top Row: Team Info & Logo */}
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
                         <TeamInfo
                             team={team}
-                            styles={customization.header}
                             eventId={eventId}
                         />
                         <TeamLogo
                             team={team}
                             eventId={eventId}
-                            styles={customization.header}
                         />
                     </div>
 
@@ -173,7 +172,6 @@ function Teampanel() {
                             attd={attd}
                             currAttd={currAttd}
                             onMarkAttendance={handleMarkAttendance}
-                            styles={customization.attendance}
                             eventId={eventId}
                         />
                     </div>
@@ -181,19 +179,16 @@ function Teampanel() {
                     {/* Bottom Rows: Problem Statement & Updates */}
                     <div className="space-y-8">
                         <ProblemStatementSection
-                            styles={customization.problem}
                             PS={PS}
                             eventId={eventId}
                             team={team}
                             onSelectPS={handleSelectPS}
                             isSubmitting={isSubmittingPS}
                         />
-                        <UpdatesSection styles={customization.updates} team={team} eventId={eventId} html={HTML} />
+                        <UpdatesSection team={team} eventId={eventId} html={HTML} />
                     </div>
                 </div>
             )}
-
-
 
             {
                 open && (
@@ -213,14 +208,10 @@ function Teampanel() {
 
 export default Teampanel
 
-
 function Model({ mem, setOpen, setTeam, team, attd, event }) {
     const webcamRef = useRef(null);
     const [isCapturing, setIsCapturing] = useState(false);
     const [loc, setloc] = useState()
-
-
-    console.log(mem)
 
     const attdCapture = async () => {
         setIsCapturing(true);
@@ -232,7 +223,7 @@ function Model({ mem, setOpen, setTeam, team, attd, event }) {
 
             const res = await axios.post(`https://api.cloudinary.com/v1_1/dfseckyjx/image/upload`, formData);
             const updatedattd = { ...mem.attd }
-            let loc = {};
+            let locInfo = {};
             try {
                 const position = await new Promise((resolve, reject) => {
                     navigator.geolocation.getCurrentPosition(resolve, reject);
@@ -240,13 +231,12 @@ function Model({ mem, setOpen, setTeam, team, attd, event }) {
                 const { latitude, longitude } = position.coords;
                 const geoRes = await axios.get(`https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`);
                 console.log(geoRes.data);
-                loc = { longitude, latitude, name: geoRes.data.display_name };
+                locInfo = { longitude, latitude, name: geoRes.data.display_name };
             } catch (err) {
                 console.error("Location error: ", err);
             }
-            updatedattd[attd] = { img: res.data.url, status: "Present", loc: loc }
+            updatedattd[attd] = { img: res.data.url, status: "Present", loc: locInfo }
             const participant = { ...mem, attd: updatedattd }
-            console.log(participant)
             if (mem.role == "lead") {
                 socket.emit("markAttd", { teamId: team._id, team: { ...team, lead: { ...participant } } })
             }
@@ -268,22 +258,22 @@ function Model({ mem, setOpen, setTeam, team, attd, event }) {
 
 
     return (
-        <div className="fixed inset-0 flex items-center justify-center bg-black/80 backdrop-blur-sm z-50 p-4">
-            <div className="bg-gray-900 p-6 rounded-2xl shadow-2xl w-full max-w-md text-center border border-gray-800 animate-in fade-in zoom-in duration-200">
-                <div className="flex justify-between items-center mb-4">
-                    <h1 className="text-xl font-bold text-white">Mark Attendance</h1>
+        <div className="fixed inset-0 flex items-center justify-center bg-[#f4efe6]/90 backdrop-blur-sm z-50 p-4 font-sans text-black">
+            <div className="bg-white p-8 border-4 border-black shadow-[12px_12px_0_0_#000] w-full max-w-md text-center">
+                <div className="flex justify-between items-center mb-6 border-b-4 border-black pb-4">
+                    <h1 className="text-2xl font-black uppercase tracking-tighter">Mark Attendance</h1>
                     <button
                         onClick={() => setOpen(false)}
-                        className="text-gray-400 hover:text-gray-200 cursor-pointer"
+                        className="text-black font-black text-2xl hover:text-red-500 transition-colors cursor-pointer"
                         disabled={isCapturing}
                     >
-                        <X className="w-6 h-6" />
+                        X
                     </button>
                 </div>
 
-                <p className="text-gray-400 mb-4">Capture photo for <span className="font-semibold text-white">{mem.name}</span></p>
+                <p className="font-serif italic mb-6 text-gray-800">Capture photo for <span className="not-italic font-black text-black">{mem.name}</span></p>
 
-                <div className="relative rounded-xl overflow-hidden bg-black aspect-video mb-6 shadow-inner border border-gray-800">
+                <div className="relative border-4 border-black bg-black aspect-video mb-8 shadow-[4px_4px_0_0_#000]">
                     <Webcam
                         audio={false}
                         ref={webcamRef}
@@ -296,23 +286,12 @@ function Model({ mem, setOpen, setTeam, team, attd, event }) {
                     <button
                         onClick={attdCapture}
                         disabled={isCapturing}
-                        className="flex-1 px-4 py-3 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 rounded-xl text-white font-semibold transition-colors flex items-center justify-center gap-2 cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed"
+                        className="w-full px-6 py-4 bg-[#7a6cf0] hover:bg-black text-white border-4 border-black font-black uppercase tracking-widest transition-all shadow-[4px_4px_0_0_#000] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                        {isCapturing ? (
-                            <>
-                                <Loader2 className="w-5 h-5 animate-spin" />
-                                Loading...
-                            </>
-                        ) : (
-                            <>
-                                <Camera className="w-5 h-5" />
-                                Capture & Upload
-                            </>
-                        )}
+                        {isCapturing ? "Processing..." : "Capture & Upload"}
                     </button>
                 </div>
             </div>
         </div>
     );
 }
-
