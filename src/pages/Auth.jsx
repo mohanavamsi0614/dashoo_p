@@ -4,13 +4,9 @@ import { Link } from "react-router-dom";
 function Auth() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-[#f4efe6] text-black p-4 sm:p-6 font-sans">
-      <div className="border border-black bg-white p-8 sm:p-12 md:p-16 rounded-3xl w-full max-w-lg relative flex flex-col items-center text-center shadow-[8px_8px_0_0_#000]">
+      <div className="border-[4px] border-black bg-white p-8 sm:p-12 md:p-16 w-full max-w-2xl relative flex flex-col items-center text-center shadow-[16px_16px_0_0_#000]">
         
-        <Link to="/" className="w-16 h-16 rounded-full bg-black flex items-center justify-center mb-8 hover:scale-105 transition-transform shadow-[4px_4px_0_0_rgba(0,0,0,0.2)]">
-          <span className="text-white font-bold text-3xl font-serif italic">D</span>
-        </Link>
-        
-        <h1 className="text-2xl sm:text-3xl font-bold uppercase tracking-widest mb-2 border-b-2 border-black pb-2 px-4 inline-block">
+        <h1 className="text-2xl sm:text-3xl font-black uppercase tracking-widest mb-4 border-b-[4px] border-black pb-2 px-4 inline-block">
           Welcome back
         </h1>
         
@@ -18,7 +14,7 @@ function Auth() {
           Dasho
         </h2>
 
-        <div className="w-full flex justify-center border-t border-black pt-8">
+        <div className="w-full flex justify-center border-t-[4px] border-black pt-8">
           <GoogleAuth />
         </div>
 

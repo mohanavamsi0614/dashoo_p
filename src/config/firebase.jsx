@@ -119,17 +119,17 @@ function GoogleAuth({ text }) {
   };
 
   return (
-    <div className="text-center">
+    <div className="text-center w-full">
       {!newUser ? (
         <button
           onClick={signIn}
           disabled={authLoading}
           aria-busy={authLoading}
-          className={`border cursor-pointer border-[#aeaeae4d] transition-colors text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-medium w-full text-sm sm:text-base ${authLoading ? 'opacity-80 cursor-wait' : 'hover:bg-white hover:text-black'}`}
+          className={`px-8 py-5 sm:py-6 bg-white border-[4px] border-black text-black font-black uppercase tracking-widest text-lg sm:text-xl shadow-[8px_8px_0_0_#000] w-full transition-all ${authLoading ? 'opacity-80 cursor-wait' : 'hover:translate-x-1 hover:translate-y-1 hover:shadow-none hover:bg-black hover:text-white'}`}
         >
           {authLoading ? (
             <>
-              <svg className="animate-spin -ml-1 mr-2 h-5 w-5 text-white inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <svg className="animate-spin -ml-1 mr-2 h-5 w-5 text-black inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
               </svg>
@@ -140,45 +140,47 @@ function GoogleAuth({ text }) {
           )}
         </button>
       ) : (
-        <div className="flex mt-6 sm:mt-10 flex-col gap-3 sm:gap-4 text-left">
+        <div className="flex mt-8 flex-col gap-5 text-left bg-white border-[4px] border-black p-6 sm:p-10 shadow-[12px_12px_0_0_#000] w-full">
+          <h3 className="text-3xl font-black uppercase tracking-tighter text-black border-b-[4px] border-black pb-4 mb-4">Complete Profile</h3>
+          
           <input
-            className="p-2 sm:p-3 text-sm sm:text-base bg-transparent text-gray-300 border rounded-lg border-[#aeaeae4d] focus:outline-none focus:ring-2 focus:ring-[#8989894d] transition-all duration-300 placeholder:opacity-40"
-            placeholder="Name"
+            className="w-full bg-white border-[3px] border-black text-black rounded-none px-4 py-3 outline-none focus:ring-0 focus:border-[#7a6cf0] transition-all duration-300 placeholder:font-serif placeholder:italic shadow-[4px_4px_0_0_#000] font-bold text-base"
+            placeholder="Full Name"
             value={data.name}
             onChange={(e) => setData({ ...data, name: e.target.value })}
           />
           <input
-            className="p-2 sm:p-3 text-sm sm:text-base rounded-lg bg-transparent text-gray-300 border border-[#aeaeae4d] focus:outline-none focus:ring-2 focus:ring-[#8989894d] transition-all duration-300 placeholder:opacity-40"
+            className="w-full bg-white border-[3px] border-black text-black rounded-none px-4 py-3 outline-none focus:ring-0 focus:border-[#7a6cf0] transition-all duration-300 placeholder:font-serif placeholder:italic shadow-[4px_4px_0_0_#000] font-bold text-base"
             placeholder="College / Company"
             value={data.group}
             onChange={(e) => setData({ ...data, group: e.target.value })}
           />
           <input
-            className="p-2 sm:p-3 text-sm sm:text-base rounded-lg bg-transparent text-gray-300 border border-[#aeaeae4d] focus:outline-none focus:ring-2 focus:ring-[#8989894d] transition-all duration-300 placeholder:opacity-40"
+            className="w-full bg-gray-200 border-[3px] border-black text-black rounded-none px-4 py-3 outline-none transition-all duration-300 placeholder:font-serif placeholder:italic shadow-[4px_4px_0_0_#000] font-bold text-base cursor-not-allowed"
             placeholder="Email"
             value={data.email}
             onChange={(e) => setData({ ...data, email: e.target.value })}
             disabled
           />
           <input
-            className="p-2 sm:p-3 text-sm sm:text-base rounded-lg bg-transparent text-gray-300 border border-[#aeaeae4d] focus:outline-none focus:ring-2 focus:ring-[#8989894d] transition-all duration-300 placeholder:opacity-40"
-            placeholder="Phone"
+            className="w-full bg-white border-[3px] border-black text-black rounded-none px-4 py-3 outline-none focus:ring-0 focus:border-[#7a6cf0] transition-all duration-300 placeholder:font-serif placeholder:italic shadow-[4px_4px_0_0_#000] font-bold text-base"
+            placeholder="Phone Number"
             value={data.phone}
             onChange={(e) => setData({ ...data, phone: e.target.value })}
           />
           <textarea
-            className="p-2 sm:p-3 text-sm sm:text-base rounded-lg bg-transparent text-gray-300 border border-[#aeaeae4d] focus:outline-none focus:ring-2 focus:ring-[#8989894d] transition-all duration-300 placeholder:opacity-40"
-            placeholder="Bio"
+            className="w-full bg-white border-[3px] border-black text-black rounded-none px-4 py-3 outline-none focus:ring-0 focus:border-[#7a6cf0] transition-all duration-300 placeholder:font-serif placeholder:italic shadow-[4px_4px_0_0_#000] font-bold text-base min-h-[100px]"
+            placeholder="Short Bio"
             value={data.bio}
             onChange={(e) => setData({ ...data, bio: e.target.value })}
           />
 
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-0">
-            <p>Optional</p>
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-2">
+            <span className="text-xs font-black uppercase tracking-widest text-black bg-[#c3cfa1] border-[2px] border-black px-2 py-1 shadow-[2px_2px_0_0_#000]">Optional Image</span>
             <button
               onClick={() => wid.current && wid.current.open()}
               disabled={regLoading}
-              className={`bg-trasparent w-full sm:w-auto border rounded-lg border-[#aeaeae4d] transition-colors duration-300 px-4 py-2 text-sm sm:text-base text-white ${regLoading ? 'opacity-80 cursor-wait' : 'hover:bg-white hover:text-black'}`}
+              className={`px-4 py-3 border-[3px] border-black bg-white text-black font-black uppercase tracking-widest text-xs shadow-[4px_4px_0_0_#000] ${regLoading ? 'opacity-80 cursor-wait' : 'hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none hover:bg-black hover:text-white transition-all'}`}
             >
               {regLoading ? (
                 <>
@@ -193,11 +195,13 @@ function GoogleAuth({ text }) {
               )}
             </button>
             {data.imgUrl && (
-              <img
-                src={data.imgUrl}
-                alt="Profile"
-                className="h-10 w-10 sm:h-12 sm:w-12 rounded-full object-cover border"
-              />
+              <div className="p-1 border-[3px] border-black bg-white shadow-[4px_4px_0_0_#000]">
+                <img
+                  src={data.imgUrl}
+                  alt="Profile"
+                  className="h-12 w-12 object-cover border-[2px] border-black"
+                />
+              </div>
             )}
           </div>
 
@@ -205,7 +209,7 @@ function GoogleAuth({ text }) {
             onClick={register}
             disabled={regLoading}
             aria-busy={regLoading}
-            className={`mt-3 sm:mt-4 bg-trasparent border rounded-lg border-[#aeaeae4d] transition-colors duration-300 px-4 sm:px-6 py-2 sm:py-3 font-nerko text-xl sm:text-2xl font-normal text-white ${regLoading ? 'opacity-80 cursor-wait' : 'hover:bg-white hover:text-black'}`}
+            className={`mt-6 w-full px-6 py-4 bg-[#7a6cf0] border-[4px] border-black text-white font-black uppercase tracking-widest shadow-[8px_8px_0_0_#000] ${regLoading ? 'opacity-80 cursor-wait' : 'hover:bg-black hover:translate-y-1 hover:shadow-none transition-all'}`}
           >
             {regLoading ? (
               <>

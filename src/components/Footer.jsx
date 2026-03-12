@@ -5,24 +5,7 @@ function Footer() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const handleEventsClick = (e) => {
-    e.preventDefault();
 
-    if (location.pathname !== "/") {
-      navigate("/");
-      setTimeout(() => {
-        const eventsSection = document.getElementById("upcoming-events");
-        if (eventsSection) {
-          eventsSection.scrollIntoView({ behavior: "smooth" });
-        }
-      }, 100);
-    } else {
-      const eventsSection = document.getElementById("upcoming-events");
-      if (eventsSection) {
-        eventsSection.scrollIntoView({ behavior: "smooth" });
-      }
-    }
-  };
 
   return (
     <footer className="mt-20 border-t border-black bg-[#f4efe6] text-black pt-16 pb-8">
@@ -54,7 +37,7 @@ function Footer() {
                 <a href="/profile" className="hover:underline underline-offset-4">Profile</a>
               </li>
               <li>
-                <a href="#events" onClick={handleEventsClick} className="hover:underline underline-offset-4 cursor-pointer">Events</a>
+                <a href="/events" className="hover:underline underline-offset-4 cursor-pointer">Events</a>
               </li>
             </ul>
           </div>

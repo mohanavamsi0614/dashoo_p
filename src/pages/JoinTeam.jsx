@@ -71,19 +71,19 @@ export default function JoinTeam() {
         }
     };
 
-    const inputClasses = "w-full bg-white border-2 border-black text-black rounded-none p-3 sm:p-4 outline-none focus:ring-0 focus:border-indigo-500 transition-all duration-300 placeholder:font-serif placeholder:italic shadow-[4px_4px_0_0_#000] mb-2";
-    const labelClasses = "block text-sm sm:text-base text-black font-bold uppercase tracking-widest mb-2";
+    const inputClasses = "w-full bg-white border-[3px] border-black text-black rounded-none p-4 outline-none focus:ring-0 focus:border-[#7a6cf0] transition-all duration-300 placeholder:font-serif placeholder:italic shadow-[4px_4px_0_0_#000] mb-4 text-lg font-bold";
+    const labelClasses = "block text-sm sm:text-base text-black font-black uppercase tracking-widest mb-2";
 
     return (
         <div className="min-h-screen font-sans bg-[#f4efe6] flex justify-center items-center px-4 sm:px-6 py-10 pt-28">
-            <div className="w-full max-w-2xl bg-white border-4 border-black p-6 sm:p-10 shadow-[8px_8px_0_0_#000]">
-                <div className="text-center mb-10 border-b-4 border-black pb-8">
-                    <span className="px-3 py-1 text-xs font-bold uppercase tracking-widest bg-black text-white inline-block mb-4">
+            <div className="w-full max-w-2xl bg-white border-[4px] border-black p-6 sm:p-10 shadow-[12px_12px_0_0_#000]">
+                <div className="text-center mb-10 border-b-[4px] border-black pb-8">
+                    <span className="px-3 py-1 text-xs font-black uppercase tracking-widest bg-black text-white inline-block mb-4">
                         Join a Team
                     </span>
-                    <h1 className="text-3xl sm:text-4xl font-bold uppercase tracking-tighter text-black leading-tight">
+                    <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black uppercase tracking-tighter text-black leading-tight">
                         Join Team for{" "}
-                        <span className="font-black text-5xl sm:text-6xl text-[#7a6cf0] block mt-2">
+                        <span className="font-black text-5xl sm:text-6xl lg:text-7xl text-[#7a6cf0] block mt-2">
                             {eventTitle || "the event"}
                         </span>
                     </h1>
@@ -96,17 +96,17 @@ export default function JoinTeam() {
                 />
 
                 <form onSubmit={handleSubmit} className="space-y-6">
-                    <div className="bg-[#c3cfa1] border-4 border-black p-6 sm:p-8 relative overflow-hidden mb-8 shadow-[4px_4px_0_0_#000]">
-                        <h3 className="font-black uppercase tracking-tighter text-2xl mb-4 border-b-2 border-black pb-2">Connect to a team</h3>
+                    <div className="bg-[#c3cfa1] border-[4px] border-black p-6 sm:p-8 relative overflow-hidden mb-12 shadow-[8px_8px_0_0_#000]">
+                        <h3 className="font-black uppercase tracking-tighter text-3xl mb-4 border-b-[3px] border-black pb-2">Connect to a team</h3>
                         <label className={labelClasses}>Team Code <span className="text-red-500">*</span></label>
                         <input
                             type="text"
                             value={teamCode}
                             onChange={(e) => setTeamCode(e.target.value.toUpperCase())}
                             placeholder="e.g. ABCD12"
-                            className="w-full bg-white border-2 border-black text-black font-mono font-bold tracking-[0.2em] text-2xl uppercase rounded-none p-4 mt-2 outline-none shadow-[2px_2px_0_0_#000] focus:shadow-none focus:translate-x-[2px] focus:translate-y-[2px] transition-all"
+                            className="w-full bg-white border-[3px] border-black text-black font-mono font-black tracking-[0.2em] text-3xl uppercase rounded-none p-4 mt-2 outline-none shadow-[4px_4px_0_0_#000] focus:shadow-none focus:translate-x-[4px] focus:translate-y-[4px] transition-all text-center"
                         />
-                        <p className="text-xs font-bold uppercase tracking-widest text-black mt-3 flex items-center gap-2">
+                        <p className="text-xs font-bold uppercase tracking-widest text-black mt-4 flex items-center justify-center gap-2">
                            <span>ℹ</span> Ask your team lead for the unique Team Code.
                         </p>
                     </div>
@@ -229,25 +229,25 @@ export default function JoinTeam() {
                     )}
 
                     {error && (
-                        <div className="text-sm sm:text-base text-white bg-red-600 border-2 border-black p-4 text-center shadow-[4px_4px_0_0_#000] font-bold uppercase tracking-widest">
+                        <div className="text-sm sm:text-base text-white bg-red-600 border-[4px] border-black p-4 text-center shadow-[6px_6px_0_0_#000] font-black uppercase tracking-widest mt-10">
                             {error}
                         </div>
                     )}
 
-                    <div className="flex flex-col sm:flex-row gap-4 pt-8 border-t-4 border-black mt-8">
+                    <div className="flex flex-col sm:flex-row gap-6 pt-10 border-t-[4px] border-black mt-10">
                         <button
                             type="button"
                             onClick={() => navigate(-1)}
-                            className="px-6 py-4 border-2 border-black bg-white text-black hover:bg-black hover:text-white transition-colors font-black uppercase tracking-widest text-sm shadow-[4px_4px_0_0_#000] w-full sm:w-1/3 order-2 sm:order-1"
+                            className="px-6 py-4 border-[3px] border-black bg-white text-black hover:bg-black hover:text-white transition-colors font-black uppercase tracking-widest text-sm shadow-[6px_6px_0_0_#000] hover:translate-y-1 hover:shadow-none w-full sm:w-1/3 order-2 sm:order-1"
                         >
                             Cancel
                         </button>
                         <button
                             type="submit"
                             disabled={loading}
-                            className="flex-1 px-6 py-4 bg-[#7a6cf0] border-2 border-black hover:bg-[#c3cfa1] text-black font-black uppercase tracking-widest shadow-[4px_4px_0_0_#000] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all text-sm disabled:opacity-50 disabled:cursor-not-allowed order-1 sm:order-2"
+                            className="flex-1 px-6 py-4 bg-[#7a6cf0] border-[3px] border-black hover:bg-[#c3cfa1] text-black font-black uppercase tracking-widest shadow-[6px_6px_0_0_#000] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all text-sm disabled:opacity-50 disabled:cursor-not-allowed order-1 sm:order-2"
                         >
-                            {loading ? "Joining..." : "Join Team"}
+                            {loading ? "JOINING..." : "JOIN TEAM"}
                         </button>
                     </div>
                 </form>

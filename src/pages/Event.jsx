@@ -13,6 +13,7 @@ function Event() {
   const [open, setopen] = useState(state?.status == "open")
   const nav = useNavigate();
   const [alredyReg, setAlreg] = useState()
+  const [selectedImage, setSelectedImage] = useState(null); // State for Gallery Popup
 
   useEffect(() => {
     if (!state) {
@@ -55,34 +56,42 @@ function Event() {
         </div>
 
         {/* BRUTALIST HERO SPLIT */}
-        <div className="grid md:grid-cols-2 gap-8 border-b border-black pb-12 mb-12">
-          <div>
-            <span className="inline-block px-3 py-1 mb-4 text-xs font-bold uppercase tracking-widest border border-black bg-[#c3cfa1]">
-              {state?.type === "hackathon" ? "HACKATHON" : "EVENT"}
-            </span>
-            <h1 className="text-6xl md:text-8xl font-black uppercase tracking-tighter leading-[0.85] mb-6">
+        <div className="grid md:grid-cols-2 gap-8 border-b-[3px] border-black pb-12 mb-12">
+          <div className="flex flex-col justify-center">
+            <div className="flex flex-wrap gap-2 mb-6">
+               <span className="inline-block px-4 py-2 text-xs font-black uppercase tracking-widest border-[3px] border-black bg-[#c3cfa1] shadow-[4px_4px_0_0_#000]">
+                 {state?.type === "hackathon" ? "HACKATHON" : "EVENT"}
+               </span>
+               <span className="inline-block px-4 py-2 text-xs font-black uppercase tracking-widest border-[3px] border-black bg-black text-white shadow-[4px_4px_0_0_#000]">
+                 {state?.status === "open" ? "OPEN" : "CLOSED"}
+               </span>
+            </div>
+            
+            <h1 className="text-6xl md:text-8xl lg:text-[7xl] font-black uppercase tracking-tighter leading-[0.85] mb-8 lg:pr-4">
               {state?.eventTitle || "Loading..."}
             </h1>
             
             {state?.theme && (
-              <p className="font-serif italic text-2xl text-gray-800 border-l-[4px] border-black pl-4">
-                Theme: <span className="font-bold not-italic">{state.theme}</span>
-              </p>
+              <div className="bg-[#f4efe6] border-[3px] border-black p-4 inline-block shadow-[4px_4px_0_0_#000]">
+                 <p className="font-serif italic text-xl md:text-2xl text-black m-0">
+                   Theme: <span className="font-black not-italic">{state.theme}</span>
+                 </p>
+              </div>
             )}
           </div>
           
-          <div className="relative border-4 border-black h-64 md:h-auto overflow-hidden rounded-tr-[4rem] rounded-bl-[4rem]">
+          <div className="relative border-[4px] border-black shadow-[12px_12px_0_0_#000] bg-white h-[400px] md:h-[500px]">
             <img
               src={state?.bannerUrl || "https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80"}
               alt={state?.eventTitle || "Event"}
-              className="w-full h-full object-cover filter grayscale hover:grayscale-0 transition-all duration-700"
+              className="w-full h-full object-cover"
             />
             {state?.logoUrl && (
-              <div className="absolute bottom-4 left-4 w-24 h-24 bg-white border-2 border-black p-1">
+              <div className="absolute -bottom-6 -left-6 w-28 h-28 bg-white border-[4px] border-black p-2 shadow-[8px_8px_0_0_#000] flex items-center justify-center">
                 <img
                   src={state.logoUrl}
                   alt="Logo"
-                  className="w-full h-full object-cover"
+                  className="max-w-full max-h-full object-contain"
                 />
               </div>
             )}
@@ -94,26 +103,26 @@ function Event() {
           <div className="lg:col-span-2 space-y-16">
 
             {/* About Section */}
-            <section>
-              <h2 className="text-4xl font-black uppercase tracking-tighter border-b-2 border-black pb-2 mb-6">
+            <section className="bg-white border-[3px] border-black p-8 shadow-[8px_8px_0_0_#000]">
+              <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tighter border-b-[3px] border-black pb-4 mb-6">
                 About the Event
               </h2>
-              <div className="font-serif text-lg leading-relaxed text-gray-900 whitespace-pre-wrap">
+              <div className="font-serif text-lg md:text-xl leading-relaxed text-black whitespace-pre-wrap">
                 {state?.description || "No description provided."}
               </div>
             </section>
 
             {/* Tracks Section */}
             {state?.tracks && state.tracks.length > 0 && (
-              <section className="bg-[#c3cfa1] border border-black p-8 rounded-2xl shadow-[8px_8px_0_0_#000]">
-                <h2 className="text-4xl font-black uppercase tracking-tighter mb-6">
+              <section className="bg-[#c3cfa1] border-[3px] border-black p-8 shadow-[8px_8px_0_0_#000]">
+                <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tighter mb-8 border-b-[3px] border-black pb-4">
                   Tracks
                 </h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {state.tracks.map((track, index) => (
-                    <div key={index} className="border-b border-black pb-2">
-                      <h3 className="font-bold uppercase text-sm mb-1 tracking-widest">Track 0{index + 1}</h3>
-                      <p className="font-serif italic">{track}</p>
+                    <div key={index} className="bg-white border-[3px] border-black p-6 shadow-[4px_4px_0_0_#000]">
+                      <h3 className="font-mono font-bold uppercase text-xs mb-2 tracking-widest text-[#7a6cf0]">Track 0{index + 1}</h3>
+                      <p className="font-serif italic text-xl font-bold">{track}</p>
                     </div>
                   ))}
                 </div>
@@ -122,38 +131,49 @@ function Event() {
 
             {/* Prizes Section */}
             {state?.prize && (
-              <section className="bg-white border-2 border-black p-8 shadow-[8px_8px_0_0_#000]">
-                <h2 className="text-4xl font-black uppercase tracking-tighter mb-4">
+              <section className="bg-black text-white border-[3px] border-black p-8 shadow-[8px_8px_0_0_#c3cfa1]">
+                <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tighter mb-6 border-b-[3px] border-white pb-4">
                   Prizes
                 </h2>
-                <p className="text-4xl md:text-5xl font-black uppercase tracking-tighter text-[#7a6cf0]">
-                  {state.prize}
-                </p>
+                <div className="flex items-center gap-6">
+                  <div className="w-16 h-16 shrink-0 bg-[#c3cfa1] border-[3px] border-white flex items-center justify-center font-black text-3xl text-black">
+                     🏆
+                  </div>
+                  <p className="text-4xl md:text-6xl font-black uppercase tracking-tighter text-[#c3cfa1]">
+                    {state.prize}
+                  </p>
+                </div>
               </section>
             )}
 
             {/* Gallery Section */}
             {(state?.photo1Url || state?.photo2Url) && (
-              <section>
-                <h2 className="text-4xl font-black uppercase tracking-tighter border-b-2 border-black pb-2 mb-6">
+              <section className="bg-white border-[3px] border-black p-8 shadow-[8px_8px_0_0_#000]">
+                <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tighter border-b-[3px] border-black pb-4 mb-8">
                   Gallery
                 </h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 relative">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
                   {state?.photo1Url && (
-                    <div className="border border-black bg-white p-2 shadow-[6px_6px_0_0_#000] rotate-1 hover:rotate-0 transition-transform">
+                    <div 
+                      className="border-[4px] border-black bg-[#f4efe6] p-2 shadow-[8px_8px_0_0_#000] hover:-translate-y-2 hover:shadow-[12px_12px_0_0_#000] hover:-rotate-2 transition-all cursor-pointer"
+                      onClick={() => setSelectedImage(state.photo1Url)}
+                    >
                       <img
                         src={state.photo1Url}
                         alt="Event Highlight 1"
-                        className="w-full h-64 object-cover filter grayscale hover:grayscale-0 transition-all"
+                        className="w-full h-64 object-cover"
                       />
                     </div>
                   )}
                   {state?.photo2Url && (
-                    <div className="border border-black bg-white p-2 shadow-[6px_6px_0_0_#000] -rotate-1 hover:rotate-0 transition-transform">
+                    <div 
+                      className="border-[4px] border-black bg-[#f4efe6] p-2 shadow-[8px_8px_0_0_#000] hover:-translate-y-2 hover:shadow-[12px_12px_0_0_#000] hover:rotate-2 transition-all cursor-pointer"
+                      onClick={() => setSelectedImage(state.photo2Url)}
+                    >
                       <img
                         src={state.photo2Url}
                         alt="Event Highlight 2"
-                        className="w-full h-64 object-cover filter grayscale hover:grayscale-0 transition-all"
+                        className="w-full h-64 object-cover"
                       />
                     </div>
                   )}
@@ -230,30 +250,44 @@ function Event() {
                   </div>
                </div>
 
-               {/* Info List */}
-               <div className="border-4 border-black p-6 bg-white shadow-[8px_8px_0_0_#000]">
-                  <ul className="space-y-4 font-bold text-sm">
-                     <li className="flex justify-between items-center border-b border-gray-200 pb-2">
-                        <span className="uppercase tracking-widest text-xs text-gray-500">Date</span>
-                        <span className="font-serif italic text-base font-normal">{state?.startDate} {state?.endDate !== state?.startDate && `- ${state?.endDate}`}</span>
-                     </li>
-                     <li className="flex justify-between items-center border-b border-gray-200 pb-2">
-                        <span className="uppercase tracking-widest text-xs text-gray-500">Time</span>
-                        <span className="font-serif italic text-base font-normal">{state?.startTime}</span>
-                     </li>
-                     <li className="flex justify-between items-center border-b border-gray-200 pb-2">
-                        <span className="uppercase tracking-widest text-xs text-gray-500">Venue</span>
-                        <span className="font-serif italic text-base font-normal text-right max-w-[150px] truncate" title={state?.venue}>{state?.venue}</span>
-                     </li>
-                     <li className="flex justify-between items-center border-b border-gray-200 pb-2">
-                        <span className="uppercase tracking-widest text-xs text-gray-500">Team Size</span>
-                        <span className="font-serif italic text-base font-normal">{state?.minTeamMembers}-{state?.maxTeamMembers}</span>
-                     </li>
-                     <li className="flex justify-between items-center text-red-600">
-                        <span className="uppercase tracking-widest text-xs">Deadline</span>
-                        <span className="font-serif italic text-base font-normal">{state?.registrationDeadline}</span>
-                     </li>
-                  </ul>
+               {/* Info List - Highly visible brutalist blocks */}
+               <div className="w-full flex flex-col gap-6">
+                  {/* VENUE BLOCK */}
+                  <div className="border-[4px] border-black bg-white p-6 md:p-8 shadow-[8px_8px_0_0_#000]">
+                     <h3 className="font-mono font-bold text-sm tracking-widest text-[#7a6cf0] uppercase mb-4 border-b-[2px] border-dashed border-black pb-2">Location</h3>
+                     <p className="font-black text-3xl md:text-4xl uppercase tracking-tighter leading-none break-words">
+                       {state?.venue || "TBA"}
+                     </p>
+                  </div>
+
+                  {/* DATE & TIME BLOCK */}
+                  <div className="grid grid-cols-2 gap-6">
+                     <div className="border-[4px] border-black bg-[#c3cfa1] p-6 shadow-[8px_8px_0_0_#000]">
+                        <h3 className="font-mono font-bold text-xs tracking-widest text-black uppercase mb-3">Date</h3>
+                        <p className="font-black text-2xl uppercase tracking-tighter leading-tight">
+                           {state?.startDate} <br/>
+                           {state?.endDate && state.endDate !== state.startDate && <span className="opacity-70 text-xl">{state?.endDate}</span>}
+                        </p>
+                     </div>
+                     <div className="border-[4px] border-black bg-[#f4efe6] p-6 shadow-[8px_8px_0_0_#000]">
+                        <h3 className="font-mono font-bold text-xs tracking-widest text-black uppercase mb-3">Time</h3>
+                        <p className="font-black text-2xl uppercase tracking-tighter leading-tight">
+                           {state?.startTime || "TBA"}
+                        </p>
+                     </div>
+                  </div>
+
+                  {/* META BLOCK */}
+                  <div className="border-[4px] border-black bg-white p-6 shadow-[8px_8px_0_0_#000] flex flex-col gap-6">
+                     <div className="flex justify-between items-end border-b-[2px] border-black pb-4">
+                        <span className="font-mono font-bold text-xs tracking-widest uppercase">Team Size</span>
+                        <span className="font-black text-2xl uppercase">{state?.minTeamMembers}-{state?.maxTeamMembers}</span>
+                     </div>
+                     <div className="flex justify-between items-end">
+                        <span className="font-mono font-bold text-xs tracking-widest uppercase text-red-600">Event Deadline</span>
+                        <span className="font-black text-xl uppercase text-red-600">{state?.registrationDeadline || "TBA"}</span>
+                     </div>
+                  </div>
                </div>
 
                {/* Organizer Card */}
@@ -271,7 +305,7 @@ function Event() {
                         {state.by.website && <a href={state.by.website} target="_blank" rel="noopener noreferrer" className="font-serif italic text-sm hover:underline">Website</a>}
                       </div>
                     </div>
-                    <div className="text-xs font-bold uppercase tracking-widest space-y-1">
+                    <div className="text-xs font-bold tracking-widest space-y-1">
                       {state.by.email && <p>✉ {state.by.email}</p>}
                       {state.by.contactPhone && <p>☏ {state.by.contactPhone}</p>}
                     </div>
@@ -283,6 +317,32 @@ function Event() {
       </div>
 
       <Footer />
+
+      {/* GALLERY POPUP MODAL */}
+      {selectedImage && (
+        <div 
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 sm:p-8"
+          onClick={() => setSelectedImage(null)}
+        >
+          <div 
+            className="relative w-full max-w-5xl max-h-[90vh] border-[4px] border-black bg-[#f4efe6] p-2 sm:p-4 shadow-[16px_16px_0_0_#000]"
+            onClick={(e) => e.stopPropagation()} // Prevent close on clicking the image box
+          >
+            <button 
+              className="absolute -top-6 -right-6 w-12 h-12 bg-white border-[3px] border-black text-black text-2xl font-black rounded-full shadow-[4px_4px_0_0_#000] hover:bg-black hover:text-white transition-colors flex items-center justify-center z-[10] leading-none"
+              onClick={() => setSelectedImage(null)}
+            >
+              ×
+            </button>
+            <img 
+              src={selectedImage} 
+              alt="Gallery Fullscreen" 
+              className="w-full h-full max-h-[80vh] object-contain border-[3px] border-black bg-black"
+            />
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }
