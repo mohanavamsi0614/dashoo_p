@@ -56,23 +56,59 @@ function Events() {
             {events.map((evt, idx) => (
               <div 
                 key={idx} 
-                className="bg-white border-4 border-black p-6 sm:p-8 hover:-translate-y-2 hover:shadow-none transition-all shadow-[8px_8px_0_0_#000] flex flex-col group cursor-pointer"
+                className="bg-white border-[3px] border-black rounded-3xl p-6 sm:p-8 hover:-translate-y-2 transition-all shadow-[8px_8px_0_0_#000] hover:shadow-[12px_12px_0_0_#000] flex flex-col group cursor-pointer relative overflow-hidden"
                 onClick={() => nav(`/event/${evt.eventId}`)}
               >
-                <div className="w-12 h-12 bg-[#c3cfa1] border-2 border-black flex items-center justify-center font-black text-xl mb-6">
-                  {idx + 1}
+                {/* Decorative dots */}
+                <div className="absolute top-4 right-4 flex gap-1 opacity-20 group-hover:opacity-100 transition-opacity">
+                   <div className="w-2 h-2 rounded-full bg-black"></div>
+                   <div className="w-2 h-2 rounded-full bg-black"></div>
+                   <div className="w-2 h-2 rounded-full bg-black"></div>
                 </div>
-                <h3 className="text-3xl font-black uppercase tracking-tighter mb-4 group-hover:text-[#7a6cf0] transition-colors">{evt.eventTitle || "Unnamed Event"}</h3>
-                <p className="font-serif italic text-sm text-gray-800 flex-grow mb-6 line-clamp-3">
+
+                <div className="flex justify-between items-start mb-6">
+                  <div className="w-12 h-12 rounded-full bg-[#c3cfa1] border-[3px] border-black flex items-center justify-center font-black text-xl shadow-[4px_4px_0_0_#000] group-hover:bg-[#7a6cf0] group-hover:text-white transition-colors">
+                    {idx + 1}
+                  </div>
+                  
+                  {/* Event Type / Status Tag */}
+                  <div className="border-[2px] border-black rounded-full px-3 py-1 text-xs font-bold uppercase tracking-widest bg-[#f4efe6]">
+                     {evt.type === 'hackathon' ? 'Hackathon' : 'Event'}
+                  </div>
+                </div>
+                
+                <h3 className="text-3xl font-black uppercase tracking-tighter mb-4 leading-none group-hover:text-[#7a6cf0] transition-colors">{evt.eventTitle || "Unnamed Event"}</h3>
+                <p className="font-serif italic text-sm text-gray-800 flex-grow mb-8 line-clamp-3 leading-relaxed">
                   {evt.description || "No description available for this event."}
                 </p>
                 
-                <div className="mt-auto pt-6 border-t-2 border-black flex justify-between items-center">
-                  <span className="font-bold uppercase tracking-widest text-xs bg-black text-white px-2 py-1">
-                    {evt.startDate ? new Date(evt.startDate).toLocaleDateString() : "TBA"}
-                  </span>
-                  <span className="font-black text-xl group-hover:text-[#7a6cf0] group-hover:translate-x-1 transition-all">→</span>
+                {/* Meta Information Container */}
+                <div className="mt-auto flex gap-2 mb-4">
+                  {/* Date Pill */}
+                  <div className="flex-1 bg-black text-white border-[2px] border-black rounded-xl p-2 flex flex-col items-center justify-center group-hover:bg-[#c3cfa1] group-hover:text-black transition-colors">
+                     <span className="text-[10px] uppercase tracking-widest opacity-60 font-bold mb-1">Date</span>
+                     <span className="font-mono text-xs font-bold whitespace-nowrap">
+                       {evt.startDate ? new Date(evt.startDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) : "TBA"}
+                     </span>
+                  </div>
+
+                  {/* Venue Pill */}
+                  <div className="flex-1 bg-white border-[2px] border-black rounded-xl p-2 flex flex-col items-center justify-center group-hover:bg-[#f4efe6] transition-colors overflow-hidden">
+                     <span className="text-[10px] uppercase tracking-widest text-gray-500 font-bold mb-1">Venue</span>
+                     <span className="font-mono text-xs font-bold text-black truncate w-full text-center" title={evt.venue || "TBA"}>
+                       {evt.venue || "TBA"}
+                     </span>
+                  </div>
                 </div>
+                
+                {/* Footer Action */}
+                <div className="border-t-[3px] border-black pt-4 flex justify-between items-center text-sm font-black uppercase tracking-widest">
+                  <span>View Details</span>
+                  <div className="w-8 h-8 rounded-full border-[2px] border-black flex items-center justify-center group-hover:bg-black group-hover:text-white group-hover:translate-x-1 transition-all">
+                    →
+                  </div>
+                </div>
+
               </div>
             ))}
           </div>

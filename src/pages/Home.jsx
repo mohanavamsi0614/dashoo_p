@@ -6,6 +6,7 @@ import { useState } from "react";
 function Home() {
   const nav = useNavigate();
   const [openFaq, setOpenFaq] = useState(null);
+  const [activeFeature, setActiveFeature] = useState(0);
 
   const toggleFaq = (index) => {
     if (openFaq === index) {
@@ -34,7 +35,7 @@ function Home() {
             </p>
             <div className="mt-8">
               <button
-                onClick={() => nav("/auth")}
+                onClick={() => nav("/events")}
                 className="px-8 py-3 rounded-full font-bold text-white bg-[#7a6cf0] hover:bg-black transition-colors shadow-sm text-sm uppercase tracking-wider"
               >
                 Get Started
@@ -77,144 +78,116 @@ function Home() {
 
       {/* FEATURES SECTION 1 */}
       <section className="py-28 px-6 max-w-7xl mx-auto">
-        <div className="grid md:grid-cols-2 gap-12 items-center">
-          <div>
-            <h2 className="text-6xl md:text-7xl font-black uppercase tracking-tighter leading-[0.85]">
+        <div className="grid lg:grid-cols-[1fr_1.5fr] gap-12 lg:gap-24 items-start">
+          <div className="lg:sticky lg:top-32 border-b lg:border-none border-black pb-8 lg:pb-0">
+            <h2 className="text-6xl md:text-7xl lg:text-8xl font-black uppercase tracking-tighter leading-[0.85] mb-8">
               Powerful<br/>Event<br/>Tools
             </h2>
-          </div>
-          
-          <div className="bg-black text-white p-10 rounded-3xl">
-            <div className="flex justify-between items-center mb-10 pb-6 border-b border-gray-800">
-              <h3 className="font-serif italic text-3xl">Dasho Features</h3>
-              <div className="w-12 h-6 bg-white rounded-full flex items-center px-1">
-                <div className="w-4 h-4 rounded-full bg-black ml-auto"></div>
-              </div>
-            </div>
-            
-            <div className="space-y-6">
-              {[
-                { title: "Registration", desc: "Automated team creation & signups." },
-                { title: "Attendance", desc: "Track participant check-ins live." },
-                { title: "Judging", desc: "Score projects via structured panels." },
-                { title: "Results", desc: "Calculate winners automatically." }
-              ].map((feat, i) => (
-                 <div key={i} className="flex gap-6 border-b border-gray-800 pb-6 last:border-0 last:pb-0">
-                    <div className="text-gray-500 font-mono text-xs w-24 shrink-0 mt-1 uppercase">0{i+1} Feature</div>
-                    <div>
-                      <h4 className="font-bold text-lg mb-1">{feat.title}</h4>
-                      <p className="text-gray-400 text-sm">{feat.desc}</p>
-                    </div>
-                 </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* FEATURES SECTION 2 (Core Belief styled) */}
-      <section className="py-24 bg-[#c3cfa1] border-y border-black">
-        <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-[1fr_2fr] gap-12">
-          
-          <h2 className="text-6xl md:text-7xl font-black uppercase tracking-tighter leading-[0.85]">
-            Core<br/>Platform
-          </h2>
-          
-          <div>
-            <p className="font-serif italic text-3xl mb-12 text-gray-900 border-b border-black pb-8">
-              Deep organization features coupled with solid infrastructure for reliable event operations.
+            <p className="font-serif italic text-2xl text-gray-800 max-w-sm lg:border-l-4 lg:border-[#7a6cf0] lg:pl-6 leading-snug">
+              Everything you need to orchestrate a flawless event without the usual headache.
             </p>
-            
-            <div className="grid md:grid-cols-2 gap-8 items-start relative">
-              <div className="border border-black p-8 rounded-2xl bg-[#c3cfa1]">
-                <div className="flex items-center gap-2 mb-4">
-                  <div className="w-8 h-8 rounded-full border border-black flex items-center justify-center text-xs">A</div>
-                  <h4 className="font-bold uppercase text-sm tracking-wide">Live Leaderboards</h4>
+          </div>
+          
+          <div className="flex flex-col gap-5">
+            {[
+              { title: "Registration", desc: "Automated team creation & signups with custom fields and waitlists.", bg: "bg-[#7a6cf0]", text: "text-white" },
+              { title: "Attendance", desc: "Track participant check-ins live with real-time tracking dashboards.", bg: "bg-[#c3cfa1]", text: "text-black" },
+              { title: "Judging", desc: "Score projects via structured panels, custom rubrics, and tabulation.", bg: "bg-[#f4efe6]", text: "text-black" },
+              { title: "Results", desc: "Calculate winners automatically and publish them instantly to public.", bg: "bg-black", text: "text-white" }
+            ].map((feat, i) => (
+              <div 
+                key={i} 
+                onClick={() => setActiveFeature(activeFeature === i ? null : i)} 
+                className={`border-[3px] border-black rounded-[2rem] overflow-hidden transition-all duration-300 cursor-pointer ${
+                  activeFeature === i 
+                    ? `${feat.bg} ${feat.text} shadow-[8px_8px_0_0_rgba(0,0,0,1)] -translate-y-1` 
+                    : 'bg-transparent text-black hover:bg-black/5'
+                }`}
+              >
+                <div className="p-6 md:p-8 lg:p-10 flex items-center justify-between">
+                  <div className="flex items-center gap-4 lg:gap-8">
+                    <span className="font-mono text-lg lg:text-xl font-bold opacity-60">{(i+1).toString().padStart(2, '0')}</span>
+                    <h4 className="font-black uppercase text-3xl md:text-4xl lg:text-5xl tracking-tighter leading-none translate-y-1">{feat.title}</h4>
+                  </div>
+                  <div className={`w-12 h-12 flex-shrink-0 rounded-full border-[3px] flex items-center justify-center transition-transform duration-500 ${activeFeature === i ? 'rotate-[135deg] border-current' : 'border-black rotate-0'}`}>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                      <line x1="12" y1="5" x2="12" y2="19"></line>
+                      <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                  </div>
                 </div>
-                <h3 className="font-serif italic text-2xl mb-4">How do we track scores?</h3>
-                <ul className="text-sm space-y-2 list-disc pl-5">
-                  <li>Display rankings instantly.</li>
-                  <li>Real-time judging updates.</li>
-                  <li>Public and private view modes.</li>
-                </ul>
-              </div>
-
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 bg-[#c3cfa1] border border-black rounded-full hidden md:flex items-center justify-center z-10">
-                 <div className="w-8 h-8 rounded-full border border-black flex items-center justify-center text-[10px]">⚖️</div>
-              </div>
-
-              <div className="border border-black p-8 rounded-2xl bg-[#c3cfa1]">
-                <div className="flex items-center gap-2 mb-4">
-                  <div className="w-8 h-8 rounded-full border border-black flex items-center justify-center text-xs">B</div>
-                  <h4 className="font-bold uppercase text-sm tracking-wide">Team Management</h4>
+                
+                {/* Expandable Content */}
+                <div 
+                  className={`grid transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] ${
+                    activeFeature === i ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'
+                  }`}
+                >
+                  <div className="overflow-hidden">
+                    <div className="px-6 md:px-8 lg:px-10 pb-8 lg:pb-10 pt-2 lg:w-5/6">
+                       <p className="font-serif italic text-xl lg:text-2xl leading-snug opacity-90">
+                         {feat.desc}
+                       </p>
+                    </div>
+                  </div>
                 </div>
-                <h3 className="font-serif italic text-2xl mb-4">How do we organize?</h3>
-                <ul className="text-sm space-y-2 list-disc pl-5">
-                  <li>Organize submissions easily.</li>
-                  <li>Drag and drop participants.</li>
-                  <li>Mentor assignment portals.</li>
-                </ul>
+                
               </div>
-            </div>
-            
-            <div className="text-center mt-12">
-               <button onClick={() => nav("/auth")} className="px-6 py-2 rounded-full border border-black text-xs font-bold uppercase tracking-wider hover:bg-black hover:text-white transition-colors">
-                 See All Features
-               </button>
-            </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* ROLES SECTION */}
-      <section className="py-28 px-6 max-w-7xl mx-auto">
-        <h2 className="text-6xl md:text-8xl font-black uppercase tracking-tighter leading-[0.85] mb-16 md:mb-24">
-          Built for<br/>Everyone
-        </h2>
+      <section className="py-32 px-6 max-w-7xl mx-auto border-t-[3px] border-black">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 md:mb-24 gap-8">
+          <h2 className="text-6xl md:text-8xl font-black uppercase tracking-tighter leading-[0.85]">
+            Built for<br/>Everyone
+          </h2>
+          <p className="font-serif italic text-xl md:text-2xl text-gray-800 max-w-md md:text-right md:border-r-4 md:border-[#7a6cf0] md:pr-6 leading-snug">
+            A unified experience that empowers every stakeholder in the event ecosystem.
+          </p>
+        </div>
 
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-3 gap-6 lg:gap-8">
           {[
-            { title: "Organizers", desc: "Manage participants, track attendance, and run events smoothly from one dashboard." },
-            { title: "Judges", desc: "Evaluate projects easily with structured judging rubrics and automated score calculation." },
-            { title: "Participants", desc: "Join events, manage teams, submit projects, and view results in real time." }
+            { title: "Organizers", bg: "hover:bg-[#c3cfa1] cursor-pointer", desc: "Manage participants, track attendance, and run events smoothly from one master dashboard." },
+            { title: "Judges", bg: "hover:bg-[#f4efe6] cursor-pointer", desc: "Evaluate projects effortlessly with structured judging rubrics and automated score calculation." },
+            { title: "Participants", bg: "hover:bg-[#7a6cf0] hover:text-white cursor-pointer", textClass: "group-hover:text-white", desc: "Join events, form teams, submit projects, and climb the live leaderboards in real time." }
           ].map((role, i) => (
-             <div key={i} className="text-center">
-               <div className="border-t border-black pt-6 mb-8 mt-12">
-                  <h3 className="font-serif italic text-2xl mb-4">{role.title}</h3>
-                  <p className="text-sm text-gray-600 max-w-xs mx-auto">{role.desc}</p>
-               </div>
+             <div key={i} className={`group border-[3px] border-black rounded-[2rem] p-8 lg:p-10 transition-all duration-300 ${role.bg} hover:shadow-[12px_12px_0_0_rgba(0,0,0,1)] hover:-translate-y-2 bg-white flex flex-col h-full cursor-default`}>
+                <h3 className={`font-black uppercase text-3xl md:text-4xl mb-4 tracking-tighter leading-none ${role.textClass || 'text-black'}`}>{role.title}</h3>
+                <p className={`font-serif italic text-lg lg:text-xl opacity-90 mt-auto leading-snug ${role.textClass || 'text-black'}`}>{role.desc}</p>
              </div>
           ))}
         </div>
       </section>
 
-      {/* FAQS / HOW IT WORKS */}
-      <section className="py-24 max-w-4xl mx-auto px-6 border-t border-black">
-        <div className="grid md:grid-cols-[1fr_2fr] gap-12">
-           <h2 className="text-5xl font-black uppercase tracking-tighter">
-             How it<br/>Works
-           </h2>
+      {/* HOW IT WORKS */}
+      <section className="py-32 bg-black text-white border-y-[3px] border-black overflow-hidden relative">
+        <div className="max-w-7xl mx-auto px-6 relative z-10">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-24 gap-8">
+            <h2 className="text-6xl md:text-8xl lg:text-[9rem] font-black uppercase tracking-tighter leading-[0.85] text-[#c3cfa1]">
+              How it<br/>Works
+            </h2>
+            <div className="w-16 h-16 rounded-full bg-[#7a6cf0] animate-[spin_10s_linear_infinite] flex items-center justify-center border-4 border-black">
+              <div className="w-8 h-8 rounded-full border-4 border-black bg-white"></div>
+            </div>
+          </div>
            
-           <div className="space-y-0 border-t border-black">
+           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
              {[
-               "1. Create Event",
-               "2. Participants Register",
-               "3. Judges Evaluate",
-               "4. Results Generated"
-             ].map((step, i) => (
-                <div key={i} className="border-b border-black">
-                  <button 
-                    onClick={() => toggleFaq(i)}
-                    className="w-full py-6 flex justify-between items-center text-left hover:bg-black/5 px-4 transition-colors"
-                  >
-                    <span className="font-serif italic text-xl">{step}</span>
-                    <span className="text-2xl font-light">{openFaq === i ? '−' : '+'}</span>
-                  </button>
-                  {openFaq === i && (
-                    <div className="px-4 pb-6 text-sm text-gray-600">
-                      Dasho simplifies this step with powerful automation and an intuitive interface designed specifically for this task.
-                    </div>
-                  )}
+               { step: "01", title: "Create Event", desc: "Set up your landing page, dates, and custom forms in minutes." },
+               { step: "02", title: "Registration", desc: "Participants join, form squads, and submit necessary docs." },
+               { step: "03", title: "Evaluation", desc: "Judges score live through structured parameter panels." },
+               { step: "04", title: "Results", desc: "Winners are generated instantly with automated tabulation." }
+             ].map((item, i) => (
+                <div key={i} className="bg-[#111] cursor-pointer p-8 lg:p-10 rounded-[2rem] border-2 border-gray-800 hover:border-[#c3cfa1] hover:bg-[#c3cfa1] hover:text-black transition-all duration-300 relative group cursor-default">
+                  <div className="text-[#7a6cf0] group-hover:text-black font-mono text-xl font-bold mb-10 transition-colors">{item.step} <span className="opacity-50">——</span></div>
+                  <h3 className="font-black uppercase text-3xl mb-4 leading-none tracking-tight">{item.title}</h3>
+                  <p className="font-serif italic text-gray-400 group-hover:text-gray-900 text-lg leading-snug transition-colors">
+                    {item.desc}
+                  </p>
                 </div>
              ))}
            </div>
@@ -230,7 +203,7 @@ function Home() {
            Organize hackathons effortlessly and become the event coordinator your community needs.
          </p>
          <button
-           onClick={() => nav("/auth")}
+           onClick={() => nav("/events")}
            className="px-10 py-4 rounded-full font-bold text-white bg-black hover:bg-gray-800 transition-colors uppercase tracking-wider text-sm shadow-[0_4px_0_0_rgba(255,255,255,0.2)]"
          >
            Get Started Now

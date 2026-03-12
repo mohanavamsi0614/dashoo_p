@@ -92,7 +92,7 @@ function Payment() {
   const currentMembers = data ? ((data.team?.members?.length || 0) + 1) : 1;
   const isTeamComplete = currentMembers >= minMembers;
 
-  const btnClasses = "px-6 py-4 border-2 border-black font-black uppercase tracking-widest text-sm shadow-[4px_4px_0_0_#000] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] transition-all";
+  const btnClasses = "px-6 py-4 border-[3px] border-black font-black uppercase tracking-widest text-sm shadow-[6px_6px_0_0_#000] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all";
 
   return (
     <div className="min-h-screen font-sans bg-[#f4efe6] flex justify-center items-center px-4 sm:px-6 py-20 pt-28 text-black">
@@ -100,9 +100,9 @@ function Payment() {
         <BackButton />
       </div>
 
-      <div className="w-full max-w-3xl bg-white border-4 border-black p-6 sm:p-10 shadow-[8px_8px_0_0_#000] relative z-10">
-        <div className="text-center mb-10 border-b-4 border-black pb-8">
-          <span className="px-3 py-1 text-xs font-bold uppercase tracking-widest bg-black text-white inline-block mb-4">
+      <div className="w-full max-w-3xl bg-white border-[4px] border-black p-6 sm:p-12 shadow-[16px_16px_0_0_#000] relative z-10">
+        <div className="text-center mb-12 border-b-[4px] border-black pb-8">
+          <span className="px-4 py-2 text-xs font-black uppercase tracking-widest bg-black text-white inline-block mb-6 shadow-[4px_4px_0_0_#c3cfa1]">
             Secure Checkout
           </span>
           <h1 className="text-4xl sm:text-5xl font-black uppercase tracking-tighter mb-2">
@@ -117,28 +117,28 @@ function Payment() {
         </div>
 
         {paid && (
-          <div className="bg-[#c3cfa1] border-4 border-black p-6 mb-8 text-center text-black font-black uppercase tracking-widest shadow-[4px_4px_0_0_#000]">
+          <div className="bg-[#c3cfa1] border-[4px] border-black p-6 mb-10 text-center text-black font-black uppercase tracking-widest shadow-[8px_8px_0_0_#000]">
             ✅ This team has already completed the payment!
           </div>
         )}
 
         {data && eventData && !isTeamComplete && (
-          <div className="bg-yellow-400 border-4 border-black p-6 mb-8 text-center text-black font-bold uppercase shadow-[4px_4px_0_0_#000]">
-            <div className="text-4xl mb-3">⚠️</div>
-            <h3 className="text-2xl font-black mb-2 tracking-tighter">Team Incomplete</h3>
+          <div className="bg-yellow-400 border-[4px] border-black p-8 mb-10 text-center text-black font-bold uppercase shadow-[8px_8px_0_0_#000]">
+            <div className="text-5xl mb-4">⚠️</div>
+            <h3 className="text-3xl font-black mb-4 tracking-tighter">Team Incomplete</h3>
             <p className="text-sm tracking-widest">
-              Your team currently has <span className="font-black underline">{currentMembers}</span> member(s), but a minimum of <span className="font-black underline">{minMembers}</span> members is required.
+              Your team currently has <span className="font-black underline text-lg">{currentMembers}</span> member(s), but a minimum of <span className="font-black underline text-lg">{minMembers}</span> members is required.
               <br /><br />
-              Please share your <b className="bg-black text-white px-2 py-1">Team Code</b> with your members so they can join before paying.
+              Please share your <b className="bg-black text-white px-3 py-1 text-base">Team Code</b> with your members so they can join before paying.
             </p>
           </div>
         )}
 
         {data && (!eventData || isTeamComplete) && (
-          <div className="space-y-8">
+          <div className="space-y-12">
             {/* Event + Team Info */}
-            <div className="bg-[#f4efe6] border-4 border-black p-6 space-y-4 shadow-[4px_4px_0_0_#000]">
-              <h3 className="text-2xl font-black uppercase tracking-tighter border-b-2 border-black pb-2 mb-4">Order Summary</h3>
+            <div className="bg-[#f4efe6] border-[4px] border-black p-8 space-y-4 shadow-[8px_8px_0_0_#000]">
+              <h3 className="text-3xl font-black uppercase tracking-tighter border-b-[3px] border-black pb-4 mb-6">Order Summary</h3>
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center text-sm font-bold uppercase tracking-widest border-b border-black pb-3">
                 <span>Event Name</span>
                 <span className="font-black text-lg">{data.name}</span>
@@ -159,15 +159,15 @@ function Payment() {
             </div>
 
             {/* Payment Methods */}
-            <div className="bg-white border-4 border-black p-6 shadow-[4px_4px_0_0_#000]">
-              <h2 className="text-2xl font-black uppercase tracking-tighter mb-6 border-b-2 border-black pb-2">
+            <div className="bg-white border-[4px] border-black p-8 shadow-[8px_8px_0_0_#000]">
+              <h2 className="text-3xl font-black uppercase tracking-tighter mb-8 border-b-[3px] border-black pb-4">
                 Payment Instructions
               </h2>
-              <div className="space-y-6">
+              <div className="space-y-8">
                 {data.payments.reverse().map((pay, idx) => (
                   <div
                     key={idx}
-                    className="bg-[#f4efe6] border-2 border-black p-6 flex flex-col md:flex-row gap-8 items-start hover:-translate-y-1 transition-transform shadow-[4px_4px_0_0_#000]"
+                    className="bg-[#f4efe6] border-[3px] border-black p-8 flex flex-col md:flex-row gap-10 items-start shadow-[6px_6px_0_0_#000] hover:translate-y-[-4px] transition-transform"
                   >
                     <div className="flex-1 space-y-3 w-full font-bold uppercase tracking-widest text-sm">
                       {pay.bankName && (
@@ -194,16 +194,16 @@ function Payment() {
                           <span className="font-black">{pay.accountName}</span>
                         </div>
                       )}
-                      <div className="flex flex-col sm:flex-row sm:justify-between pt-2">
-                        <span className="text-[#7a6cf0] font-black items-center">UPI ID</span>
-                        <span className="text-lg font-black bg-[#c3cfa1] px-2 border-2 border-black">{pay.upi}</span>
+                      <div className="flex flex-col sm:flex-row sm:justify-between pt-4 mt-2">
+                        <span className="text-[#7a6cf0] font-black items-center text-lg">UPI ID</span>
+                        <span className="text-xl font-black bg-[#c3cfa1] px-4 py-1 border-[3px] border-black shadow-[4px_4px_0_0_#000]">{pay.upi}</span>
                       </div>
-                      <p className="text-xs font-serif italic normal-case tracking-normal mt-4 bg-white p-3 border-2 border-black shadow-[2px_2px_0_0_#000]">
+                      <p className="text-xs font-serif italic normal-case tracking-normal mt-6 bg-white p-4 border-[3px] border-black shadow-[4px_4px_0_0_rgba(0,0,0,0.5)] leading-relaxed">
                         Scan the QR code or send payment directly to the UPI ID above. Note the exact transaction reference number.
                       </p>
                     </div>
 
-                    <div className="flex flex-col items-center justify-center p-4 bg-white border-4 border-black shadow-[4px_4px_0_0_#000]">
+                    <div className="flex flex-col items-center justify-center p-6 bg-white border-[4px] border-black shadow-[8px_8px_0_0_#000]">
                       <img
                         src={pay.imgUrl}
                         alt="UPI QR"
@@ -216,19 +216,19 @@ function Payment() {
             </div>
 
             {/* Payment Submission */}
-            <div className="bg-[#c3cfa1] border-4 border-black p-6 shadow-[4px_4px_0_0_#000]">
-              <h2 className="text-2xl font-black uppercase tracking-tighter mb-6 border-b-2 border-black pb-2">
+            <div className="bg-[#c3cfa1] border-[4px] border-black p-8 shadow-[8px_8px_0_0_#000]">
+              <h2 className="text-3xl font-black uppercase tracking-tighter mb-8 border-b-[3px] border-black pb-4">
                 Verify Payment
               </h2>
 
               <div className="space-y-6">
                 <div>
-                  <label className="block text-sm font-black uppercase tracking-widest mb-2">
+                  <label className="block text-sm font-black uppercase tracking-widest mb-3">
                     Transaction / UPI Reference ID <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="text"
-                    className="w-full bg-white border-2 border-black rounded-none px-4 py-4 text-black focus:outline-none focus:ring-0 focus:border-[#7a6cf0] transition-all shadow-[4px_4px_0_0_#000] text-lg font-mono font-bold tracking-widest uppercase placeholder:font-serif italic placeholder:normal-case placeholder:font-normal placeholder:tracking-normal"
+                    className="w-full bg-white border-[3px] border-black rounded-none px-6 py-5 text-black focus:outline-none focus:ring-0 focus:border-[#7a6cf0] transition-all shadow-[6px_6px_0_0_#000] text-xl font-mono font-black tracking-widest uppercase placeholder:font-serif italic placeholder:normal-case placeholder:font-normal placeholder:tracking-normal"
                     placeholder="e.g. 31234567890"
                     value={payment.upi}
                     onChange={(e) =>
@@ -252,14 +252,14 @@ function Payment() {
                         onClick={() => wid.current && wid.current.open()}
                         className={`bg-white text-black w-full sm:w-auto ${btnClasses}`}
                       >
-                        Upload Screenshot
+                        UPLOAD SCREENSHOT
                       </button>
                     ) : (
-                      <div className="w-full relative group p-2 bg-white border-4 border-black shadow-[4px_4px_0_0_#000] inline-block">
+                      <div className="w-full relative group p-3 bg-white border-[4px] border-black shadow-[8px_8px_0_0_#000] inline-block">
                         <img
                           src={payment.imgUrl}
                           alt="Payment proof"
-                          className="w-full sm:w-64 h-auto max-h-64 object-cover border-2 border-black"
+                          className="w-full sm:w-64 h-auto max-h-64 object-cover border-[3px] border-black"
                         />
                         <button
                           type="button"
@@ -277,14 +277,13 @@ function Payment() {
                 </div>
               </div>
 
-              <div className="pt-10 flex flex-col sm:flex-row justify-end gap-4 border-t-2 border-black mt-8">
+              <div className="pt-12 flex flex-col sm:flex-row justify-end gap-6 border-t-[4px] border-black mt-10">
                 <button
                   type="button"
                   onClick={handleSubmit}
-                  className={`w-full sm:w-auto bg-black text-white hover:bg-[#7a6cf0] ${btnClasses} disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-black disabled:hover:translate-x-0 disabled:hover:translate-y-0`}
-                  disabled={!payment.upi || !payment.imgUrl}
+                  className={`w-full sm:w-auto bg-black text-white hover:bg-[#7a6cf0] ${btnClasses} disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-black disabled:hover:translate-x-0 disabled:hover:translate-y-0 text-base py-5 px-10`}
                 >
-                  Submit Processing
+                  Confirm Payment
                 </button>
               </div>
             </div>
@@ -295,7 +294,7 @@ function Payment() {
       {
         showSuccessPopup && (
           <div className="fixed inset-0 z-[100] flex items-center justify-center bg-[#f4efe6]/90 p-4">
-            <div className="bg-white border-4 border-black p-8 sm:p-10 max-w-md w-full shadow-[12px_12px_0_0_#000] text-center">
+            <div className="bg-white border-[4px] border-black p-8 sm:p-12 max-w-lg w-full shadow-[16px_16px_0_0_#000] text-center">
               <div className="flex flex-col items-center space-y-6">
                 <div className="w-20 h-20 bg-[#c3cfa1] border-4 border-black rounded-full flex items-center justify-center shadow-[4px_4px_0_0_#000]">
                   <span className="text-4xl">✓</span>
@@ -312,7 +311,7 @@ function Payment() {
 
                 <button
                   onClick={() => navigate("/")}
-                  className="mt-6 w-full py-4 bg-black text-white font-black uppercase tracking-widest text-sm border-2 border-black hover:bg-white hover:text-black transition-colors shadow-[4px_4px_0_0_#000]"
+                  className="mt-10 w-full py-5 bg-black text-white font-black uppercase tracking-widest text-base border-[3px] border-black hover:bg-white hover:text-black transition-colors shadow-[6px_6px_0_0_#000] hover:translate-y-1 hover:shadow-none"
                 >
                   Return Home
                 </button>

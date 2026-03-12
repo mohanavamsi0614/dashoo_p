@@ -28,39 +28,34 @@ export default function RegistrationSuccessPopup({ isOpen, onClose, data }) {
     // Determine the content based on the flags
     let title = "Registration Successful!";
     let description = "Your team has been registered successfully.";
-    let icon = <CheckCircle className="w-16 h-16 text-green-500" />;
+    let icon = <CheckCircle className="w-12 h-12 text-black" />;
     let type = "success"; // success, warning, neutral
 
     if (payment && mail) {
-        title = "Payment & Registration Complete";
-        description = "User registration successful and payment mail has been sent, pay the amount from the mail. Please check your inbox.";
-        icon = <CreditCard className="w-16 h-16 text-indigo-500" />;
+        title = "Action Required";
+        description = "Registration successful! A payment email has been sent to your inbox. Please complete the payment to finalize your registration.";
+        icon = <CreditCard className="w-12 h-12 text-black" />;
         type = "success";
     } else if (!payment && !mail && data.payment !== undefined) {
-        // Specifically checking if payment is explicitly false, implying it was attempted/expected but failed or config prevented it?
-        // OR backend logic: event.cost && !event.auto_payment_mail -> payment:false, mail:false
-        title = "Registered, Action Needed";
+        title = "Action Needed";
         description = message || "User registered successfully, but the payment email could not be sent. Please contact support.";
-        icon = <AlertCircle className="w-16 h-16 text-yellow-500" />;
+        icon = <AlertCircle className="w-12 h-12 text-black" />;
         type = "warning";
     } else if (!payment && mail) {
         title = "Registration Complete";
         description = "User registered for event successfully and welcome mail has been sent. Good luck!";
-        icon = <Mail className="w-16 h-16 text-blue-500" />;
+        icon = <Mail className="w-12 h-12 text-black" />;
         type = "success";
     }
 
     return (
         <AnimatePresence>
             {isOpen && (
-                <div className="fixed inset-0 flex items-center justify-center z-50 px-4">
+                <div className="fixed inset-0 flex items-center justify-center z-[100] px-4">
                     {/* Backdrop */}
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
+                    <div
                         onClick={timeLeft === 0 ? onClose : undefined}
-                        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+                        className="absolute inset-0 bg-[#f4efe6]/90"
                     />
 
                     {/* Popup Modal */}
@@ -68,61 +63,67 @@ export default function RegistrationSuccessPopup({ isOpen, onClose, data }) {
                         initial={{ opacity: 0, scale: 0.9, y: 20 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.9, y: 20 }}
-                        transition={{ type: "spring", stiffness: 300, damping: 25 }}
-                        className="relative w-full max-w-md bg-[#1e1e1e] border border-white/10 rounded-2xl shadow-2xl overflow-hidden"
+                        transition={{ duration: 0.3 }}
+                        className="relative w-full max-w-2xl bg-white border-[4px] border-black shadow-[16px_16px_0_0_#000] overflow-hidden"
                     >
-                        {/* Gradient Border Effect at top */}
-                        <div className={`h-1.5 w-full ${type === 'warning' ? 'bg-yellow-500' : 'bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500'}`} />
+                        {/* Top Accent Bar */}
+                        <div className={`h-4 w-full border-b-[4px] border-black ${type === 'warning' ? 'bg-yellow-400' : 'bg-[#c3cfa1]'}`} />
 
                         <button
                             onClick={onClose}
                             disabled={timeLeft > 0}
-                            className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="absolute top-8 right-6 text-black hover:scale-110 transition-transform disabled:opacity-30 disabled:cursor-not-allowed"
                         >
-                            <X size={20} />
+                            <X size={32} />
                         </button>
 
-                        <div className="p-8 flex flex-col items-center text-center">
-                            <div className="mb-6 p-4 rounded-full bg-white/5 border border-white/10 shadow-inner">
-                                {icon}
+                        <div className="p-8 sm:p-12 flex flex-col">
+                            <div className="flex items-center gap-6 mb-8 border-b-[4px] border-black pb-6">
+                                <div className={`min-w-[5rem] w-20 h-20 border-[4px] border-black flex items-center justify-center shadow-[6px_6px_0_0_#000] ${type === 'warning' ? 'bg-yellow-400' : 'bg-[#c3cfa1]'}`}>
+                                    {icon}
+                                </div>
+                                <h2 className="text-3xl sm:text-4xl font-black uppercase tracking-tighter text-black leading-none flex-1">
+                                    {title}
+                                </h2>
                             </div>
-
-                            <h2 className="text-2xl font-bold text-white mb-2">{title}</h2>
-                            <p className="text-gray-400 mb-6 leading-relaxed">
+                            
+                            <p className="text-sm font-bold uppercase tracking-widest text-gray-800 mb-8 border-l-[4px] border-black pl-5">
                                 {description}
                             </p>
 
                             {teamCode && (
-                                <div className="mb-8 w-full bg-[#111] border border-white/10 rounded-xl p-4 shadow-inner text-left">
-                                    <p className="text-xs text-gray-500 uppercase tracking-wider mb-2 font-semibold">Your Team Code</p>
-                                    <div className="flex items-center justify-between bg-black/50 p-3 rounded-lg border border-white/5">
-                                        <span className="font-mono text-2xl tracking-widest text-indigo-400 font-bold ml-2">
+                                <div className="mb-10 w-full bg-[#f4efe6] border-[4px] border-black p-6 shadow-[8px_8px_0_0_#000]">
+                                    <p className="text-xs font-black uppercase tracking-widest text-black mb-4">Your Team Code</p>
+                                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
+                                        <span className="font-mono text-3xl sm:text-4xl font-black tracking-widest text-black bg-white px-4 border-[3px] border-black py-2 shadow-[4px_4px_0_0_#000]">
                                             {teamCode}
                                         </span>
                                         <button
                                             onClick={() => {
                                                 navigator.clipboard.writeText(teamCode);
-                                                alert("Team code copied!");
+                                                window.alert("Team code copied!");
                                             }}
-                                            className="p-2 bg-white/5 hover:bg-white/10 rounded-md text-gray-400 hover:text-white transition-colors border border-white/5"
+                                            className="px-6 py-4 bg-black text-white hover:bg-[#7a6cf0] hover:text-black font-black uppercase tracking-widest text-xs border-[3px] border-black shadow-[4px_4px_0_0_#000] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all flex items-center justify-center gap-2"
                                             title="Copy Code"
                                         >
-                                            <Copy size={18} />
+                                            <Copy size={20} /> Copy
                                         </button>
                                     </div>
-                                    <p className="text-xs text-indigo-400/80 mt-2">Share this code with your members so they can join.</p>
+                                    <p className="text-xs font-serif italic text-black mt-6 border-t-[2px] border-black pt-3">
+                                        Share this code with your members so they can join your team.
+                                    </p>
                                 </div>
                             )}
 
                             <button
                                 onClick={onClose}
                                 disabled={timeLeft > 0}
-                                className={`w-full py-3 px-6 rounded-xl font-semibold text-white shadow-lg transition-all transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:hover:scale-100 disabled:cursor-not-allowed ${type === 'warning'
-                                    ? "bg-yellow-600 hover:bg-yellow-700 shadow-yellow-500/20"
-                                    : "bg-indigo-600 hover:bg-indigo-700 shadow-indigo-500/20"
+                                className={`w-full py-5 px-6 font-black uppercase tracking-widest text-sm sm:text-base border-[4px] border-black transition-all shadow-[8px_8px_0_0_#000] hover:shadow-none hover:translate-y-1 hover:translate-x-1 text-black disabled:opacity-50 disabled:cursor-not-allowed ${type === 'warning'
+                                    ? "bg-yellow-400 hover:bg-yellow-300"
+                                    : "bg-[#7a6cf0] hover:bg-[#c3cfa1]"
                                     }`}
                             >
-                                {timeLeft > 0 ? `Please wait read the instructions above ${timeLeft}s` : "Continue to Dashboard"}
+                                {timeLeft > 0 ? `Please read instructions (${timeLeft}s)` : "Continue to Dashboard"}
                             </button>
                         </div>
                     </motion.div>
